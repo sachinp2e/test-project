@@ -1,0 +1,94 @@
+.create-catalog-container {
+  form{
+    height: 70vh;
+  }
+  .custom-file-container {
+    display: flex;
+    align-items: end;
+    gap: 16px;
+  }
+  .upload-info {
+    display: inline-block;
+    margin-top: 16px;
+    color: #000;
+    font-family: DM Sans;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+    opacity: 0.4;
+  }
+  .margin-top-input {
+    margin-top: 26px;
+  }
+  .gradient-button {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.modal-content {
+  .modal-header {
+    .modal-title {
+      color: #000;
+      font-family: Rajdhani;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+  }
+}
+@media only screen and (min-width: 320px) and (max-width: 440px) {
+  .custom-file-container{
+    .media-file{
+      width: 100px;
+      height: 110px;
+      p{
+        font-size: 12px;
+      }
+    } 
+    .upload-button{
+      font-size: 12px;
+    }
+
+  } 
+  .media-withformat{
+    .supported-formats{
+      font-size: 12px;
+    }
+  }
+  .wizard-form{
+    form{
+      .create-asset-select-category{
+        flex-direction: column !important;
+        width: 100%;
+      }
+      .create-asset-select-catalog{
+        flex-direction: column!important;
+        align-items: flex-start !important;
+        width: 100%;
+      }
+    }
+  }
+  .step-two-container{
+    .button-group {
+      .group-button{
+        button{
+
+          font-size: 16px;
+        }
+      }
+    }
+    .select-modal-container{
+      #custom-modal{
+        width: 300%;
+        top: 78px;
+        right: -10px;
+        height: 25vh;
+      }
+  
+    } 
+  }
+  
+}

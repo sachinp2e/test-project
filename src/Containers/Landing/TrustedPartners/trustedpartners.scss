@@ -1,0 +1,95 @@
+.trusted-partners-main-wrapper {
+  padding: 40px 0;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f4f4;
+  min-height: 347px;
+
+  .sub-trusted-partners-main-wrapper {
+    width: 1072px;
+    min-height: 267px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .title-trusted-partners {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 32px;
+
+      & span {
+        text-transform: uppercase;
+        font-family: Rajdhani;
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 51px;
+        letter-spacing: -0.04em;
+        text-align: center;
+      }
+    }
+
+    .card-trusted-partners {
+      .sub-card-trusted-partners {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 24px;
+
+        .final-card-trusted-partners {
+          width: 250px;
+          height: 80px;
+          border-radius: 5px;
+          border: 1px solid #cccccc;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #ffffff;
+        }
+      }
+    }
+  }
+}
+@media only screen and (min-width: 320px) and (max-width:440px){
+  .trusted-partners-main-wrapper{
+    min-height: unset;
+    .sub-trusted-partners-main-wrapper{
+      min-height: unset;
+      .title-trusted-partners{
+        justify-content: flex-start;
+        padding: 0 20px;
+        span{
+          color: #000;
+          font-family: Rajdhani;
+          font-size: 24px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;
+          letter-spacing: -0.96px;
+          text-transform: uppercase;
+        }
+      }
+      .card-trusted-partners{
+        .sub-card-trusted-partners{
+          .final-card-trusted-partners{
+            height: unset;
+            width: unset;
+            img{
+              width: 80px;
+            }
+          }
+
+        } 
+
+      } 
+
+    } 
+
+  } 
+  
+}

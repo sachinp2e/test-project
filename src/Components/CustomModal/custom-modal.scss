@@ -1,0 +1,23 @@
+.modal-container {
+  .modal-dialog-centered {
+    display: flex;
+    justify-content: center;
+  }
+
+  .modal-content {
+    width: unset;
+    max-width: 100%;
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+    }
+
+    .modal-footer {
+      border-top: none;
+      padding: 0;
+    }
+  }
+}

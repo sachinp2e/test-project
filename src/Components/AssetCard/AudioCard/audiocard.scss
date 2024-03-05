@@ -1,0 +1,268 @@
+.audio-card {
+  min-height: 350px;
+  width: 100%;
+  position: relative;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px 1px #ddd;
+  display: flex;
+
+  &:hover {
+    .image-icon {
+      display: none;
+    }
+
+    .audio-blur-overlay {
+      display: unset;
+    }
+  }
+
+  .audio-asset-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  .audio-left-icon-wrapper {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 1;
+  }
+
+  .on-sale-absolute {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 77px;
+    height: 23px;
+    border-radius: 30px;
+    background-color: #18181866;
+    font-family: DM Sans;
+    font-size: 12px;
+    font-weight: 400;
+    color: #fff;
+    border: 1px solid #FFFFFFA3;
+  }
+
+  .audio-blur-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 5px;
+    background: #41414180;
+    backdrop-filter: blur(16.5px);
+    //padding: 6px 12px;
+    z-index: 1;
+
+    .overlay-card {
+      height: 100%;
+      position: relative;
+      padding: 16px 16px 0 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .audio-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .image-icon {
+          display: flex;
+          align-items: center;
+        }
+
+        .bidding-time-wrapper {
+          display: flex;
+          align-items: center;
+
+          .bidding-live-indicator {
+            position: relative;
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin: 10px;
+            background: #02c715;
+
+            &:before {
+              background: #02c715;
+              content: '';
+              position: absolute;
+              display: block;
+              left: -5px;
+              top: -5px;
+              width: 25px;
+              height: 25px;
+              border-radius: 50%;
+              animation: pulse 1.2s infinite ease-in;
+            }
+
+            &.closed {
+              background: #ff0000;
+              &:before {
+                background: #ff0000;
+              }
+            }
+          }
+
+          .bidding-date {
+            color: #fff;
+            text-align: center;
+            font-family: Inter;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: normal;
+
+            b {
+              font-weight: 600;
+            }
+          }
+        }
+
+        .sub-image-right-wrapper {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+        }
+      }
+
+      .physical-asset-badge {
+        background: #d9d9d9;
+        color: #000;
+        width: max-content;
+        border-radius: 30px;
+        text-align: center;
+        font-family: Inter;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        padding: 7px;
+        margin: 0 auto;
+      }
+
+      .audio-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: calc(100% - 175px);
+        width: 100%;
+        position: relative;
+        z-index: 1;
+        gap: 20px;
+
+        video {
+          height: 100%;
+          width: 100%;
+        }
+        div{
+          cursor: pointer;
+        }
+
+        .play-pause-btn-wrapper {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      .details-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin:auto;
+
+        .left-section {
+          .catalogue-name {
+            color: #fff;
+            font-family: DM Sans;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            text-transform: uppercase;
+          }
+
+          .asset-name {
+            color: #fff;
+            font-family: DM Sans;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            overflow-wrap: anywhere;
+          }
+        }
+
+        .right-section {
+          align-items: center;
+          gap:0.25rem;
+          p {
+            color: #fff;
+            text-align: right;
+            font-family: DM Sans;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+          }
+
+          h4 {
+            margin: 0;
+            color: #fff;
+            font-family: DM Sans;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+          }
+        }
+      }
+
+      .offer-card {
+        margin-bottom: 80px;
+        justify-content: center;
+        width: 100%;
+        .right-section{
+          align-items: center;
+          h4{
+            margin: 0;
+          }
+        }
+      }
+
+      .assets-audio-footer {
+        //position: absolute;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .bid-bow-audio-btn {
+          height: 40px;
+          padding: 13px 16px;
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      .offer-hover-footer{
+        left: 0px;
+      }
+    }
+  }
+}

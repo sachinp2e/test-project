@@ -1,0 +1,121 @@
+.make-offer-container {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  .make-offer{
+    height: 50px;
+  }
+  .select-date-container{
+    label{
+      padding: 0 !important;;
+    }
+  }
+  .btn-group {
+    background: linear-gradient(
+      114deg,
+      #ffcb14 0%,
+      #fe9417 26.56%,
+      #ff2df7 79.86%,
+      #d150ff 100%
+    );
+    padding: 2px;
+    .custom-button {
+      &:hover {
+        background: linear-gradient(
+          114deg,
+          #ffcb14 0%,
+          #fe9417 26.56%,
+          #ff2df7 79.86%,
+          #d150ff 100%
+        );
+      }
+      button {
+        border: none;
+        background: none;
+        border-radius: 0;
+
+        .text {
+          color: black;
+        }
+      }
+    }
+    .custom-button:nth-child(1) {
+      background-color: white;
+      border-radius: 5px 0 0 5px;
+    }
+    .custom-button:nth-child(2) {
+      background-color: white;
+      border-radius: 0;
+      margin: 0 2px;
+    }
+    .custom-button:nth-child(3) {
+      background-color: white;
+      border-radius: 0 5px 5px 0;
+    }
+  }  
+}
+.footer-Subscribe-btn {
+  display: flex;
+  margin-top: 61px;
+  border: 0;
+  color: white;
+  margin-bottom: 32px;
+  width: 100%;
+  max-width: 130px;
+  height: 50px;
+  display: inline-flex;
+  padding: 13px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 5px;
+  background: linear-gradient(
+    114deg,
+    #ffcb14 0%,
+    #fe9417 26.56%,
+    #ff2df7 79.86%,
+    #d150ff 100%
+  );
+}
+
+.modal-dialog {
+  max-width: 700px !important;
+}
+.select-input-container .select-input .currencyInput {
+  overflow: hidden !important;
+}
+
+.offer-asset-details {
+  display: flex;
+  justify-content: space-between;
+  h2 {
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  .offer-left-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-between;
+  }
+}
+
+.offer-asset-name {
+  margin-top: 57px;
+}
+
+
+.proceed-button{
+  display: flex;
+  justify-content: center;
+}
+.offer-note{
+  color: #434343;
+  margin-top: 40px;
+  font-size: 14px;
+  opacity: 0.7;
+}

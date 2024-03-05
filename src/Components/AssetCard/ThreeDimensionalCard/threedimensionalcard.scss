@@ -1,0 +1,307 @@
+.three-dimensional-main-wrapper {
+  width: 100%; 
+  position: relative;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px 1px #ddd;
+  display: flex;
+  align-items: stretch; 
+  min-height: 316px;
+
+  .three-dimensional-main-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  .three-dimensional-left-wrapper,
+  .three-dimensional-right-wrapper {
+    position: absolute;
+    top: 16px;
+  }
+
+  .three-dimensional-left-wrapper {
+    z-index: 600;
+    left: 16px;
+  }
+
+  .three-dimensional-right-wrapper {
+    right: 16px;
+
+    .three-dimensional-right-icon {
+      border: none;
+      background: none;
+    }
+  }
+
+  .on-sale-absolute {
+    display: block;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 77px;
+    height: 23px;
+    border-radius: 30px;
+    background-color: #18181866;
+    font-family: DM Sans;
+    font-size: 12px;
+    font-weight: 400;
+    color: #fff;
+    border: 1px solid #FFFFFFA3;
+  }
+ 
+
+  .three-dimensional-blur-overlay {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    background: #41414180;
+    color: white;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.48);
+    backdrop-filter: blur(16.5px);
+ 
+
+    .three-dimensional-text-blur-overlay {
+      padding: 50px 0 16px 0;
+      display: flex;
+      color: #ffffff;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+      height: 100%;
+
+      .three-dimensional-details {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+
+        .three-dimensional-title {
+          color: #FFF;
+          text-align: center;
+          font-family: DM Sans;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+          text-transform: uppercase;
+        }
+
+        .three-dimensional-sub-title {
+          color: #FFF;
+          text-align: center;
+          font-family: DM Sans;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;
+          display: flex;
+          gap: 10px;
+        }
+
+        .three-dimensional-price {
+          display: flex;
+          color: #fff;
+          text-align: center;
+          justify-content: center;
+          font-family: DM Sans;
+          font-size: 24px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+
+          span {
+            color: #FFF;
+            font-family: DM Sans;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+          }
+        }
+      }
+
+      .three-dimensional-cards-btn {
+        border: none;
+        display: flex;
+        height: 40px;
+        padding: 13px 16px;
+        align-items: center;
+        gap: 5px;
+        background: linear-gradient(
+                        114deg,
+                        #ffcb14 0%,
+                        #fe9417 26.56%,
+                        #ff2df7 79.86%,
+                        #d150ff 100%
+        );
+      }
+    }
+  }
+
+  &:hover .three-dimensional-blur-overlay {
+    display: block;
+  }
+}
+
+.bidding-time-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+
+  .bidding-live-indicator {
+    position: relative;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin: 10px;
+    background: #02C715;
+
+    &:before {
+      background: #02C715;
+      content: '';
+      position: absolute;
+      display: block;
+      left: -5px;
+      top: -5px;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      animation: pulse 1.2s infinite ease-in;
+    }
+
+    &.closed {
+      background: #FF0000;
+      &:before {
+        background: #FF0000;
+      }
+    }
+  }
+
+  .bidding-date {
+    color: #FFF;
+
+    text-align: center;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+
+    b {
+      font-weight: 600;
+    }
+
+  }
+}
+
+.physical-asset-badge {
+  background: #D9D9D9;
+  color: #000;
+  width: max-content;
+  border-radius: 30px;
+  text-align: center;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding: 7px;
+  margin: 0 auto;
+}
+.details-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin:auto;
+  gap: 5%;
+  width: 80%;
+  
+
+  .left-section {
+    .catalogue-name {
+      color: #FFF;
+
+      font-family: DM Sans;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      text-transform: uppercase;
+    }
+
+    .asset-name {
+      color: #FFF;
+      font-family: DM Sans;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      overflow-wrap: anywhere;
+      
+    }
+  }
+
+  .right-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25rem;
+    p {
+      color: #FFF;
+      width: max-content;
+      text-align: right;
+      font-family: DM Sans;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    h4 {
+      margin: 0;
+      color: #FFF;
+      font-family: DM Sans;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+  }
+}
+
+.threeD-footer {
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+
+    .buy-now-btn {
+      height: 40px;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+  }
+}
+
+.three-dimensional-main-wrapper:hover .on-sale-absolute {
+  display: none; 
+}

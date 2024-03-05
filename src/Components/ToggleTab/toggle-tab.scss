@@ -1,0 +1,111 @@
+.toggle-tab {
+  .tabs {
+    display: flex;
+    border-radius: 40px;
+    border: 1px solid #bcbcbc;
+    background: #fff;
+    height: 44px;
+    //max-width: 220px;
+    width: 100%;
+    padding: 2px;
+
+    .tab {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      padding: 7px 24px;
+      gap: 10px;
+      color: #000;
+      font-family: Rajdhani;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      white-space: nowrap;
+      border-radius: 40px;
+      text-transform: capitalize;
+
+      &.active {
+        border-radius: 40px;
+        background: #262626;
+        color: #fff;
+        //font-family: Rajdhani;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 26px;
+        letter-spacing: 0em;
+        text-align: center;
+      }
+    }
+  }
+
+  .content {
+    .tab-content {
+      display: none;
+      &.active {
+        //display: block;
+      }
+    }
+    .sub-nav-container{
+      .dropdown{
+        .dropdown-menu{
+          top: 0px;
+          right: -50px;
+        }
+      }
+    }
+  }
+
+  .contentTab{
+    display: flex;
+    justify-content: end;
+  }
+  
+  .showModel{
+    display: none;
+  }
+  
+  
+}
+
+
+@media only screen and (max-width: 768px) {
+  .toggle-tab {
+    .tabs {
+      max-width: unset;
+
+      .tab {
+        width: 100%;
+      }
+    }
+  }
+
+
+}
+.settingIconDiv{
+  background-color: rgb(252, 247, 247);
+  width: 140px;
+  border-radius: 0.5rem ;
+
+  span{
+    margin: 3px 0px;
+    padding: 3px;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 3px;
+
+    &:hover{
+      color: black;
+      font-weight: 500;
+    }
+  }
+
+  .active{
+    color: black;
+      font-weight: 500;
+  }
+  
+  
+}
+

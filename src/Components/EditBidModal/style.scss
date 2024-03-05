@@ -1,0 +1,142 @@
+.edit-modal {
+
+  &.confirm-modal {
+    .modal-dialog {
+      width: 360px;
+    }
+  }
+  .modal-content {
+    padding: 26px !important;
+  }
+}
+
+.edit-bid {
+  .section {
+    margin-top: 24px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    label {
+      color: #000;
+
+      font-family: "DM Sans";
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    p {
+      color: #434343;
+
+      font-family: "DM Sans";
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    .enter-bid-label {
+      color: #000;
+
+      font-family: Inter;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: normal;
+    }
+
+    input {
+      margin-left: 10px;
+      border-radius: 5px;
+      border: 1px solid #D3D3D3;
+      background: #FFF;
+      box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.20);
+      height: 38px;
+      padding: 10px 16px;
+    }
+  }
+
+  .info-section {
+    margin-top: 24px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+
+    span {
+      color: var(--Text-Colour, #716A79);
+      font-family: "DM Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+
+  .confirm-edit-bid {
+    margin-top: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.confirm-edit-bid {
+  position: relative;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .background {
+    position: absolute;
+    opacity: 0.2;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 60% !important;
+      height: auto !important;
+    }
+  }
+
+  label {
+    color: #000;
+
+    text-align: center;
+    font-family: "DM Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 25px; /* 156.25% */
+  }
+
+  p {
+    margin-top: 11px;
+    color: #000;
+    line-break: anywhere;
+    text-align: center;
+    font-family: "DM Sans";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 38px;
+  }
+
+  .confirm-button {
+    margin-top: 40px;
+  }
+}
+
+.confirm-modal {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

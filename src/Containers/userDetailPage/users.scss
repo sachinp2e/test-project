@@ -1,0 +1,425 @@
+.user-container {
+  .user-all-details {
+    padding: 65px 80px 0 80px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 0 -34px;
+    animation: changeBackground 4s linear infinite;
+    .user-cover {
+      width: 100%;
+      margin-top: 50px;
+      position: relative;
+      img {
+        border-radius: 10px;
+        object-fit: cover;
+        width: 100%;
+        height: 320px;
+      }
+      .icons {
+        display: flex;
+        gap: 10px;
+        position: absolute;
+        right: 50px;
+        bottom: -25px;
+        z-index: 99;
+      }
+    }
+  }
+  .profile-col {
+    display: flex;
+    .user-profile {
+      min-width: 282px;
+      height: 359px;
+      background: white;
+      position: relative;
+      bottom: 77px;
+      left: 44px;
+      border-radius: 5px;
+      background: #fff;
+      box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.12);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 12px;
+      .profile-pic {
+        border-radius: 50%;
+        img {
+          border-radius: 50%;
+          object-fit: cover;
+          width: 100px;
+          height: 100px;
+        }
+      }
+      .username {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        & span {
+          color: #000;
+          display: flex;
+          text-align: center;
+          font-size: 20px;
+          font-weight: 700;
+        }
+      }
+      .social-icons {
+        display: flex;
+        gap: 20px;
+        svg {
+          cursor: pointer;
+        }
+      }
+      .kalp-id {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        p {
+          color: #000;
+          text-align: center;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 25px;
+        }
+        div{
+          cursor: pointer;
+        }
+      }
+      .user-button-wrapper {
+        display: flex;
+        gap: 20px;
+        .follow-unfollow-button {
+          height: 100%;
+          .link-span{
+            padding: 8px 1.5rem;
+          }
+          div{
+            line-height: 34px;
+          }
+        }
+       
+        .share-btn-wrapper{
+          position: relative;
+          .share-user-button{
+            span{
+              padding: 12px 14.5px;
+            }
+          }
+        }
+      }
+    }
+    .user-description {
+      margin-left: 70px;
+      margin-top: 45px;
+      .description {
+        color: #434343;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 140%;
+        max-width: 865px;
+      }
+      .joined {
+        color: #434343;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 25px;
+        margin: 9px 0 32px 0;
+        span {
+          color: #000;
+          text-align: center;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 25px;
+        }
+      }
+      .follower-following {
+        display: flex;
+        gap: 17px;
+        .followers {
+          display: flex;
+          cursor: pointer;
+          flex-direction: column;
+          gap: 10px;
+          padding: 8px 16px;
+          justify-content: center;
+          border-radius: 5px;
+          background: #fff;
+          box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+          span:nth-child(1) {
+            color: #787878;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 120%;
+          }
+          span:nth-child(2) {
+            color: var(--tertiary-color, #c34ac3);
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 120%;
+          }
+        }
+      }
+    }
+  }
+
+  .custom-tabs {
+    padding: 0 80px 0 80px;
+    margin: 0 0 50px 0;
+    display: flex;
+  }
+  .local-searchbar-row {
+    display: flex;
+    align-items: center;
+    padding: 0 80px 40px 80px;
+    .custom-toogle-tab {
+      display: flex;
+      .toggle-tab {
+        .tabs {
+          box-sizing: border-box;
+          border: none;
+          display: flex;
+          background: #fff;
+          border-radius: 0;
+          padding: 0;
+          border-bottom: 1px solid #bcbcbc;
+          .tab {
+            padding: 20px 12px;
+          }
+        }
+        .active {
+          background: transparent;
+          color: #000;
+          border-radius: 0px;
+          border-bottom: 1px solid #000;
+        }
+      }
+    }
+  }
+
+  .local-searchbar-row-hidden{
+    align-items: baseline;
+    display: block;
+    padding: 0 80px 40px 80px;
+  }
+  .custom-sub-tabs {
+    color: #000;
+    font-family: Rajdhani;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-left: 15px;
+    border: 1px solid red;
+  }
+}
+.explore-cards {
+  display: flex;
+  .filter-button {
+    display: flex;
+    width: 60px;
+    padding: 8px 16px;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    border-radius: 0px 30px 30px 0px;
+    background: var(
+      --Primary-Gradient,
+      linear-gradient(
+        114deg,
+        #ffcb14 0%,
+        #fe9417 26.56%,
+        #ff2df7 79.86%,
+        #d150ff 100%
+      )
+    );
+  }
+  .explore-filter-container {
+    padding: 0 80px 70px 80px;
+    width: 100%;
+  }
+  .filter-hidden{
+    padding-left: 24px;
+  }
+}
+@media (min-width: 1550px) {
+  .user-container {
+    .profile-desc {
+      .profile-col {
+        .user-profile {
+          min-width: 330px;
+          height: 400px;
+        }
+      }
+      .user-description {
+        left: 41%;
+      }
+    }
+  }
+}
+@media only screen and (min-width: 1024px) and (max-width: 1370px) {
+  .user-container {
+    .profile-desc {
+      .user-description {
+        left: 55%;
+        top: 1px;
+        .description {
+          max-width: 500px;
+          font-size: 13px;
+        }
+        .joined {
+          margin: 9px 0 30px 0;
+        }
+        .follower-following .followers {
+          gap: 4px;
+        }
+      }
+    }
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .user-all-details {
+      padding: 80px 15px 0 15px;
+      .profile-desc {
+        .profile-col {
+          .user-profile {
+            min-width: 238px;
+            bottom: 36px;
+            left: 15px;
+          }
+        }
+        .user-description {
+          left: 68%;
+          top: 1px;
+          margin-left: 22px;
+          margin-top: 32px;
+          .description {
+            max-width: 350px;
+            font-size: 13px;
+          }
+          .joined {
+            margin: 9px 0 30px 0;
+          }
+        }
+      }
+    }
+  }
+}
+@media only screen and (min-width: 320px) and (max-width: 440px) {
+  .user-container {
+    .local-searchbar-row{
+      flex-direction: column;
+      .col-3{
+        width: 145%;
+      }
+      .custom-toogle-tab{
+        margin-top: 10px;
+      }
+    }
+    .user-all-details {
+      padding: 40px 12px 0 12px;
+      .user-cover{
+        img{
+          height: 200px;
+        }
+      }
+    }
+    .profile-col {
+      flex-direction: column;
+      align-items: center;
+      .user-profile {
+        min-width: unset;
+        margin-bottom: 20px;
+        padding: 10px;
+        flex-wrap: wrap;
+        flex-direction: row;
+        height: 230px;
+        flex: row;
+        width: 334px;
+        height: 218px;
+        left: 0;
+        bottom: 100px;
+        .user-button-wrapper{
+          position: absolute;
+          bottom: 10px;
+          right: 10px;
+        }
+        .kalp-id{
+          position: relative;
+          bottom: 75px;
+          left: 68px;
+        }
+        .social-icons{
+          gap:12px;
+          position: absolute;
+          bottom: 10px;
+          left: 20px;
+      
+          svg{
+            width: 28px;
+          }
+        }
+        .profile-pic{
+          img{
+            width:20vw;
+            height: 10vh;
+            position: relative;
+            top: 11px;
+            right: 24px;
+          }
+        }
+        .username{
+          span{
+            font-size: 16px;
+          }
+        }
+      }
+      .user-description {
+        
+        bottom: 90px;
+        margin-left: 0;
+        margin-top: 20px;
+        position: relative;
+
+        .description {
+          max-width: 100%;
+          font-size: 14px;
+        }
+        .joined {
+          margin: 9px 0 20px 0;
+        }
+        .follower-following {
+          flex-direction: row;
+          align-items: center;
+          .followers {
+            gap: 4px;
+            
+          }
+        }
+      }
+    }
+    .custom-tabs{
+      padding: 0 20px;
+      overflow-x:scroll ;
+      width: 100%;
+      -ms-overflow-style: none; 
+      scrollbar-width: none;
+    }
+    .filter-button {
+      padding: 8px 12px;
+    }
+  }
+  .explore-cards{
+    .custom-button{
+      position: absolute;
+    }
+    .explore-filter-container {
+      margin-top:55px;
+      padding: 0 20px;
+    }
+  }
+}

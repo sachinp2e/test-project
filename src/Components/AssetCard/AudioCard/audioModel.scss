@@ -1,0 +1,92 @@
+.audio-model {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  height: 100%;
+  .spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #000;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+  
+  .thumbnail-container {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 75%;
+    
+    img {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  }
+  .bottom-side-player {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    // background: rgba(133, 132, 132, 0.5);
+    height: 20vh;
+    background: tra;
+    
+  }
+  .player-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 25vh;
+    background-color:rgba(133, 132, 132, 0.5);
+  
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background-color: #eee;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      
+      .progress {
+        height: 100%;
+        background-color: #f760db;
+        border-radius: 4px;
+      }
+    }
+    
+    .playback-controls {
+      display: flex;
+      align-items: center;
+      
+      .control {
+        cursor: pointer;
+        margin: 0 10px;
+      }
+      .pause{
+        svg{
+
+          width: 32px;
+          height: 32px;
+        }
+      }
+      
+      .time {
+        margin: 0 10px;
+        font-weight: 700;
+      }
+      .audio-svg{
+        svg{
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+  
+ 
+}

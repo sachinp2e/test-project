@@ -1,0 +1,29 @@
+/* styles/Dropdown.module.scss */
+.dropdown-custom {
+  position: relative;
+
+  input {
+    width: 200px;
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  .optionsContainer {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+
+    div {
+      padding: 8px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
+    }
+  }
+}

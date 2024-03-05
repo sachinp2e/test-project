@@ -1,0 +1,87 @@
+.bid-container {
+  margin-top: 3rem;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  .bid-left-content,.bid-right-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    span {
+      color: #434343;
+      font-family: DM Sans;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+  .bid-right-content{
+    text-align: end;
+  }
+
+
+}
+.your-bid {
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 2rem;
+  gap: 10px;
+  input {
+    padding: 10px 16px;
+    border-radius: 5px;
+    width: 100px;
+    border: 1px solid #d3d3d3;
+    background: #fff;
+    box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    font-weight: 600;
+    &:focus-visible {
+      box-shadow: none;
+      outline: none;
+    }
+  }
+
+  select {
+    border: none;
+    background: transparent;
+    &:focus-visible {
+      box-shadow: none;
+      outline: none;
+    }
+  }
+}
+
+.disclaimer {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  align-items:start;
+  color: #434343;
+  font-family: DM Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  .proceed {
+    border-radius: 5px;
+    background: linear-gradient(
+      114deg,
+      #ffcb14 0%,
+      #fe9417 26.56%,
+      #ff2df7 79.86%,
+      #d150ff 100%
+    );
+    border: none;
+  }
+}
+.bids-left-content{
+  display: flex;
+  flex-direction: row;
+  gap: 200px;
+  justify-content: space-between;
+  margin-top: 30px;
+}

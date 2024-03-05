@@ -1,0 +1,363 @@
+.edit-profile {
+  max-width: 767px;
+  position: relative;
+  bottom: 90px;
+  left: 20px;
+
+  .photo-section {
+    .image-preview-section {
+      display: flex;
+      align-items:flex-end;
+      gap: 20px;
+
+      .circular-image-preview {
+        img {
+          width: 170px;
+          height: 170px;
+          object-fit: cover;
+          margin: 0;
+          border-radius: 50%;
+          overflow: hidden;
+          position: relative;
+          border: 1px solid #e5e5e5;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .name-initials {
+          width: 170px;
+          height: 170px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 60px;
+          font-weight: 600;
+          color: #fff;
+          background: #757472;
+          border-radius: 50%;
+        }
+      }
+
+      .upload-photo-btn {
+        line-height: 34px;
+      }
+
+      .delete-photo-btn {
+        button {
+          span {
+            font-size: 18px;
+            line-height: 30px;
+          }
+        }
+      }
+    }
+
+    .profile-image-error {
+      margin: 5px 0;
+      color: #e34444;
+    }
+  }
+
+  .account-creation-details {
+    display: flex;
+    margin-top: 13px;
+    color: #434343;
+    text-align: center;
+    font-family: DM Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 25px;
+
+    b {
+      color: #000;
+      text-align: center;
+      font-family: DM Sans;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 25px;
+    }
+  }
+
+  .profile-form {
+    padding-top: 20px;
+
+    .form {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 40px;
+
+      .form-group {
+        width: 100%;
+        display: flex;
+        gap: 15px;
+
+        button {
+          border-radius: 5px;
+        }
+
+        .link-style {
+          span {
+            line-height: 30px;
+          }
+        }
+
+        .form-element {
+          width: 100%;
+
+          .text-field {
+            .text-field__input {
+              ::placeholder {
+                opacity: 0.4;
+              }
+            }
+          }
+
+          label {
+            color: var(--Basic-400, #716a79);
+            font-family: DM Sans;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+          }
+
+          .error {
+            color: var(--Red, #ff1414);
+            font-family: DM Sans;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 28px;
+            margin: 0;
+          }
+
+          .email-verifier {
+            position: absolute;
+            top: 10px;
+            right: 5px;
+          }
+
+          .form-input-dropdown {
+            position: absolute;
+            top: 0;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .dropdown-btn {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+              color: #000;
+              font-family: "DM Sans";
+              font-size: 14px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: normal;
+              background: transparent;
+              border-top: none;
+              border-bottom: none;
+              border-left: none;
+              border-radius: 0;
+              border-right: 1px solid #d3d3d3;
+              padding: 8px 16px;
+
+              &:before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+                width: 2px;
+                height: 25px;
+              }
+
+              &::after {
+                content: none;
+              }
+
+              .arrow-down {
+                transform: rotate(0deg);
+                transition: 0.3s;
+              }
+
+              .arrow-up {
+                transform: rotate(-180deg);
+                transition: 0.3s;
+              }
+            }
+
+            .dropdown-menu {
+              min-width: unset;
+
+              .dropdown-item {
+                &:active {
+                  background-color: #f8f9fa;
+                  color: #000;
+                }
+              }
+            }
+          }
+
+          .phone-number-input {
+            padding-left: 80px;
+          }
+        }
+      }
+
+      .radius-btn {
+        border-radius: 5px;
+      }
+
+      .form-element {
+        .text-area-container {
+          & ::placeholder {
+            opacity: 0.4;
+          }
+        }
+
+        .error {
+          color: var(--Red, #ff1414);
+          font-family: DM Sans;
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 28px;
+          margin: 0;
+        }
+      }
+    }
+
+  }
+}
+
+.user-cover-image {
+  position: relative;
+  border-radius: 10px;
+
+  img {
+    width: 100%;
+    border-radius: 10px;
+    height: 170px;
+    object-fit: cover;
+  }
+
+  .edit-btn-wrapper {
+    position: absolute;
+    display: flex;
+    gap: 10px;
+    top: 70%;
+    right: 20px;
+
+    .edit-btn-icon, .trash-btn-icon {
+      border: none;
+      background: url('../../../Assets/_images/small-gradient-border.svg');
+      font-family: Rajdhani;
+      font-size: 16px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: background 0.3s ease-out;
+      color: #ffffff;
+      display: inline-flex;
+      height: 40px;
+      padding: 13px 16px;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      border-radius: 5px;
+      border-image: linear-gradient(
+          to right,
+          rgb(255, 203, 20),
+          rgba(254, 148, 23, 0.98),
+          rgba(255, 45, 247, 0.94),
+          rgba(209, 80, 255, 0.94)
+        )
+        1;
+    }
+    .trash-btn-icon {
+      padding: 13px 14.5px;
+    }
+  }
+}
+
+.cover-image-error {
+  margin: 6px 0;
+  text-align: right;
+  color: #e34444;
+}
+
+.profile-update-success-modal {
+  display: flex;
+  flex-direction: column;
+  text-align: center !important;
+
+  div {
+    align-items: center;
+
+    img {
+      height: 30%;
+      width: 30%;
+    }
+  }
+
+  span {
+    font-family: DM Sans;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: -0.5px;
+    text-align: center;
+    padding: 0 20px;
+    white-space: nowrap;
+  }
+
+  .custom-button {
+    .change-password-btn {
+      height: 40px;
+      padding: 13px 16px;
+    }
+  }
+}
+
+.change-password-modal {
+  text-align: center;
+  .change-password-image{
+    img{
+      height: 30%;
+      width: 30%;
+    }
+  }
+  .custom-button {
+    .change-password-btn {
+      height: 40px;
+      padding: 13px 16px;
+    }
+  }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 440px) {
+  .custom-gradient-button-filled {
+    .align-items-center {
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+  .edit-profile {
+    .photo-section {
+      .image-preview-section {
+        .delete-photo-btn {
+          position: absolute;
+          top: 546px;
+          right: 85px
+        }
+      }
+
+    }
+
+  }
+}

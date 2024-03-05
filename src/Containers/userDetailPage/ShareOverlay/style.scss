@@ -1,0 +1,17 @@
+.share-icons-wrapper{
+    position: absolute;
+    background-color: #fff;
+    border-radius: 40px;
+    top: 55px;
+    left: -53px;
+    box-shadow: 0px 3px 10px 0px #0000001C;
+    .cross-btn{
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        box-shadow: 1px 2px 4px 0px #00000026;
+    }
+    >svg:last-child{
+        margin-right: 16px;
+    }
+}

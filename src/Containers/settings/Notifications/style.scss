@@ -1,0 +1,61 @@
+.notification-settings-page {
+  .heading {
+    h3 {
+      color: #000;
+
+      font-family: DM Sans;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+
+    .divider {
+      background: #C6C6C6;
+      height: 1px;
+      width: 100%;
+    }
+  }
+
+  .notifications {
+    max-width: 1024px;
+
+    .notification-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &__left {
+        margin: 13px 0;
+        p {
+          margin: 0;
+
+          &:first-child {
+            color: #000;
+
+            font-family: DM Sans;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+          }
+
+          &:last-child {
+            color: #000;
+            opacity: 0.7;
+            font-family: DM Sans;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin-top: 6px;
+          }
+        }
+      }
+
+      &__right {
+
+      }
+    }
+  }
+}

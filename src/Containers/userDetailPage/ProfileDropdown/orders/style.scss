@@ -1,0 +1,105 @@
+.orderProfile {
+  .table-container .table-responsive .custom-table tr {
+    th {
+      color: #fff;
+      text-align: center;
+      font-family: Rajdhani;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      padding: 8px;
+      div {
+        border-left: 1px solid #6d6d6d;
+        padding: 10px;
+      }
+      &:first-child div {
+        border-left: 0;
+      }
+    }
+    td:first-child {
+      color: #0792f7 !important;
+      text-decoration: underline;
+      span{
+        cursor: pointer;
+      }
+    }
+    td {
+      div{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      ._failed {
+        color: #e34444;
+        text-align: center;
+        font-family: 'DM Sans';
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        padding: 4px 10px;
+        border-radius: 5px;
+        background: #feebe9;
+        min-width: 100px;
+      }
+      ._pending, ._custom {
+        color: #9a763b;
+        text-align: center;
+        font-family: 'DM Sans';
+        font-size: 12px;
+        font-style: normal;
+        padding: 4px 10px;
+        font-weight: 400;
+        line-height: normal;
+        border-radius: 5px;
+        background: #f8f3d6;
+        min-width: 100px;
+      }
+      ._success {
+        color: #5b7153;
+        text-align: center;
+        font-family: 'DM Sans';
+        font-size: 12px;
+        font-style: normal;
+        padding: 4px 10px;
+        font-weight: 400;
+        line-height: normal;
+        min-width: 100px;
+        border-radius: 5px;
+        background: #def2d6;
+      }
+    }
+  }
+}
+
+.orders-pagination {
+  .table-pagination-select {
+      padding: 4px 0px 4px 0px;
+      
+      .options-container {
+        top: -132px;
+        text-align: center;
+      }
+  }
+
+  .right-wrapper {
+      span:not(span:last-child) {
+          width: 28px;
+          height: 28px;
+          border: 1px solid #BAB7BA;
+          border-radius: 4px;
+          text-align: center;
+          font-weight: 400;
+          cursor: default;
+      }
+
+      span:nth-child(odd) {
+          cursor: pointer;
+      }
+
+      .light {
+          color: #CFCDCF;
+      }
+  }
+}

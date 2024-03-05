@@ -1,0 +1,222 @@
+.explore-user-img-main-wrapper {
+  width: 100%;
+  height: auto;
+  background: #fff;
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid #d9d9d9;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .explore-user-img {
+    flex: 0 1 150px;
+
+    .sub-explore-user-img {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    & img {
+      width: 305px;
+      height: 160px;
+    }
+  }
+
+  .explore-user-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 100px;
+
+    .sub-explore-user-text {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      & span {
+        color: #000;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .explore-user-avatar {
+    top: 60%;
+    left: 50%;
+    width: 87px;
+    height: 87px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid #fff;
+    }
+  }
+
+  .explore-user-overlay {
+    opacity: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    background: #41414180;
+    color: white;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.48);
+    backdrop-filter: blur(16.5px);
+    transition: opacity 0.45s ease-in-out;
+
+    .sub-explore-user-overlay {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      .title-explore-user {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+        > img {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          border: 2px solid #fff;
+          cursor: pointer;
+        }
+
+        & div {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          & span {
+            color: #fff;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            & img {
+              margin-left: 5px;
+            }
+          }
+        }
+      }
+
+      .recently-created-explore-user {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        .recently-created-explore-user-img {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .sub-recently-created-explore-user-img {
+            position: relative;
+          }
+
+          .second {
+            right: 4px;
+          }
+
+          .third {
+            right: 8px;
+          }
+
+          .fourth {
+            right: 12px;
+          }
+
+          & span {
+            color: #fff;
+            font-family: Inter;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 25px;
+          }
+        }
+
+        & span {
+          color: #fff;
+          //font-family: Inter;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 300;
+          line-height: 25px;
+        }
+      }
+
+      .footer-explore-user {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
+
+        .followers-footer-explore-user {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+
+          & span {
+            color: #fff;
+            font-family: DM Sans;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 20px;
+          }
+        }
+
+        .vertical-line-footer-explore-user {
+          width: 1px;
+          height: 26px;
+          opacity: 0.4;
+          background: #adadad;
+        }
+      }
+
+      .footer-button {
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+          height: 39px;
+          width: 100px;
+          div {
+            justify-content: center;
+          }
+          span {
+            padding: 8px 14px 8px 16px;
+            height: 36px;
+            width: 97px;
+          }
+        }
+      }
+    }
+  }
+
+  &:hover .explore-user-overlay {
+    opacity: 1;
+  }
+}

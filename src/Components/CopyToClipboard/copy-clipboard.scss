@@ -1,0 +1,43 @@
+.copied-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  height: 100%;
+
+  .copy-id {
+    color: #000;
+    font-family: DM Sans;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 18px;
+  }
+  .svg{
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .copied {
+    position: absolute;
+    right: -19px;
+    top: -20px;
+    opacity: 0;
+  }
+
+  .animation {
+    animation: disappear 2.5s linear;
+  }
+
+  @keyframes disappear {
+    0% {
+      opacity: 0;
+    }
+    5% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+}

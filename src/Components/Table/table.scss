@@ -1,0 +1,121 @@
+.table-container {
+  .table-responsive {
+    border-radius: 5px;
+    border: 1px solid #adadad;
+    background: #fff;
+
+    .custom-table {
+      min-width: 925px;
+      margin-bottom: 0;
+      overflow: auto;
+      empty-cells: show;
+      border-spacing: 0;
+      border: 1px solid;
+
+      & thead {
+        white-space: nowrap;
+        border: none;
+
+        background-color: #f1f1f1;
+        position: relative;
+        display: block;
+        width: 100%;
+
+        & tr {
+          display: flex;
+          width: 100%;
+
+          & th {
+            padding: 0.5rem 0.7rem;
+            color: #ffffff;
+            font-family: DM Sans;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            display: flex;
+            align-items: center;
+            background: #000000;
+
+            .sorting-icon {
+              cursor: pointer;
+            }
+          }
+
+          .rank-wrapper {
+            background: #262626;
+            color: #fff;
+            font-family: DM Sans;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+          }
+        }
+      }
+
+      tbody {
+        max-height: calc(100vh - 250px);
+        display: block;
+        position: relative;
+        width: 100%;
+        overflow-y: scroll;
+        border-top: 1px solid rgba(0, 0, 0, 0.2);
+
+        tr {
+          white-space: nowrap;
+          display: flex;
+          width: 100%;
+
+          // odd child change background color
+          &:nth-child(even) {
+            td {
+              background: #f1f1f1;
+            }
+          }
+
+          td {
+            padding: 0.6rem 0.9rem;
+            white-space: nowrap;
+            color: #000;
+            font-family: DM Sans;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            border: none;
+            flex: 1;
+            svg{
+              cursor: pointer;
+            }
+          }
+
+          .loader {
+            border: 4px solid #000;
+            border-bottom-color: transparent;
+          }
+        }
+      }
+    }
+  }
+
+  & ::-webkit-scrollbar {
+    margin-top: 10px;
+    width: 5px;
+  }
+
+  & ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+  }
+
+  & ::-webkit-scrollbar-thumb {
+    background: #262626;
+    border-radius: 40px;
+  }
+
+  & ::-webkit-scrollbar:horizontal {
+    height: 5px;
+  }
+}

@@ -1,0 +1,26 @@
+.skip span {
+  color: #000;
+  text-align: center;
+  font-family: Rajdhani;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  border-bottom: 1px solid #000;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.kyc-modal-children .button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  button{
+    z-index: 0;
+  }
+}
+.skip-kyc{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

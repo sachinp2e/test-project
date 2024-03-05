@@ -1,0 +1,136 @@
+.explore-container {
+  .explore-cover {
+    width: 100%;
+    height: 304px;
+    position: relative;
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 304px;
+    }
+
+    .category-title {
+      position: absolute;
+      padding: 0 70px;
+      bottom: -20px;
+      color: #fff;
+      text-align: center;
+      font-family: Inter;
+      font-size: 80px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      text-transform: uppercase;
+    }
+  }
+
+  .tabs-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 70px;
+
+    .select-group {
+      display: flex;
+      gap: 50px;
+
+      .select-three {
+        width: 120px;
+        margin-left: 16px;
+        .custom-select{
+          width:fit-content;
+          .select-placeholder{
+            width: max-content;
+          }
+        }
+      }
+
+      .sort-select {
+        .custom-select {
+          .options-container {
+            width: unset;
+            z-index: 100;
+          }
+        }
+      }
+    }
+  }
+  .explore-cards {
+    display: flex;
+    position: relative;
+
+    .filter-button {
+      display: flex;
+      width: 60px;
+      padding: 8px 16px;
+      align-items: center;
+      position: sticky;
+      top: 100px;
+      gap: 5px;
+      border: none;
+      border-radius: 0px 30px 30px 0px;
+      background: var(
+        --Primary-Gradient,
+        linear-gradient(
+          114deg,
+          #ffcb14 0%,
+          #fe9417 26.56%,
+          #ff2df7 79.86%,
+          #d150ff 100%
+        )
+      );
+    }
+
+    .explore-filter-container {
+      padding: 0 70px 70px 70px;
+      width: 100%;
+    }
+  }
+}
+@media only screen and (min-width: 320px) and (max-width: 440px) {
+  .explore-container {
+    .explore-cover {
+      height: 200px;
+      img{
+        height: -webkit-fill-available;
+      }  
+
+      .category-title {
+        padding: 0 10px; 
+        font-size: 30px;  
+        bottom: -5px; 
+      }
+    }
+
+    .tabs-dropdown {
+      padding: 10px; 
+      display: block; 
+      .select-group {
+        gap: 40px;
+        margin-top:10px ;
+
+        .select-three {
+          width: 200px;  
+          margin-left: 5px;  
+        }
+      }
+    }
+
+    .explore-cards {
+      .custom-button{
+        position: absolute;
+      }
+      .filter-button {
+        width: 30px;  
+        padding: 6px 10px; 
+        top: 30px;  
+      }
+
+      .explore-filter-container {
+        padding: 0 10px 10px 10px;  
+        margin-top: 55px;
+      }
+    }
+  }
+}

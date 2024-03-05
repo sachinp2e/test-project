@@ -1,0 +1,92 @@
+.apps-tooltip-container {
+  margin-left: -4%;
+  margin-top: 8px;
+  z-index: 9999;
+  cursor: pointer;
+
+  .tooltip-arrow {
+    display: none;
+  }
+
+  .tooltip-inner {
+    background: #fff;
+    padding: 20px;
+    min-width: 345px;
+  }
+
+  .apps-modal-conatiner {
+    .apps-modal {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .myipr-button {
+        max-width: 81px;
+        height: 40px;
+        border: none;
+        border-radius: 5px;
+        font-family: Rajdhani;
+        font-weight: 700;
+        size: 14px;
+        line-height: 24px;
+        align-items: center;
+        background: linear-gradient(114deg, #ffcb14 0%, #fe9417 26.56%, #ff2df7 79.86%, #d150ff 100%);
+      }
+
+      .credits-wrapper {
+        border: 2px solid rgba(249, 174, 35, 1);
+        padding: 8px 12px 8px 12px;
+        border-radius: 5px;
+        color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 400;
+        font-family: DM Sans;
+
+      }
+    }
+
+    hr {
+      border: 1px solid #bcbcbc;
+      margin-top: 14px;
+      margin-bottom: 14px;
+    }
+  }
+}
+
+.subnav-tabs-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  font-family: DM Sans;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 39px;
+  gap: 33px;
+
+  .app-cursor {
+    cursor: pointer;
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+
+  .leaderboard-cursor {
+    cursor: pointer;
+  }
+}
+
+.text-white {
+  color: #FFFFFF;
+}
+
+@media (max-width: 1240px) {
+  .subnav-tabs-container {
+    display: none
+  }
+}

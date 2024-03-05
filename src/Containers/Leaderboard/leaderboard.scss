@@ -1,0 +1,42 @@
+.leaderboard-main-container {
+  padding: 94px 80px 53px 80px;
+
+  .heading {
+    color: #000;
+    font-family: Rajdhani;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 24px;
+  }
+
+  .rank-td {
+    background: #000000 !important;
+    color: #ffffff !important;
+    justify-content: center;
+  }
+
+  .leaderboard-td {
+    background: #ffffff !important;
+    color: #000000 !important;
+    div {
+      img {
+        border-radius: 5px;
+        width: 48px;
+        height: 48px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .leaderboard-main-container {
+    padding: 15% 50px 53px 50px;
+  }
+}
+@media only screen and (min-width:320px) and (max-width:440px){
+  .leaderboard-main-container{
+    padding: 20px;
+  }
+}

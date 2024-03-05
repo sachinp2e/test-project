@@ -1,0 +1,214 @@
+.file-cards-main-wrapper {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 1px 4px 1px #ddd;
+  border-radius: 5px;
+
+  .file-main-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+
+  .file-left-wrapper,
+  .file-right-wrapper {
+    position: absolute;
+    top: 16px;
+  }
+
+  .file-left-wrapper {
+    z-index: 99;
+    left: 16px;
+  }
+
+  .file-right-wrapper {
+    right: 16px;
+
+    .sale-file-right-wrapper {
+      display: flex;
+      width: 77px;
+      height: 23px;
+      padding: 4px 16px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.64);
+      background: rgba(24, 24, 24, 0.40);
+      backdrop-filter: blur(3px);
+
+      & span {
+        color: #FFF;
+        text-align: center;
+        font-family: DM Sans;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+    }
+
+
+    .file-right-icon {
+      border: none;
+      background: none;
+    }
+  }
+
+  .file-blur-overlay {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    background: #41414180;
+    color: white;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.48);
+    backdrop-filter: blur(16.5px);
+
+    .file-text-blur-overlay {
+      padding: 50px 0 16px 0;
+      display: flex;
+      color: #ffffff;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+      height: 100%;
+
+      .file-details {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 17px;
+
+        .sale-file-details {
+          display: flex;
+          width: 77px;
+          height: 23px;
+          padding: 4px 16px;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          flex-shrink: 0;
+          border-radius: 30px;
+          background: rgba(24, 24, 24, 0.40);
+          backdrop-filter: blur(3px);
+          -webkit-backdrop-filter: blur(3px);
+
+          & span {
+            color: #FFF;
+            text-align: center;
+            font-family: DM Sans;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+          }
+        }
+
+        .file-title {
+          color: #fff;
+          text-align: center;
+          font-family: DM Sans;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+          text-transform: uppercase;
+        }
+
+        .file-sub-title {
+          color: #fff;
+          text-align: center;
+          font-family: DM Sans;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;
+          display: flex;
+          gap: 10px;
+        }
+
+        .file-price {
+          display: flex;
+          color: #fff;
+          text-align: center;
+          justify-content: center;
+          font-family: DM Sans;
+          font-size: 24px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+
+          span {
+            color: #fff;
+            font-family: DM Sans;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+          }
+        }
+      }
+
+      .file-cards-btn {
+        border: none;
+        display: flex;
+        height: 40px;
+        padding: 13px 16px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        color: #FFF;
+        text-align: center;
+        font-family: Rajdhani;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 24px;
+        border-radius: 5px;
+        background: linear-gradient(114deg, #FFCB14 0%, #FE9417 26.56%, #FF2DF7 79.86%, #D150FF 100%);
+      }
+    }
+  }
+
+  &:hover .file-blur-overlay {
+    display: block;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .file-cards-main-wrapper {
+    .file-blur-overlay {
+      .file-text-blur-overlay {
+        gap: 20px;
+
+        .file-details {
+          gap: 8px;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1300px) {
+  .file-cards-main-wrapper {
+    .file-blur-overlay {
+      .file-text-blur-overlay {
+        gap: 20px;
+
+        .file-details {
+          gap: 8px;
+        }
+      }
+    }
+  }
+}

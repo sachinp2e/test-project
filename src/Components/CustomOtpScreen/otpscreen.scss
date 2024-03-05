@@ -1,0 +1,113 @@
+.otp-screen-main-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .otp-input {
+    margin-top: 10px;
+    .input-gap {
+      gap: 20px;
+      justify-content: center;
+    }
+
+    input {
+      width: 46px !important;
+      height: 61px;
+      border: 1px solid #2B2929;
+      background: transparent;
+
+      &:focus-visible {
+        outline: none;
+      }
+    }
+
+    .form-error {
+      color: #FF1414;
+      font-family: DM Sans;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%;
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+  
+    }
+  }
+
+  .reset-otp-timer {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    max-width: auto;
+    justify-content: space-between;
+
+    .timer {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #4F4E51;
+      font-family: Inter;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 32px;
+    }
+
+    .reset-otp {
+      .resend-button {
+        color: #D150FF;
+        background: unset;
+        border: 0;
+      }
+
+      .disabled {
+        color: #B3B3B3;
+        background: unset;
+        border: 0;
+      }
+
+      font-family: Inter;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 32px;
+      cursor: pointer;
+    }
+  }
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .otp-screen-main-wrapper {
+    .otp-input {
+      .input-gap {
+        gap: 15px;
+      }
+    }
+  }
+}
+
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .otp-screen-main-wrapper {
+
+    .otp-input {
+      .input-gap {
+        gap: 10px;
+      }
+
+      input {
+        width: 38px !important;
+        height: 46px;
+      }
+    }
+
+    .logo {
+      svg {
+        width: 150px;
+      }
+    }
+  }
+}

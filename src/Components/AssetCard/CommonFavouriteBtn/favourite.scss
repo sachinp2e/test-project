@@ -1,0 +1,12 @@
+.card-favourite-btn{
+    padding: 0.4rem;
+    border: 1px solid #6a6a6a;
+    background-color: #0000007e;
+    border-radius: 50%;
+    display: grid;
+    color: #6a6a6a;
+    place-items: center;
+}
+.card-favourite-btn .heart-red{
+    color: red;
+}

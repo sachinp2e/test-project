@@ -1,0 +1,322 @@
+.login-main-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 420px;
+  gap: 60px;
+  white-space: nowrap;
+
+  .login-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+
+    .login-logo {
+      display: flex;
+      justify-content: center;
+    }
+
+    .login-heading {
+      color: #100124;
+      font-family: DM Sans;
+      font-size: 29px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 48px;
+      letter-spacing: -0.5px;
+    }
+
+    .verify-email-section {
+      background: rgba(244, 120, 104, 0.15);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+
+      .text {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+
+      .login-form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+
+        .password-block {
+          position: relative;
+        }
+
+        .eye-icon {
+          position: absolute;
+          top: 7px;
+          right: 14px;
+          cursor: pointer;
+        }
+
+        .login-label {
+          color: #2E3134;
+          font-family: DM Sans;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 28px;
+        }
+
+        .login-input {
+          border-radius: 5px;
+          border: 1px solid #D3D3D3;
+          background: #FFF;
+          box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.20);
+          height: 40px;
+          width: 100%;
+          color: #716A79;
+          font-family: DM Sans;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 28px;
+          padding-left: 15px;
+
+          &:focus-visible {
+            outline: none;
+            border: 1px solid #C34AC3;
+          }
+        }
+
+        .form-error {
+          color: #FF1414;
+          font-family: DM Sans;
+          white-space: break-spaces;
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 120%;
+          margin: 5px;
+        }
+      }
+
+      .login-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border-radius: 8px;
+        height: 40px;
+        font-size: 20px;
+        margin-top: -8px;
+
+        span {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .forgot-password {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: -8px;
+
+        .forgot-password-link {
+          color: #424B5A;
+          font-family: DM Sans;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 32px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .login-signup-text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #716A79;
+      font-family: DM Sans;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 28px;
+
+      .signup-link {
+        color: #C34AC3;
+        font-family: DM Sans;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28px;
+        text-decoration-line: underline;
+        margin-left: 7px;
+        cursor: pointer;
+      }
+    }
+  }
+  .global-error{
+    span{
+      overflow-wrap: break-word;
+      display: block;
+      color: #FF1414;
+      font-family: DM Sans;
+      text-wrap: wrap;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%;
+      margin: 5px;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .login-main-form {
+    min-width: 350px;
+    padding-right: 15px;
+
+    .login-logo {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+
+@media only screen and (min-width: 424px) and (max-width: 767px) {
+  .login-main-form {
+    min-width: 400px;
+    padding-right: 15px;
+
+    .login-logo {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 440px) {
+  .login-main-form {
+    align-items: center;
+    gap: 54px;
+    margin-top: 10px;
+
+    .login-logo {
+      svg {
+        width: 150px;
+      }
+    }
+
+    .login-wrapper {
+      max-width: 270px;
+      margin-bottom: 30px;
+      .login-signup-text{
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .login-heading {
+        font-size: 22px;
+      }
+    }
+  }
+}
+@media only screen and (min-width: 240px) and (max-width: 319px)  {
+ .login-main-form{
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+  width: fit-content;
+  gap: 0;
+  .login-logo{
+    svg{
+      width: 100px;
+      height: 100px;
+    }
+
+ }
+ .login-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  .login-heading {
+    font-size: 20px;
+  }
+  .login-form{
+    .login-form-field {
+      .login-label{
+        font-size: 12px;
+      }
+      .login-input {
+        padding: 10px;
+        width: 200px;
+      }
+
+    }
+    .forgot-password{
+      justify-content: end;
+      .forgot-password-link{
+        font-size: 12px;
+      }
+    }
+    .login-btn{
+      width: 200px;
+    }
+
+  }
+  .login-signup-text{
+    line-height: 24px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    font-size: 12px;
+    .signup-link{
+      font-size: 12px;
+    }
+  }
+}
+
+}
+}
+
+.verify-email-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  .modal-body {
+
+    p {
+      color: #716A79;
+      font-family: DM Sans;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 28px;
+    }
+
+    .error {
+      color: red;
+      font-family: DM Sans;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    .verification-email-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px auto 0;
+    }
+  }
+}

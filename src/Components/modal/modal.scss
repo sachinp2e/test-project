@@ -1,0 +1,43 @@
+.generic-modal {
+  .modal-content {
+    padding: 0 !important;
+  }
+  .modal-header {
+    padding: 1.5rem 2rem !important;
+    border-bottom: 1px solid #cacaca;
+    .btn-close {
+      margin: 0;
+    }
+  }
+  .modal-body {
+    margin: 0;
+    padding: 2rem;
+    .label-container {
+      margin-top: 0;
+      .LabelType {
+        cursor: pointer;
+      }
+    }
+    .select-input-container span,
+    .input-field-container span {
+      color: #00000073;
+      font-family: 'DM Sans';
+      font-size: 14px;
+      font-style: normal;
+      line-height: 20px;
+    }
+    .royalties-input label {
+      padding-bottom: 1px !important;
+    }
+    .bid-expire {
+      margin-top: 1rem;
+    }
+    .submit-btn button {
+      font-family: Rajdhani;
+      font-weight: 800;
+      padding: 0.25rem 2.5rem !important;
+      margin-top: 1rem;
+      font-size: 18px;
+    }
+  }
+}

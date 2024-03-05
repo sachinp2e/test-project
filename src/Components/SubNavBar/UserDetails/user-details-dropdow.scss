@@ -1,0 +1,140 @@
+.sub-nav-container {
+  .arrow-down {
+    transform: rotate(0deg);
+    transition: 0.3s;
+  }
+  .profile-navbar-avatar {
+    background: black;
+    color: white;
+    border-radius: 50%;
+    font-weight: 600;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .arrow-up {
+    transform: rotate(-180deg);
+    transition: 0.3s;
+  }
+
+  .dropdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .img-wrapper {
+      cursor: pointer;
+      img{
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+
+    .btn-primary {
+      background: none;
+      border: none;
+    }
+
+    .dropdown-toggle {
+      &::after {
+        content: none;
+      }
+    }
+
+    &:focus-visible {
+      color: #212121;
+      outline: none;
+      box-shadow: none;
+    }
+
+    .btn {
+      --bs-btn-padding-x: 0.25rem;
+
+      &:focus-visible {
+        box-shadow: none;
+      }
+    }
+
+    .dropdown-menu {
+      margin-top: 8px;
+      font-size: 14px;
+      padding: 12px;
+      --bs-dropdown-link-active-bg: #fff;
+      --bs-dropdown-link-active-color: #000;
+      --bs-dropdown-link-hover-bg: #fff;
+
+      a:-webkit-any-link {
+        cursor: unset;
+      }
+
+      .profile-details {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .avatar {
+          background: black;
+          color: white;
+          border-radius: 50%;
+          font-weight: 600;
+          height: 40px;
+          width: 40px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .user {
+          display: flex;
+          flex-direction: column;
+
+          .name {
+            font-weight: 700;
+            font-family: DM Sans;
+            font-size: 14px;
+            line-height: 24px;
+          }
+
+          .email {
+            font-size: 12px;
+            font-weight: 400;
+            font-family: DM Sans;
+            font-size: 12px;
+            line-height: 20px;
+          }
+        }
+      }
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 7px 10px 7px;
+        gap: 8px;
+
+        .icon {
+          cursor: pointer;
+        }
+
+        .value {
+          font-family: DM Sans;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 24px;
+          cursor: pointer;
+        }
+      }
+
+      a:last-child {
+        gap: 11px;
+        .icon {
+          margin-left: 2px;
+        }
+      }
+    }
+  }
+}

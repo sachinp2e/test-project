@@ -1,0 +1,49 @@
+.favourite-container {
+  display: flex;
+  gap: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+  flex-direction: column;
+  padding-right: 20px;
+ 
+  &::-webkit-scrollbar {
+    width: 5px;
+    background-color: #f0f0f0;
+    height: 75.382px;
+    flex-shrink: 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #555;
+  }
+  .favourite-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    .leftContent {
+      display: flex;
+      gap: 10px;
+
+      .userImage {
+        flex-direction: column;
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+        img {
+          overflow: hidden;
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}
+
+.copied-tooltip .tooltip-inner{
+  background: none !important;
+}

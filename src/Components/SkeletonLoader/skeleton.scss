@@ -1,0 +1,151 @@
+@mixin skeleton-background {
+  background: linear-gradient(
+                  to right,
+                  rgba(255, 255, 255, 0),
+                  rgba(255, 255, 255, 0.5) 50%,
+                  rgba(255, 255, 255, 0) 80%
+  ),
+  lightgray;
+  background-repeat: repeat-y;
+  background-size: 50px 500px;
+  background-position: 0 0;
+  animation: shimmer 3s infinite linear;
+}
+
+/* Skeleton styles*/
+.container {
+  width: 100%;
+  height: 100%;
+  min-width: 305px;
+  display: flex;
+  padding: 21px;
+  border-radius: 5px;
+  background: #EBE7E7;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  .skeleton-header {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .rectangle-round {
+      width: 98px;
+      height: 23px;
+      border-radius: 30px;
+      @include skeleton-background;
+    }
+
+    .rectangle-header {
+      width: 173px;
+      height: 12px;
+    }
+  }
+
+  .skeleton-container {
+    width: 100%;
+    display: flex;
+    gap: 40px;
+    flex-direction: column;
+
+    .rectangle-container {
+      width: 173px;
+      height: 12px;
+    }
+
+    .input-icon {
+      min-width: 281.311px;
+      height: 5.182px;
+      flex-shrink: 0;
+      border-radius: 30px;
+      background: #DCDCDC;
+    }
+
+    .first {
+      width: 75px;
+      height: 11px;
+    }
+
+    .second {
+      width: 179px;
+      height: 14px;
+    }
+
+    .third {
+      width: 33px;
+      height: 11px;
+    }
+
+    .fourth {
+      width: 43px;
+      height: 14px;
+    }
+
+    .five {
+      width: 135px;
+      height: 30px;
+    }
+
+    .rectangle-audio {
+      width: 70%;
+      height: 26px;
+    }
+
+    .center-place {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .skeleton-btn {
+    width: 135px;
+    height: 43px;
+  }
+}
+
+.big-size {
+  min-height: 498px;
+  max-height: 498px;
+}
+
+.small-size {
+  min-height: 328px;
+  max-height: 328px;
+}
+
+.small-round {
+  width: 31px;
+  height: 31px;
+}
+
+.big-round {
+  width: 41px;
+  height: 41px;
+}
+
+.round-icon {
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #CCCACA;
+  @include skeleton-background;
+}
+
+.rectangle-icon {
+  flex-shrink: 0;
+  background: #D9D9D9;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+
+  100% {
+    background-position: 468px 0;
+  }
+}

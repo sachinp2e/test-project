@@ -22,18 +22,18 @@ const Data = [
     icon: <MyIprIcon width="125" height="37"/>,
     description: "Lorem ipsum dolor sit amet consectetur. Risus viverra commodo semper metus nunc tortor nisi ante. Diam urna erat cras sagittis ac ut mauris etiam at at id.",
   },
-  {
-    id: 1,
-    credits: 18,
-    icon: <SmartIcon/>,
-    description: "Lorem ipsum dolor sit amet consectetur. Risus viverra commodo semper metus nunc tortor nisi ante. Diam urna erat cras sagittis ac ut mauris etiam at at id.",
-  },
-  {
-    id: 2,
-    credits: 15,
-    icon: <Image src={MaiCityIcon} alt=""/>,
-    description: "Lorem ipsum dolor sit amet consectetur. Risus viverra commodo semper metus nunc tortor nisi ante. Diam urna erat cras sagittis ac ut mauris etiam at at id.",
-  },
+  // {
+  //   id: 1,
+  //   credits: 18,
+  //   icon: <SmartIcon/>,
+  //   description: "Lorem ipsum dolor sit amet consectetur. Risus viverra commodo semper metus nunc tortor nisi ante. Diam urna erat cras sagittis ac ut mauris etiam at at id.",
+  // },
+  // {
+  //   id: 2,
+  //   credits: 15,
+  //   icon: <Image src={MaiCityIcon} alt=""/>,
+  //   description: "Lorem ipsum dolor sit amet consectetur. Risus viverra commodo semper metus nunc tortor nisi ante. Diam urna erat cras sagittis ac ut mauris etiam at at id.",
+  // },
 ]
 
 const SubscriptionCards: React.FC<ISubscriptionCards> = () => {

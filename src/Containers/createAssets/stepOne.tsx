@@ -28,6 +28,7 @@ interface IStepOneProps {
   updateFormData: (newValues: Partial<CreateAssetFormDataType>) => void;
   onNext: () => void;
   onDraftAsset: (values: Partial<CreateAssetFormDataType>) => void;
+  draftFromExternal: boolean;
 }
 
 const validationSchema = Yup.object().shape({
@@ -38,21 +39,32 @@ const validationSchema = Yup.object().shape({
       }
       return value && value.size <= 100 * 1024 * 1000;
     })
-    .when(['id'], (values, field) => {
-      if (
-        !values[0] &&
-        [...validFileExtensions.image, ...validFileExtensions.video].includes(
-          (values[0]?.type || '').split('/')?.[1] || '',
-        )
-      ) {
-        return field
-          .required('Media is required')
-          .test('is-valid-type', 'Not a valid file type', (value: any) =>
-            isValidFileType(value && (value.name || '').toLowerCase(), 'image'),
-          );
+    .required('Media is required')
+    .test('is-valid-type', 'Not a valid file type', (value: any) => {
+      if (typeof value === 'string') {
+        return isValidFileType(value, 'image', value);
       }
-      return field;
+      return isValidFileType(
+        value && (value.name || '').toLowerCase(),
+        'image',
+        value,
+      );
     }),
+  // .when(['id'], (values, field) => {
+  //   if (
+  //     !values[0] &&
+  //     [...validFileExtensions.image, ...validFileExtensions.video].includes(
+  //       (values[0]?.type || '').split('/')?.[1] || '',
+  //     )
+  //   ) {
+  //     return field
+  //       .required('Media is required')
+  //       .test('is-valid-type', 'Not a valid file type', (value: any) =>
+  //         isValidFileType(value && (value.name || '').toLowerCase(), 'image'),
+  //       );
+  //   }
+  //   return field;
+  // }),
   thumbnail: Yup.mixed().when(['media'], (values, field) => {
     if (
       values[0] &&
@@ -84,8 +96,8 @@ const validationSchema = Yup.object().shape({
   catalogueId: Yup.string().required('Catalog is required'),
   description: Yup.string()
     .required('Description is required')
-    .min(4, 'description must be at least 4 character')
-    .max(160, 'description must not exceed 160 characters'),
+    .min(4, 'Description must be at least 4 character')
+    .max(160, 'Description must not exceed 160 characters'),
 });
 
 const StepOne: React.FC<IStepOneProps> = ({
@@ -93,20 +105,21 @@ const StepOne: React.FC<IStepOneProps> = ({
   updateFormData,
   onNext,
   onDraftAsset,
+  draftFromExternal,
 }) => {
   const dispatch = useAppDispatch();
 
   const {
     usersData: { userCatalogs },
   } = useAppSelector(getAllUsersSelector);
-  const { id: userId } = useAppSelector(authSelector);
+  const { id: userId }: any = useAppSelector(authSelector);
 
   const { categories } = useAppSelector(getAllCategorySelector);
 
   const [showCatalogModal, toggleCatalogModal] = useState<boolean>(false);
   const [sizeError, setSizeError] = useState<boolean>(false);
   const [errorThumbnail, setErrorThumbnail] = useState<boolean>(false);
-
+  const [fileNameForExternal, setFileNameForExternal] = useState<string>('');
   useEffectOnce(() => {
     dispatch(getAllUserCatalogs({ userId: userId }));
   });
@@ -150,11 +163,10 @@ const StepOne: React.FC<IStepOneProps> = ({
   });
 
   const handleMediaSelect = (name: string, file: File) => {
-    // console.log(name, file);
     if (!isValidThumbnail(file)) {
       setFieldValue('thumbnail', null);
     }
-    if (name === 'thumbnail' && file?.size / (1024 * 1024) >= 5) {
+    if (name === 'thumbnail' && file?.size / (1024 * 1024) >= 2) {
       setSizeError(true);
     } else {
       setSizeError(false);
@@ -166,7 +178,6 @@ const StepOne: React.FC<IStepOneProps> = ({
     }
     setFieldValue(name, file);
   };
-
   const isValidThumbnail = (file: File) => {
     return file.type.startsWith('image/');
   };
@@ -205,9 +216,13 @@ const StepOne: React.FC<IStepOneProps> = ({
 
     if (values.media) {
       // @ts-ignore
-      return ![...validFileExtensions.image].includes(
-        (values.media?.type || '').split('/')?.[1] || '',
-      );
+      const media = values.media;
+
+      if (isValidFileType(media && (media.name || ''), 'image', media)) {
+        return ![...validFileExtensions.image].includes(
+          (values.media?.type || '').split('/')?.[1] || '',
+        );
+      }
     }
     return false;
   };
@@ -223,6 +238,11 @@ const StepOne: React.FC<IStepOneProps> = ({
 
   const catalogueOptions = useMemo(() => {
     const options: IOption[] = [];
+    options.push({
+      id: 'default',
+      value: 'default',
+      label: 'NiftiQ Catalog (Default)',
+    });
     (userCatalogs?.catalogs || []).forEach((catalogs: ICatalogs) => {
       options.push({
         id: catalogs.id,
@@ -233,6 +253,27 @@ const StepOne: React.FC<IStepOneProps> = ({
     return options;
   }, [userCatalogs.catalogs]);
 
+  const isMediaPreview = useMemo(() => {
+    if (!draftFromExternal && typeof values.media !== 'string') {
+      return true;
+    }
+    if (typeof values?.media === 'string') {
+      const extension = values.media.split('.').pop();
+      return validFileExtensions.image.includes(extension) ? true : false;
+    }
+  }, [values.media]);
+
+  const mediaUrlToBeShown = useMemo(() => {
+    if (!draftFromExternal && typeof values.media !== 'string') {
+      return values.media;
+    }
+    if (typeof values?.media === 'string') {
+      const extension = values.media.split('.').pop();
+      const fileName = values.media.split('.com/').pop();
+      return validFileExtensions.image.includes(extension) ? values.media : fileName;
+    }
+  }, [values?.media]);
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-uploader">
@@ -242,10 +283,11 @@ const StepOne: React.FC<IStepOneProps> = ({
               buttonLabel="Upload Media"
               buttonClassName="mt-3"
               onFileSelect={handleMediaSelect}
-              accept="image/*, .pdf, .doc, .docx, .mp3, .mp4, .wav, .ogg, .glb"
+              accept="image/*, .pdf, .doc, .docx, .mp3, .mp4, .wav, .ogg, .glb, .webm"
               htmlFor="media"
-              value={values.media}
-              isPreview
+              value={mediaUrlToBeShown}
+              isPreview={isMediaPreview}
+              isDisabled = {draftFromExternal}
             />
             <div className="supported-formats">
               <p>
@@ -276,11 +318,11 @@ const StepOne: React.FC<IStepOneProps> = ({
                 />
               </div>
               {sizeError && (
-                <div className="error-message">Max allowed size is 5MB</div>
+                <div className="error-message">Max allowed size is 2MB</div>
               )}
               {errorThumbnail && (
                 <div className="error-message">
-                  Supported formats - JPG, PNG,  GIF, WEBP
+                  Supported formats - JPG, PNG, GIF, WEBP
                 </div>
               )}
             </div>

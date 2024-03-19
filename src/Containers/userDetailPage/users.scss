@@ -45,10 +45,29 @@
       .profile-pic {
         border-radius: 50%;
         img {
-          border-radius: 50%;
-          object-fit: cover;
           width: 100px;
           height: 100px;
+          object-fit: cover;
+          margin: 0;
+          border-radius: 50%;
+          overflow: hidden;
+          position: relative;
+          border: 1px solid #e5e5e5;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .name-initials {
+          width: 100px;
+          height: 100px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 60px;
+          font-weight: 600;
+          color: #fff;
+          background: #000;
+          border-radius: 50%;
         }
       }
       .username {
@@ -117,6 +136,7 @@
         font-weight: 400;
         line-height: 140%;
         max-width: 865px;
+        overflow-wrap: anywhere;
       }
       .joined {
         color: #434343;
@@ -212,7 +232,7 @@
     border: 1px solid red;
   }
 }
-.explore-cards {
+.user-tabs-cards {
   display: flex;
   .filter-button {
     display: flex;
@@ -233,7 +253,7 @@
       )
     );
   }
-  .explore-filter-container {
+  .user-tabs-filter-container {
     padding: 0 80px 70px 80px;
     width: 100%;
   }
@@ -413,11 +433,11 @@
       padding: 8px 12px;
     }
   }
-  .explore-cards{
+  .user-tabs-cards{
     .custom-button{
       position: absolute;
     }
-    .explore-filter-container {
+    .user-tabs-filter-container {
       margin-top:55px;
       padding: 0 20px;
     }

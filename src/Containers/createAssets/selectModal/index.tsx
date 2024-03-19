@@ -12,6 +12,8 @@ interface ISelectModalProps {
 const SelectModal:React.FC<ISelectModalProps> = ({inputFields,setInputFields}) => {
   const [isArrowRotated, setIsArrowRotated] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error,setError] = useState('');
+  const [islenght,setIsLength] = useState(false);
 
   // const EndRef = useRef(null)
   //
@@ -26,6 +28,13 @@ const SelectModal:React.FC<ISelectModalProps> = ({inputFields,setInputFields}) =
 
   const handleChange = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    if (value.length > 30) {
+      setIsLength(true)
+      setError('Max length for Key-Value must be 30 characters'); 
+    }else{
+      setError('')
+      setIsLength(false)
+    }
     const index = inputFields.findIndex((field) => field.id === id);
     if (index !== -1) {
       setInputFields((prevFields) => (
@@ -37,6 +46,7 @@ const SelectModal:React.FC<ISelectModalProps> = ({inputFields,setInputFields}) =
       ));
     }
   };
+  
 
   const handleAddField = () => {
     setInputFields((prevFields) => [...prevFields, { id: prevFields.length + 1, key: '', value: '' }]);
@@ -53,7 +63,8 @@ const SelectModal:React.FC<ISelectModalProps> = ({inputFields,setInputFields}) =
 
   return (
     <div className="select-modal-container">
-      <label htmlFor="">Advanced Settings (optional)</label>
+      {error && <div className="global-error mt-2">{error}</div>}
+      <label htmlFor="">Asset Properties (optional)</label>
       <div className="dropdown-container" onClick={handleArrowClick}>
         <span>Properties</span>
         <div

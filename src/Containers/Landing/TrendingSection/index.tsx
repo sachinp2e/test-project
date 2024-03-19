@@ -8,11 +8,9 @@ import CustomSelect from '../../../Components/CustomSelect/index';
 import { trendingDataSelector } from '@/Lib/landing/landing.selector';
 import { useAppDispatch, useAppSelector } from '@/Lib/hooks';
 import { getTrendingAssets } from '@/Lib/landing/landing.action';
-import useEffectOnce from '../../../Hooks/useEffectOnce';
 import MasonryLayout from '../../../Components/MasonryLayout/index';
 import AssetCard from '../../../Components/AssetCard/index';
 import CatalogCard from '../../../Components/CatalogCard/index';
-import { getAllCategorySelector } from '@/Lib/category/category.selector';
 import './trending-section.scss';
 import { getAllCatalogsSelector } from '@/Lib/catalogs/catalogs.selector';
 import { getTrendingCatalogs } from '@/Lib/catalogs/catalogs.action';
@@ -39,24 +37,22 @@ const TrendingSection: React.FC<ITrendingSectionType> = () => {
   useEffect(() => {
     if (
       selectedCategory === 'Assets' &&
-      selectedPeriod !== 'All' &&
-      !!!trendingAssets[selectedPeriod]?.length
+      selectedPeriod !== 'All'
     ) {
       dispatch(getTrendingAssets({ period: selectedPeriod }));
     } else if (
-      selectedCategory === 'Assets' &&
-      !!!trendingAssets?.allTrendingCatalogs?.length
+      selectedCategory === 'Assets'
     ) {
       dispatch(getTrendingAssets({}));
     } else if (
       selectedCategory === 'Catalogs' &&
       selectedPeriod !== 'All' &&
-      !!!trendingCatalogs[selectedPeriod]?.length
+      !trendingCatalogs[selectedPeriod]?.length
     ) {
       dispatch(getTrendingCatalogs({ period: selectedPeriod }));
     } else if (
       selectedCategory === 'Catalogs' &&
-      !!!trendingCatalogs?.allTrendingCatalogs?.length
+      !trendingCatalogs?.allTrendingCatalogs?.length
     ) {
       dispatch(getTrendingCatalogs({}));
     }
@@ -144,22 +140,11 @@ const TrendingSection: React.FC<ITrendingSectionType> = () => {
               ? trendingAssets.allTrendingAssets
               : trendingAssets[selectedPeriod]
             )?.map((item: any) => {
-              const updatedItemObj = Object.entries(item).reduce(
-                (acc: any, [key, value]) => {
-                  return {
-                    ...acc,
-                    [key.replace('assetmediaurl', 'assetMediaUrl')]: value,
-                    [key.replace('assetthumbnail', 'assetThumbnail')]: value,
-                    isFavourite: 'hide',
-                  };
-                },
-                {},
-              );
               return (
                 <AssetCard
                   key={item.id}
                   loading={loading}
-                  item={updatedItemObj}
+                  item={item}
                 />
               );
             })}

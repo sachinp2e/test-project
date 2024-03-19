@@ -25,7 +25,7 @@ const TransactionsTable: React.FC<ITransactionsTable> = () => {
       className: 'th-right-border',
       renderCell: (row: any) => (
         <span>
-          {(row?.assetID.length > 15 ? row?.assetID?.slice(0, 15) + '...' : row?.assetID) || "-" }
+          {(row?.assetID.length > 15 ? row?.assetID?.slice(0, 10) + '...' : row?.assetID) || "-" }
         </span>
       ),
     },
@@ -35,7 +35,7 @@ const TransactionsTable: React.FC<ITransactionsTable> = () => {
       value: 'credit',
       className: 'th-right-border',
       renderCell: (row: any) => (
-        <div className={row?.transactionType}>${row?.amount}</div>
+        <div className={row?.transactionType}>{row?.amount ? `$ ${Number(row?.amount).toFixed(2)} `: '-'}</div>
       ),
     },
     // {
@@ -43,7 +43,7 @@ const TransactionsTable: React.FC<ITransactionsTable> = () => {
     //   label: 'Type',
     //   value: 'type',
     //   className: 'th-right-border',
-    //   renderCell: (row: any) => <div>{row?.orderType || '-'}</div>,
+    //   renderCell: (row: any) => <div>{row?.transactionCode || '-'}</div>,
     // },
     {
       id: '4',

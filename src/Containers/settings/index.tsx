@@ -1,17 +1,14 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import MyKyc from './MyKyc/index';
 import EditProfile from './EditProfile';
 import NotificationSettings from './Notifications';
-import TwoFactorAuthentication from '@/Containers/settings/TwoFactorAuthentication';
 import MyWallet from '@/Containers/settings/MyWallet';
-import { useAppSelector } from '@/Lib/hooks';
 import settingsCover from '@/Assets/_images/settings-cover.jpg';
 import './style.scss';
-import { authSelector } from '@/Lib/auth/auth.selector';
 
 enum SettingPage {
   editProfile = 'Edit Profile',
@@ -26,8 +23,6 @@ interface ISearchPageType {}
 const Settings: React.FC<ISearchPageType> = () => {
   const params = useParams();
   const router = useRouter();
-
-  const { userDetails } = useAppSelector(authSelector);
 
   const onPageChange = (page: SettingPage) => () => {
     router.push(`/settings/${page}/${params.userId}`);

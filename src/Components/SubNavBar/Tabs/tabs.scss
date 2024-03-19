@@ -3,6 +3,18 @@
   margin-top: 8px;
   z-index: 9999;
   cursor: pointer;
+  .tooltip-app-dropdown{
+    display: flex;
+    gap: 70px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    button{
+      width: max-content;
+      font-size: 12px;
+    }
+  }
 
   .tooltip-arrow {
     display: none;
@@ -10,8 +22,8 @@
 
   .tooltip-inner {
     background: #fff;
-    padding: 20px;
-    min-width: 345px;
+    padding: 10px;
+    min-width: fit-content !important;
   }
 
   .apps-modal-conatiner {
@@ -74,6 +86,9 @@
       text-decoration: none;
       color: inherit;
     }
+    a:active{
+      background-color: #d150ff;
+    }
   }
 
   .leaderboard-cursor {
@@ -84,6 +99,26 @@
 .text-white {
   color: #FFFFFF;
 }
+.available-credits {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid #F9AE23;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  .myipr-logo{
+    display: flex;
+    align-items: center;
+  }
+  label ,span{ 
+    color: black;
+  }
+
+}
+
+
 
 @media (max-width: 1240px) {
   .subnav-tabs-container {

@@ -22,7 +22,7 @@ const Landing = () => {
       <TopCatalogs
         toggleTab
         title="top Catalogs"
-        desc="Check out the video to make your journey even more easier."
+        desc="Check out Catalogs that made highest revenue from their assets."
       />
       <VideoSection />
       <TrendingFrame />

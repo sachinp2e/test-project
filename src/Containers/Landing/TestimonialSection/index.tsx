@@ -1,7 +1,9 @@
 'use client';
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
-import LightAI from '../../../Assets/_images/lightAI.svg';
+import MyIPRLogo from '@/Assets/_images/MyIprLogo.svg'
+import MayaaVerseLogo from '@/Assets/_images/MayaaVerse.png';
+import KalpStudioLogo from '@/Assets/_images/KalpStudio.png'
 import Avatar from '../../../Assets/_images/avatar.svg';
 import './testimonial.scss';
 
@@ -11,38 +13,38 @@ const data = [
   {
     id: 1,
     Avatar: Avatar,
-    username: 'first',
-    Designation: 'Designation',
+    username: 'Ashish Minocha',
+    Designation: 'CBO of Mayaa-Verse',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    logo: LightAI,
+      'Working with the NiftiQ marketplace has been a game-changer for us. Their expertise and asset library have elevated our metaverse projects, making our digital experiences truly immersive. Highly recommend their services.',
+    logo: MayaaVerseLogo,
   },
   {
     id: 2,
     Avatar: Avatar,
-    username: 'second',
-    Designation: 'Designation',
+    username: 'Harshit Ralhan',
+    Designation: ' Brand Conduit at MyIPR',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    logo: LightAI,
+      'At MyIPR, we extend our heartfelt gratitude to NiftiQ for their seamless collaboration and assistance in protecting the intellectual property rights of creators. Their expertise has been invaluable in our mission to safeguard creative endeavors.',
+    logo: MyIPRLogo,
   },
   {
     id: 3,
     Avatar: Avatar,
-    username: 'third',
-    Designation: 'Designation',
+    username: 'Ruchit Saxena',
+    Designation: 'Product Owner at Kalp Studio',
     description:
-      'Lorem ipsum dolor sit amet,consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.dolor sit amet, consectetur adipiscing elit. Sed do consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    logo: LightAI,
+      'The NiftiQ marketplace has played a pivotal role in providing us with essential assets to enhance the blockchain experience for our users.',
+    logo: KalpStudioLogo,
   },
   {
     id: 4,
     Avatar: Avatar,
-    username: 'fourth',
-    Designation: 'Designation',
+    username: 'Rachel',
+    Designation: 'Digital Artist',
     description:
-      'Lorem ipsum dolor sit amet,consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.dolor sit amet, consectetur adipiscing elit. Sed do consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.dolor , consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    logo: LightAI,
+      'I am immensely grateful for the NFT marketplace. It has provided me with an invaluable platform to showcase and monetize my digital creations. The exposure, community support, and seamless experience have truly transformed mycreative journey.',
+
   },
 ];
 
@@ -88,9 +90,9 @@ const Testimonials: React.FC<ITestimonialsType> = () => {
     <div className="container-fluid testimonials-main-wrapper">
       <div className="text-testimonials-main-wrapper">
         <div className="text-testimonials">
-          testimonials
+            Testimonials
           <div className="sub-text-testimonials">
-            See what the users have to say about us
+            Discover What Users Love About Us!
           </div>
         </div>
       </div>
@@ -110,21 +112,17 @@ const Testimonials: React.FC<ITestimonialsType> = () => {
               <span className="card-testimonials-user-name">
                 {item.username}
               </span>
-              <span className="card-testimonials-user-name">|</span>
-              <span>{item.Designation}</span>
-              <span className="card-testimonials-user-name">
-                |<Image src={item.logo} alt="logo" />
+              <span>|</span>
+              <span className="card-testimonials-user-designation">{item.Designation}</span>
+              <span>|</span>
+              {item.logo && (
+              <span className="card-testimonials-user-image">
+                <Image src={item.logo} alt="logo" />
               </span>
+              )}
             </div>
             <div className="card-testimonials-text">
-              {isFullTextVisible.includes(item.id)
-                ? item.description
-                : `${item.description.slice(0, 100)}...`}
-              <button onClick={() => toggleTextVisibility(item.id)}>
-                {isFullTextVisible.includes(item.id)
-                  ? 'show less'
-                  : 'show more'}
-              </button>
+                {item.description}
             </div>
           </div>
         ))}

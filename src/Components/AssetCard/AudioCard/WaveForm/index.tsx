@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import WaveSurfer, { WaveSurferOptions } from 'wavesurfer.js';
 
 interface WaveformProps {
@@ -8,7 +8,7 @@ interface WaveformProps {
 
 const Waveform: React.FC<WaveformProps> = ({ audioUrl, setWaveformInstance }) => {
   const wavesurferRef = useRef<HTMLDivElement>(null);
-
+  
   useEffect(() => {
     const options: WaveSurferOptions = {
       container: wavesurferRef.current!,
@@ -18,7 +18,6 @@ const Waveform: React.FC<WaveformProps> = ({ audioUrl, setWaveformInstance }) =>
       barWidth: 3,
       height:100
     };
-
     const wavesurfer = WaveSurfer.create(options);
 
     wavesurfer.load(audioUrl);
@@ -26,7 +25,7 @@ const Waveform: React.FC<WaveformProps> = ({ audioUrl, setWaveformInstance }) =>
     wavesurfer.on('ready', () => {
       setWaveformInstance(wavesurfer);
     });
-
+    
     return () => wavesurfer.destroy();
   }, [audioUrl, setWaveformInstance]);
 

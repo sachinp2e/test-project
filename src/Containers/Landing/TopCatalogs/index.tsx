@@ -189,11 +189,7 @@ const GetMappedItems = ({
         items.map((item: any, idx: number) => (
           <div key={item?.id} className="top-catalogs-cards-img-container">
             <Image
-              src={
-                isSimilarNfts
-                  ? item?.assetMediaUrl
-                  : item?.catalogueImage_resized
-              }
+              src={item?.assetThumbnail_resized || item?.assetMediaUrl_resized || item?.assetMediaUrl || item?.catalogueImage_resized}
               className="top-catalogs-cards-img"
               alt={isSimilarNfts ? 'Similar Asset' : 'Top Catalog Image'}
               layout="fill"
@@ -205,19 +201,23 @@ const GetMappedItems = ({
                   {isSimilarNfts ? item?.name : item?.catalogueName}
                 </div>
                 <div className="sub-title-text-blur-overlay">
+                  {item?.owner?.profileImage || item?.profileImage  ? (
                   <Image
-                    src={CatalogAvatar}
+                    src={item?.owner?.profileImage || item?.profileImage }
                     alt=""
                     height={200}
                     width={200}
                     quality={100}
-                  />
-                  <span>
-                    {isSimilarNfts ? item?.catalogue?.name : item?.creatorName}
-                  </span>
-                  {isSimilarNfts && item?.catalogue?.isLegallyVerified && (
-                    <Image src={StarIcon} alt="star icon" />
+                  />) :  (
+                    <div className="name-initials">
+                      {item?.owner?.firstName && item?.owner?.firstName[0].toUpperCase()}
+                      {item?.owner?.lastName && item?.owner?.lastName[0].toUpperCase()}
+                    </div>
                   )}
+                  <span>
+                    {item?.owner?.userName || item?.creatorName}
+                  </span>
+                  {<Image src={StarIcon} alt="star icon" />}
                 </div>
                 <div className="overlay-effect-hover">
                   {!isSimilarNfts && (

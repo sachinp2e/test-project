@@ -11,6 +11,7 @@ import * as THREE from 'three';
 function Model({ modelUrl }) {
   const [loading, setLoading] = useState(true);
   const [manualRotationEnabled, setManualRotationEnabled] = useState(false);
+  const [error, setError] = useState(null);
   const orbitControls = useRef();
   const camera = useRef();
   const modelsGroup = useRef();
@@ -55,8 +56,18 @@ function Model({ modelUrl }) {
       controls.enablePan = true;
     }
   };
+  const handleContextLost = event => {
+    console.error('WebGL context lost:', event);
+    window.location.reload();
+  };
   
-  
+  useEffect(() => {
+    window.addEventListener('webglcontextlost', handleContextLost);
+
+    return () => {
+      window.removeEventListener('webglcontextlost', handleContextLost);
+    };
+  }, []);
   
   
 
@@ -89,7 +100,13 @@ function Model({ modelUrl }) {
         <ambientLight />
         <Suspense fallback={null}>
           <group ref={modelsGroup}>
-            <DynamicModel modelUrl={modelUrl} setLoading={setLoading} />
+          {error ? (
+              <Html center>
+                <div className="error-message">{error.message}</div>
+              </Html>
+            ) : (
+              <DynamicModel modelUrl={modelUrl} setLoading={setLoading} setError={setError} />
+            )}
           </group>
         </Suspense>
         <OrbitControls
@@ -105,7 +122,7 @@ function Model({ modelUrl }) {
         <Environment preset="sunset" />
         {loading && (
           <Html center>
-            <div className="loading-spinner"></div>
+            <div className="loading-spinner"> </div>
           </Html>
         )}
       </Canvas>

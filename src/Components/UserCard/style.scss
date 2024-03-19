@@ -60,6 +60,18 @@
       border-radius: 50%;
       border: 3px solid #fff;
     }
+    .name-initials {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      font-weight: 600;
+      color: #fff;
+      background: #000;
+      border-radius: 50%;
+    }
   }
 
   .explore-user-overlay {
@@ -115,6 +127,18 @@
               margin-left: 5px;
             }
           }
+        }
+        .name-initials {
+          width: 60px;
+          height: 60px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 30px;
+          font-weight: 600;
+          color: #fff;
+          background: #000;
+          border-radius: 50%;
         }
       }
 

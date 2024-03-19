@@ -81,7 +81,7 @@ const DeleteModal = ({
 
   const handledeleteSuccess = () => {
     handleClose();
-    router.back();
+    router.push('/');
   };
 
   const handleDeleteAsset = async () => {

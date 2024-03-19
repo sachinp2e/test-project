@@ -12,6 +12,7 @@ import { debounce } from 'lodash';
 import { useRouter } from 'next/navigation';
 import { updateFollowStatus } from '@/Lib/users/users.slice';
 import { authSelector } from '@/Lib/auth/auth.selector';
+import userCover from '@/Assets/_images/default-user-cover.svg';
 
 
 interface IUserCard {
@@ -37,7 +38,7 @@ const UserCard: React.FC<IUserCard> = ({ cardData }) => {
     <div className="explore-user-img-main-wrapper">
       <div className="explore-user-img">
         <Image
-          src={cardData?.bannerImage || ExploreUserBanner}
+          src={cardData?.bannerImage || userCover}
           className="sub-explore-user-img"
           alt="Cover image"
           width="1220"
@@ -52,6 +53,7 @@ const UserCard: React.FC<IUserCard> = ({ cardData }) => {
         </div>
       </div>
       <div className="explore-user-avatar">
+        {cardData?.profileImage ? (
         <Image
           src={cardData?.profileImage || ExploreUserAvatar}
           className="sub-explore-user-img"
@@ -59,7 +61,12 @@ const UserCard: React.FC<IUserCard> = ({ cardData }) => {
           width="200"
           height="200"
           quality={100}
-        />
+        />):(
+            <div className="name-initials">
+              {cardData?.firstName && cardData?.firstName[0].toUpperCase()}
+              {cardData?.lastName && cardData?.lastName[0].toUpperCase()}
+            </div>
+          )}
       </div>
       <div className="explore-user-overlay">
         <div className="sub-explore-user-overlay">
@@ -67,13 +74,20 @@ const UserCard: React.FC<IUserCard> = ({ cardData }) => {
             className="title-explore-user"
             onClick={() => router.push(`/user/${cardData?.id}`)}
           >
+            {cardData?.profileImage ? (
             <Image
-              src={cardData?.profileImage || ExploreUserAvatar}
+              src={cardData?.profileImage}
               width="200"
               height="200"
               quality={100}
               alt=" "
             />
+            ):(
+              <div className="name-initials">
+                  {cardData?.firstName && cardData?.firstName[0].toUpperCase()}
+                  {cardData?.lastName && cardData?.lastName[0].toUpperCase()}
+                </div>
+              )}
             <div onClick={() => router.push(`/user/${cardData?.id}`)}>
               <span>{cardData?.userName}</span>
               {cardData?.isKycVerified && <Image src={StarIcon} alt="" />}

@@ -74,6 +74,7 @@ const SignupScreen: React.FC<ISignupType> = () => {
 
   const [globalError, setGlobalError] = useState<string>();
   const [isHoveringUser, setIsHoveringUser] = useState<boolean>(false);
+  const [isHoveringPass, setIsHoveringPass] = useState<boolean>(false);
   const [usernameStatus, setUsernameStatus] = useState<null | 'FETCHING' | 'AVAILABLE' | 'USED'>(null);
   const [passwordFieldType, setPasswordFieldType] = useState<IPasswordFieldType>({
     password: 'password',
@@ -103,7 +104,9 @@ const SignupScreen: React.FC<ISignupType> = () => {
     validationSchema: CreateSchema,
     validateOnMount: false,
     onSubmit: async (values: any) => {
-      const { confirm_password, ...payload } = values;
+      const { confirm_password } = values;
+      const payload = {...values, firstName:values.firstName.trim(), lastName:values.lastName.trim(),email:values.email.toLowerCase()};
+      delete payload.confirm_password;
       if (confirm_password) {
         const data: any = await dispatch(registerAction(payload));
         if (data.payload.status === 400 && data.payload.customErrorNumber === 10006) {
@@ -128,6 +131,10 @@ const SignupScreen: React.FC<ISignupType> = () => {
 
   const handleUser = () => {
     setIsHoveringUser(prev => !prev);
+  };
+
+  const handlePass = () => {
+    setIsHoveringPass(prev => !prev);
   };
 
   const verifyUsername = async (username: string) => {
@@ -309,35 +316,32 @@ const SignupScreen: React.FC<ISignupType> = () => {
                       <OpenEyeIconSVG />
                     )}
                   </div>
-                  <OverlayTrigger
-                    key="password-info"
-                    placement="left-start"
-                    overlay={
-                      <div className="password-overlay">
-                        <span className="password-following">Password must include the following:</span>
-                        <ul>
-                          <li>
-                            <span>Minimum of 8 and a maximum of 20 characters- the more, the better.</span>
-                          </li>
-                          <li>
-                            <span>Atleast one number, upper-case & lowercase alphabet</span>
-                          </li>
-                          <li>
-                            <span>Atleast one special character which includes “ ! @ # $ % & * ( ) - + = ^ ” </span>
-                          </li>
-                        </ul>
-                        <OverlayBack />
-                      </div>
-                    }
-                  >
-                    <p className={`${errors.password && touched.password ? 'form-error' : ''}`}>
-                    <span className="hint">
+                  <p className={`${errors.password && touched.password ? 'form-error' : ''}`}>
+                  <span className="hint">
+                    <span onMouseOver={handlePass} onMouseOut={handlePass}>
                       <HintIcon />
-                      {errors.password || 'Password must be atleast 8 characters...'}
                     </span>
-                    </p>
-                  </OverlayTrigger>
+                    {errors.password || 'Password must be atleast 8 characters...'}
+                  </span>
+                  </p>
                 </div>
+                {isHoveringPass && (
+                  <div className="info-cont">
+                    <span className="password-following">Password must include the following:</span>
+                    <ul>
+                        <li>
+                          <span>Minimum of 8 and a maximum of 20 characters- the more, the better.</span>
+                        </li>
+                        <li>
+                          <span>Atleast one number, upper-case & lowercase alphabet</span>
+                        </li>
+                        <li>
+                          <span>Atleast one special character which includes “ ! @ # $ % & * ( ) - + = ^ ” </span>
+                        </li>
+                      </ul>
+                    <OverlayBack />
+                  </div>
+                )}
               </div>
               <div className="signup-form-field">
                 <label className="signup-label">Confirm Password*</label>

@@ -122,17 +122,17 @@ const Checkout = ({
             </div>
             <div className="asset-information">
               <div className="d-flex gap-1 ">
-                <b className="d-flex gap-1 flex-row">
+                <span className="d-flex gap-1 flex-row asset-name"> 
                   {AssetDetails?.name}
 
                   {AssetDetails?.isLegallyVerified && (
                     <VerifiedSign width="24px" height="24px" />
                   )}
-                </b>
+                </span>
               </div>
-              <div className="d-flex flex-column">
+              <div className="d-flex flex-column asset-creator-name">
                 <span>
-                  Created By: <b>{AssetDetails?.creator?.userName}</b>{' '}
+                  Created By: <b>{AssetDetails?.creator?.userName}</b> <VerifiedSign width="18px" height="18px" />{' '}
                 </span>
               </div>
             </div>
@@ -147,6 +147,10 @@ const Checkout = ({
               </ButtonGroup>
             </div>
           )}
+
+          <div className='checkout-heading'>
+            Amount
+          </div>
           <div className="horizontal-rule" />
 
           <div className="price-break mt-4">
@@ -188,7 +192,7 @@ const Checkout = ({
           </div>
 
           <div className="info-field">
-            <Info /> The amount will be reflected in USD currency
+            <Info /> All amount will be facilitated in the standard USD currency
           </div>
         </div>
       )}
@@ -223,7 +227,7 @@ export const PayoutWalletModal = ({ amount, initiatePayment }: any) => {
               <div className="">
                 <p className="fs-4">Wallet</p>
                 <p>
-                  Available balance: <b>{walletBalance}</b>
+                  Available balance: <b style={{color:'#85CB33'}}>$ {walletBalance}</b>
                 </p>
               </div>
             </div>

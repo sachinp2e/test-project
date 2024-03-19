@@ -151,7 +151,7 @@ export const authSlice = createSlice({
         }
         const kycReminderShownOnce = localStorage.getItem('kycReminderShownOnce');
         if(!kycReminderShownOnce){
-          state.kycReminder = action.payload.result.kycStatus !== 'VERIFIED';
+          state.kycReminder = !['VERIFIED','INPROCESS'].includes(action.payload.result.kycStatus);
           localStorage.setItem('kycReminderShownOnce','true');
         }
         state.isLoggedIn = true;

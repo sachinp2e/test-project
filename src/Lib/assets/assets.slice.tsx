@@ -50,21 +50,12 @@ export const assetsSlice = createSlice({
   name: 'assets',
   initialState,
   reducers: {
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
-    updateExploreFavAssets: (state: AssetsState, action) => {
-      const updatedFavIndex =
-        state.assets.findIndex(asset => asset.id === action.payload?.assetId);
-        state.assets[updatedFavIndex] = {
-          ...state.assets[updatedFavIndex],
-          isFavourite: action.payload?.isLike
-      }
-    },
+    resetExploreAssets: (state: AssetsState) => {
+      state.assets = [];
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getAllAssets.pending, (state: AssetsState) => {
-
       state.loading = true;
     });
     builder.addCase(
@@ -128,6 +119,5 @@ export const assetsSlice = createSlice({
   },
 });
 
-export const { updateExploreFavAssets } = assetsSlice.actions;
-
+export const { resetExploreAssets } = assetsSlice.actions;
 export default assetsSlice.reducer;

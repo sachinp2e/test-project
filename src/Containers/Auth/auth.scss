@@ -98,6 +98,13 @@
 }
 
 @media only screen and (min-width: 320px) and (max-width: 767px) {
+  .auth-container{
+    .auth-screen{
+      display: flex;
+      justify-content: center;
+      padding: 0px;
+    }
+  }
   .otp {
     display: flex;
     justify-content: center;

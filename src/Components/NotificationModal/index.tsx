@@ -9,7 +9,7 @@ import { notificationsSelector } from '@/Lib/notifications/notifications.selecto
 import dayjs from 'dayjs';
 import useNotificationSocket from '@/Hooks/useNotificationSocket';
 import { authSelector } from '@/Lib/auth/auth.selector';
-import { markAllNotificationsRead } from '@/Lib/notifications/notifications.slice';
+import { markAllNotificationsRead, updateNotificationsState } from '@/Lib/notifications/notifications.slice';
 
 interface INotification {}
 
@@ -19,7 +19,11 @@ const NotificationModal: React.FC<INotification> = () => {
   const { id: userId } = useAppSelector(authSelector);
   const dispatch = useAppDispatch();
 
-  const { socket } = useNotificationSocket(() => {});
+  const newSocketNotificationHandler = (data: any) => {
+    dispatch(updateNotificationsState(data));
+  };
+
+  const { socket } = useNotificationSocket(newSocketNotificationHandler);
 
   const onToggleDrawer = () => {
     toggleDrawer(!showDrawer);
@@ -53,24 +57,24 @@ const NotificationModal: React.FC<INotification> = () => {
         </div>
         <div className="menu">
           {notifications?.length ? (
-            notifications.map((item: any) => (
+            notifications.map((item: any,idx:number) => (
               <div
                 className={`menu-item ${
                   item.status === 'read' ? 'read' : 'unread'
                 }`}
-                key={item.id}
+                key={`notification_${idx}`}
               >
                 <div className="d-flex align-items-center gap-2">
-                  <div className="noti-img">
+                  {/* <div className="noti-img">
                     <Image src={VirtualImg} alt="noti" />
-                  </div>
+                  </div> */}
                   <div className="noti-message">
                     <div>
                       <span className="title">{item.title}</span>
                       <div className="description">{item.eventMessage}</div>
                     </div>
                     <div className="noti-date">
-                      {dayjs(item.date).format('D MMM, YYYY h:m A')}
+                      {dayjs(item.createdAt).format('D MMM, YYYY h:mm A')}
                     </div>
                   </div>
                 </div>

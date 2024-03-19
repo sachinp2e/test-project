@@ -13,6 +13,7 @@ import useEffectOnce from '@/Hooks/useEffectOnce';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { updateFollowStatus } from '@/Lib/users/users.slice';
 import CustomCopyToClipboard from '@/Components/CopyToClipboard';
+import { authSelector } from '@/Lib/auth/auth.selector';
 
 interface IConnectionsModal {
   title: string; // Followers | Following
@@ -100,7 +101,7 @@ const ConnectionsModal: React.FC<IConnectionsModal> = ({title, triggerCopyMessag
   const params = useParams();
   const router = useRouter();
   const dispatch = useAppDispatch();
-
+  const {id} = useAppSelector(authSelector);
   const {
     usersData: { userFollowers: { followers = [], hasMore: hasMoreFollowers, latestPage: latestPageFollowers },
       userFollowing: { following = [], hasMore: hasMoreFollowing, latestPage: latestPageFollowing }, loading },
@@ -189,8 +190,15 @@ const ConnectionsModal: React.FC<IConnectionsModal> = ({title, triggerCopyMessag
           <div className="connections-card">
             <div className="leftContent">
               <div className="userImage" onClick={()=> router.push(`/user/${follower?.follower?.id}?tab=Assets`)}>
-                  <Image src={follower?.follower?.profileImage_resized || follower?.follower?.profileImage || Asset}
+                {follower?.follower?.profileImage ? (
+                  <Image src={follower?.follower?.profileImage || follower?.follower?.profileImage_resized|| Asset}
                     alt="NA" width={100} height={100} quality={100} />
+                ) :(
+                  <div className="name-initials">
+                    {follower?.follower?.firstName && follower?.follower?.firstName[0].toUpperCase()}
+                    {follower?.follower?.lastName && follower?.follower?.lastName[0].toUpperCase()}
+                  </div>
+                )}
               </div>
               <div className="d-flex flex-column">
                 <div className="name">
@@ -214,6 +222,7 @@ const ConnectionsModal: React.FC<IConnectionsModal> = ({title, triggerCopyMessag
                 </div>
               </div>
             </div>
+            {follower?.followerId !== id &&
             <div className="rightContent" >
               <Button
                 className="follow-unfollow-button"
@@ -222,7 +231,7 @@ const ConnectionsModal: React.FC<IConnectionsModal> = ({title, triggerCopyMessag
                 isGradient
                 onClick={() => handleFollowUnfollow(follower?.followerId, follower?.isFollower)}
                 onlyVerifiedAccess/>
-            </div>
+            </div>}
           </div>
           <hr />
        </div>
@@ -232,7 +241,14 @@ const ConnectionsModal: React.FC<IConnectionsModal> = ({title, triggerCopyMessag
           <div className="connections-card">
             <div className="leftContent">
               <div className="userImage" onClick={() => router.push(`/user/${following?.following?.id}?tab=Assets`)}>
+                {following?.following?.profileImage_resized ? (
                 <Image src={following?.following?.profileImage_resized || following?.following?.profileImage || Asset} alt="NA" width={100} height={100} quality={100}/>
+                ):(
+                    <div className="name-initials">
+                      {following?.following?.firstName && following?.following?.firstName[0].toUpperCase()}
+                      {following?.following?.lastName && following?.following?.lastName[0].toUpperCase()}
+                    </div>
+                  )}
               </div>
               <div className="d-flex flex-column">
                 <div className="name">
@@ -256,7 +272,7 @@ const ConnectionsModal: React.FC<IConnectionsModal> = ({title, triggerCopyMessag
                 </div>
               </div>
             </div>
-            <div className="rightContent" onClick={() => handleFollowUnfollow(following?.followingId, following?.isFollower)}>
+            {following?.followingId !== id && <div className="rightContent" onClick={() => handleFollowUnfollow(following?.followingId, following?.isFollower)}>
               <Button
                 className="follow-unfollow-button"
                 text={`${following?.isFollower ? 'Unfollow' : 'Follow'}`}
@@ -264,7 +280,7 @@ const ConnectionsModal: React.FC<IConnectionsModal> = ({title, triggerCopyMessag
                 isGradient
                 onlyVerifiedAccess
               />
-            </div>
+            </div>}
           </div>
           <hr />
         </div>

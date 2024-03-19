@@ -1,60 +1,62 @@
-import React, {useEffect, useState} from 'react';
-import Image from "next/image";
-import HeartIcon1 from "../../Assets/_images/red-heart-1.png";
-import HeartIcon6 from "../../Assets/_images/red-heart-6.png";
-import HeartIcon3 from "../../Assets/_images/red-heart-3.png";
-import HeartIcon4 from "../../Assets/_images/red-heart-4.png";
-import HeartIcon5 from "../../Assets/_images/red-heart-5.png";
+import React, { useEffect, useState } from 'react';
+import "./fav.scss"
 
 interface ICustomFavAndUnFav {
-  favBtn:boolean;
+  favBtn: boolean;
+  handleLikeUnlikeBtn?: ()=>void;
 }
 
-const images = [
-  HeartIcon1,
-  HeartIcon6,
-  HeartIcon3,
-  HeartIcon4,
-  HeartIcon5,
-  HeartIcon6
-];
-
 const CustomFavAndUnFav: React.FC<ICustomFavAndUnFav> = (props) => {
-  const {favBtn} = props
-  const [currentImage, setCurrentImage] = useState(favBtn ? 5 : 0);
-
-  useEffect(() => {
-    if (favBtn && currentImage === 0) {
-      images.forEach((image, index) => {
-        setTimeout(() => {
-          setCurrentImage(index);
-        }, index * 200);
-      });
-    } else if (!favBtn && currentImage === 5){
-      let intervalId: NodeJS.Timeout;
-      let reversedIndex = images.length - 1;
-      intervalId = setInterval(() => {
-        setCurrentImage(reversedIndex);
-        reversedIndex--;
-
-        if (reversedIndex < 0) {
-          clearInterval(intervalId);
-        }
-      }, 200);
-    } else if(favBtn){
-      setCurrentImage(5)
-    } else {
-      setCurrentImage(0)
-    }
-  }, [favBtn]);
+  const { favBtn, handleLikeUnlikeBtn } = props;
 
   return (
     <>
-      <Image
+      <div id="main-content">
+        <div>
+          <input
+            type="checkbox"
+            id="checkbox"
+            checked={favBtn}
+            onChange={handleLikeUnlikeBtn}
+          />
+          <label htmlFor="checkbox">
+            <svg
+              id="heart-svg"
+              viewBox="467 392 58 57"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{width:'40px'}}
+            >
+              <g
+                id="Group"
+                fill="none"
+                fillRule="evenodd"
+                transform="translate(467 392)"
+              >
+                <path
+                  d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z"
+                  id="heart"
+                  fill="#AAB8C2"
+                />
+                <circle
+                  id="main-circ"
+                  fill="#E2264D"
+                  opacity="0"
+                  cx="29.5"
+                  cy="29.5"
+                  r="1.5"
+                />
+
+                {/* Groups omitted for brevity */}
+              </g>
+            </svg>
+          </label>
+        </div>
+      </div>
+      {/* <Image
         src={images[currentImage]}
         alt={`Image ${currentImage + 1}`}
-      />
+      /> */}
     </>
-  )
-}
-export default CustomFavAndUnFav
+  );
+};
+export default CustomFavAndUnFav;

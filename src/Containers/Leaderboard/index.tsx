@@ -4,8 +4,6 @@ import Image from 'next/image';
 import CustomTable from '../../Components/Table';
 import useEffectOnce from '@/Hooks/useEffectOnce';
 import { useAppDispatch, useAppSelector } from '@/Lib/hooks';
-import { getLeaderboardTopCatalogs } from '@/Lib/leaderboard/leaderboard.action';
-import { leaderboardSelector } from '@/Lib/leaderboard/leaderboard.selector';
 import { LeftArrowIcon } from '@/Assets/svg';
 import './leaderboard.scss';
 import { getAllCatalogsSelector } from '@/Lib/catalogs/catalogs.selector';
@@ -20,7 +18,7 @@ const Leaderboard = () => {
   } = useAppSelector(getAllCatalogsSelector);
 
   useEffectOnce(() => {
-    if (!!!catalogs.length) dispatch(getTopCatalogs({ pageSize: 20 }));
+    if (!!!catalogs.length) dispatch(getTopCatalogs({ pageSize: 50 }));
   });
 
   const columns = [

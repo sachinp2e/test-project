@@ -25,7 +25,7 @@ const VerifyEmailModal: React.FC<IVerifyEmailModal> = ({ onHide }) => {
       const payload = { email };
       const response = await axiosInstance.post('/user/resend-email-otp', payload);
       if (response.data.result) {
-        toastSuccessMessage('Email sent successfully');
+        toastSuccessMessage('OTP sent successfully');
         router.push(`/otp?email=${email}`);
       } else {
         setError(response.data.message);

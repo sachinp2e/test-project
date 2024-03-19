@@ -20,13 +20,13 @@ const MyKyc: React.FC<IMyKyc> = () => {
     userDetails: { kycStatus },
   } = useAppSelector(authSelector);
 
- 
   const isKycProcessInitiated = useMemo(() => {
     const kycProcess = localStorage.getItem('kycProcess');
-    return kycProcess === 'initiated';
+    if (kycStatus !== 'VERIFIED' && kycStatus !== 'FAILED') {
+      return kycProcess === 'initiated';
+    }
+    return false;
   }, []);
- 
-
 
   const handleKycButton = () => {
     if (kycStatus !== 'VERIFIED') {
@@ -52,12 +52,11 @@ const MyKyc: React.FC<IMyKyc> = () => {
     let text3 = '';
     let action = '';
     let imageSrc = KycPendingFailed;
-  
-   
+
     // const isKycProcessInitiated = localStorage.getItem('kycProcess') === 'initiated';
-  
-    if (isKycProcessInitiated && kycStatus !='VERIFIED') {
-      text1 = ""
+
+    if (isKycProcessInitiated && kycStatus != 'VERIFIED') {
+      text1 = '';
       text2 = 'Your KYC in progress! ⏳';
       text3 = 'KYC status will be updated in 24-48 hours';
       imageSrc = KycInprocess;
@@ -68,6 +67,12 @@ const MyKyc: React.FC<IMyKyc> = () => {
           text2 = 'You are all set up!';
           text3 = 'Your KYC is complete. Enjoy full access to the platform!';
           imageSrc = KycCompleted;
+          break;
+        case 'INPROCESS':
+          text1 = '';
+          text2 = 'Your KYC in progress! ⏳';
+          text3 = 'KYC status will be updated in 24-48 hours';
+          imageSrc = KycInprocess;
           break;
         case 'PENDING':
           text1 = 'Oops!';
@@ -92,24 +97,21 @@ const MyKyc: React.FC<IMyKyc> = () => {
           break;
       }
     }
-  
+
     return { text1, text2, text3, action, imageSrc };
   }, [kycStatus]);
-  
-  
 
   return (
     <div className="kyc-status-page">
       <div className="kyc-header align-items-center">
         <span>KYC Status </span>
         {isKycProcessInitiated && (
-          <button className="kyc-status-button-inprogress">
-               In Progress
-          </button>
+          <button className="kyc-status-button-inprogress">In Progress</button>
         )}
-        {!isKycProcessInitiated && kycStatus &&  (
+        {!isKycProcessInitiated && kycStatus && (
           <button className={`kyc-status-button ${kycStatus?.toLowerCase()}`}>
             {kycStatus === 'VERIFIED' && 'Complete'}
+            {kycStatus === 'INPROCESS' && 'In Progress'}
             {kycStatus === 'PENDING' && 'Incomplete'}
             {kycStatus === 'initiated' && 'In Progress'}
             {kycStatus === 'FAILED' && 'Rejected'}
@@ -120,7 +122,11 @@ const MyKyc: React.FC<IMyKyc> = () => {
         {imageSrc && <Image src={imageSrc} alt={`kyc ${kycStatus} image`} />}
         {text1 && <span className="kyc-text1">{text1}</span>}
         {text2 && <span className="kyc-text2"> {text2}</span>}
-        {text3 && <span className="kyc-text3"><InfoIcon/> {text3}</span>}
+        {text3 && (
+          <span className="kyc-text3">
+            <InfoIcon /> {text3}
+          </span>
+        )}
         {action && (
           <Button
             className={`start-kyc-btn ${

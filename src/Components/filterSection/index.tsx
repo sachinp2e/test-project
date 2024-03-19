@@ -15,6 +15,8 @@ import { useAppDispatch, useAppSelector } from '@/Lib/hooks';
 import { getGlobalSearchDataSelector, getSelectedFiltersSelector } from '@/Lib/globalSearchAndFilters/globalSearchAndFilters.selector';
 import "react-range-slider-input/dist/style.css";
 import './filter-section.scss';
+import FilterEllipse from "@/Assets/_images/filterEllipse.svg"
+
 
 interface FilterSectionProps {
   isFilterVisible?: boolean;
@@ -86,12 +88,14 @@ const accordionItems = [
       label: 'Expiring Soon',
       key: 'expiringSoon' as keyof GlobalSearchType,
       value: 'expiringSoon',
-    }, {
-      id: 4,
-      label: 'Upcoming',
-      key: 'upcoming' as keyof GlobalSearchType,
-      value: 'upcoming',
-    }],
+    }
+    //  {
+      // id: 4,
+      // label: 'Upcoming',
+      // key: 'upcoming' as keyof GlobalSearchType,
+      // value: 'upcoming',
+    // }],
+  ]
   },
 ];
 
@@ -168,6 +172,12 @@ const FilterSection: React.FC<FilterSectionProps> = ({ handleToggleFilter, isFil
             <div className="left-header">
               <TuneDSVG />
               <span>Filters</span>
+              {filtersAppliedArr.length > 0 && (
+                <Image
+                  src={FilterEllipse}
+                  alt="filter-show-image"
+                />
+              )}
             </div>
             <div onClick={handleToggleFilter} style={{ cursor: 'pointer' }}>
               <BackButton />

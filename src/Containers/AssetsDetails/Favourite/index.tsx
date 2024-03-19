@@ -32,8 +32,8 @@ const FavouiteModal = () => {
   return (
     <div className="favourite-container">
       {favouriteUserList?.data?.length ? (
-        favouriteUserList.data.map((elem: any) => (
-          <FavouriteCard element={elem} />
+        favouriteUserList.data.map((elem: any,idx:number) => (
+          <FavouriteCard element={elem} key={`favourite_${idx}`}/>
         ))
       ) : (
         <>No data</>
@@ -87,12 +87,19 @@ const FavouriteCard = ({ element }: any) => {
     <div className="favourite-card">
       <div className="leftContent">
         <div className="userImage">
+          { element?.user?.profileImage ?(
           <Image
-            src={element?.user?.profileImage || Asset}
+            src={element?.user?.profileImage}
             width={1000}
             height={1000}
             alt=""
           />
+          ):(
+            <div className="name-initials">
+                  {element?.user?.firstName && element?.user?.firstName[0].toUpperCase()}
+                  {element?.user?.lastName && element?.user?.lastName[0].toUpperCase()}
+                </div>
+            )}
         </div>
         <div className="d-flex flex-column">
           <div className="name">

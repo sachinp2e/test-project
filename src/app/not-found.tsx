@@ -1,6 +1,6 @@
-import Link from 'next/link'
+
 import React from 'react';
-import astronaut from '@/Assets/_images/astronaut.svg';
+import '../Containers/NotFoundPage/styles/main.scss';
 import NotFoundPage from '@/Containers/NotFoundPage';
  
 export function NotFound() {

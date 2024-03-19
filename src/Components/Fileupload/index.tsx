@@ -12,6 +12,7 @@ interface MediaUploadButtonProps {
   htmlFor: string;
   isPreview?: boolean;
   value?: File | string | null;
+  isDisabled?: boolean;
 }
 
 const MediaUploadButton: React.FC<MediaUploadButtonProps> = ({
@@ -22,11 +23,15 @@ const MediaUploadButton: React.FC<MediaUploadButtonProps> = ({
   htmlFor,
   value = null,
   isPreview,
+  isDisabled
 }) => {
   const fileInput = useRef<HTMLInputElement | null>(null);
   const [selectedFile, setSelectedFile] = useState<any>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if(isDisabled){
+      return
+    }
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
@@ -63,7 +68,7 @@ const MediaUploadButton: React.FC<MediaUploadButtonProps> = ({
     if(typeof value === 'string'){
       return value
     }
-    return value ? URL.createObjectURL(selectedFile) : ''
+    return value ? URL.createObjectURL(selectedFile || value) : ''
   },[value])
 
   return (
@@ -103,10 +108,11 @@ const MediaUploadButton: React.FC<MediaUploadButtonProps> = ({
           name={htmlFor}
           accept={accept}
           onChange={handleFileChange}
+          disabled={isDisabled}
           style={{ display: 'none' }}
         />
       </label>
-      <label className={`upload-button ${buttonClassName}`} htmlFor="media-file" onClick={onButtonClick}>
+      <label className={`upload-button ${buttonClassName} ${isDisabled && 'disabled'}`} htmlFor="media-file" onClick={onButtonClick}>
         {buttonLabel}
       </label>
     </div>

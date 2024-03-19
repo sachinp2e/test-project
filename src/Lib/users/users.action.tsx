@@ -141,12 +141,9 @@ export const getUserAssets = createAsyncThunk(
         });
       }
       // @ts-ignore
-      // const response = await axiosInstance.get(url, { restrictToken: true });
-      // @ts-ignore
       const state: RootState = thunkAPI.getState();
       const payload = getAllAssetFilterPayload(state.globalSearch, state.assets);
-      // @ts-ignore
-      const response = await axiosInstance.get(url, { restrictToken: true, params: payload });
+      const response = await axiosInstance.get(url, { params: payload });
       return {
         resObj: response.data?.result,
         loadMore,
@@ -220,7 +217,10 @@ export const getAllUserFavAssets = createAsyncThunk(
           }
         });
       }
-      const response: any = await axiosInstance.get(url);
+      // @ts-ignore
+      const state: RootState = thunkAPI.getState();
+      const payload = getAllAssetFilterPayload(state.globalSearch, state.assets);
+      const response = await axiosInstance.get(url, { params: payload });
       return {
         resObj: response.data?.result,
         loadMore,
@@ -432,7 +432,7 @@ export const getAllMyOrders = createAsyncThunk(
     }
   },
   );
-  
+
 export const getUsersActivity = createAsyncThunk(
   `/activity?userId=userId?page=number`,
   async ({
@@ -443,7 +443,7 @@ export const getUsersActivity = createAsyncThunk(
   }: IGetUsersParams, thunkAPI) => {
     try {
       const response = await axiosInstance.get(
-        `/activity?userId=${userId}&page=${latestPage}&limit=${pageSize}`,
+        `/activity?page=${latestPage}&limit=${pageSize}`,
       );
       return {
         resObj: response.data?.result,

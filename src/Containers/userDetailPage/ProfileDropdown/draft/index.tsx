@@ -20,8 +20,8 @@ const MyDraft = () => {
         className="my-masonry-grid"
         columnClassName="my-masonry-grid_column"
       >
-        {(userProfileDrafts.assets || []).length > 0 ? (userProfileDrafts.assets || []).map((item: any) => {
-          return <AssetCard item={item} />;
+        {(userProfileDrafts.assets || []).length > 0 ? (userProfileDrafts.assets || []).map((item: any,idx:number) => {
+          return <AssetCard item={item} key={`asset_${idx}`}/>;
         }) : <></>}
       </Masonry>
     </div>

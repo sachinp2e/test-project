@@ -7,17 +7,32 @@ import './make-offer.scss';
 import { useAppDispatch, useAppSelector } from '@/Lib/hooks';
 import { getAllCurrenciesSelector } from '@/Lib/currencies/currencies.selector';
 import { AssetDetailSelector } from '@/Lib/assetDetail/assetDetail.selector';
-import { numberSchema } from '../Bid';
+import * as yup from 'yup';
 import dayjs from 'dayjs';
 import axiosInstance from '@/Lib/axios';
-import { toast } from 'react-toastify';
 import { toastErrorMessage, toastSuccessMessage } from '@/utils/constants';
-import AddFunds from '@/Containers/settings/MyWallet/AddFunds';
 import { PayoutWalletModal } from '../Checkout';
 import { getAssetDetails } from '@/Lib/assetDetail/assetDetail.action';
 
+const numberSchema = yup
+  .string()
+  .test(
+    'is-numeric',
+    'Invalid Offer price entered!',
+    (value: any) => !isNaN(value),
+  )
+  .test(
+    'is-positive',
+    'Price can not be less than 0',
+    (value: any) => value > 0,
+  )
+  .required('Price is required');
 
-const MakeOffer = ({ availableCopies, individualOwnerId, handleModalClose }: any) => {
+const MakeOffer = ({
+  availableCopies,
+  individualOwnerId,
+  handleModalClose,
+}: any) => {
   const dispatch = useAppDispatch();
   const { AssetDetails } = useAppSelector(AssetDetailSelector);
   const { currencies } = useAppSelector(getAllCurrenciesSelector);
@@ -27,9 +42,6 @@ const MakeOffer = ({ availableCopies, individualOwnerId, handleModalClose }: any
   const [isPayModal, setIsPayModal] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [selectedCopies, setSelectedCopies] = useState<number>(1);
-  const [serviceCharges, setServiceCharges] = useState<any>({});
-  const [price, setPrice] = useState<string>('');
-
 
   useEffect(() => {
     if (currencies.length && !selectedCurrency) {
@@ -43,7 +55,8 @@ const MakeOffer = ({ availableCopies, individualOwnerId, handleModalClose }: any
     setSelectedValue(option.value);
   };
   const handleOfferPriceChange = (e: any) => {
-    numberSchema()
+    setOfferPrice(e.target.value);
+    numberSchema
       .validate(e.target.value || null)
       .then(() => {
         setError('');
@@ -51,7 +64,6 @@ const MakeOffer = ({ availableCopies, individualOwnerId, handleModalClose }: any
       .catch((error: any) => {
         setError(error.errors[0]);
       });
-    setOfferPrice(e.target.value);
   };
   const handleInitiatePayment = () => {
     setIsPayModal(true);
@@ -66,7 +78,9 @@ const MakeOffer = ({ availableCopies, individualOwnerId, handleModalClose }: any
         offerAmount: offerPrice,
         offerCurrencyId: selectedCurrency,
         offerExpiry: dayjs().add(Number(selectedValue), 'days'),
-        ownerId : individualOwnerId ? individualOwnerId : AssetDetails?.owner?.id
+        ownerId: individualOwnerId
+          ? individualOwnerId
+          : AssetDetails?.owner?.id,
       };
       if (AssetDetails?.isMultiple) {
         payload.supply = selectedCopies;
@@ -76,7 +90,7 @@ const MakeOffer = ({ availableCopies, individualOwnerId, handleModalClose }: any
         payload,
       );
       toastSuccessMessage('Offer successfully Placed');
-      dispatch(getAssetDetails(AssetDetails?.id))
+      dispatch(getAssetDetails(AssetDetails?.id));
       handleModalClose();
     } catch (error: any) {
       toastErrorMessage('Something went wrong, Please try again!.');
@@ -92,11 +106,6 @@ const MakeOffer = ({ availableCopies, individualOwnerId, handleModalClose }: any
       setSelectedCopies((prev) => prev - 1);
     }
   };
-  const totalPrice = useMemo(()=>{
-    const serviceCharge = Number(serviceCharges?.platformFee || 0) / 100 * Number(price)
-    
-    return Number(price || 0) + serviceCharge
-  },[price])
 
   const currencyOptions = useMemo(() => {
     if (currencies.length) {
@@ -119,12 +128,12 @@ const MakeOffer = ({ availableCopies, individualOwnerId, handleModalClose }: any
         </div>
       ) : (
         <form>
-          <div className="make-offer-container"> 
+          <div className="make-offer-container">
             <Row>
               <Col md={6}>
                 {currencies?.length > 0 && (
                   <SelectInput
-                    type="NUMBER"
+                    type="TEXT"
                     label="Offer Price"
                     labelTwo=""
                     name="offerPrice"
@@ -138,7 +147,7 @@ const MakeOffer = ({ availableCopies, individualOwnerId, handleModalClose }: any
                 {error && <p className="error-message">{error}</p>}
               </Col>
               <Col md={6}>
-                <div className='select-date-container'>
+                <div className="select-date-container">
                   <CustomSelect
                     placeholder="In 7 days"
                     onChange={(_, value) => handleOnchange(value)}
@@ -191,11 +200,11 @@ const MakeOffer = ({ availableCopies, individualOwnerId, handleModalClose }: any
                 </span>
               )}
               <span>
-              <p>{Number(totalPrice).toFixed(3)} USD</p>
+                <p>{offerPrice} USD</p>
               </span>
             </div>
           </div>
-          <span className="offer-note">Note: Additional platform fees will be added to your offer price. </span>
+          {/* <span className="offer-note">Note: Additional platform fees will be added to your offer price. </span> */}
           <div className="proceed-button">
             <Button
               isFilled

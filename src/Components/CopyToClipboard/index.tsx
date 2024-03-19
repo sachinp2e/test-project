@@ -31,9 +31,11 @@ const CustomCopyToClipboard: React.FC<ICopyToClipboardType> = (props) => {
   };
 
   return (
-    <div onClick={() => handleOnClick()} className="copied-container">
+    <div className="copied-container">
       <span className="copy-id">{text?.slice(0, sliceNumber) + "....." + text?.slice(lastSliceNumber)}</span>
+      <span onClick={() => handleOnClick()}>
       <CopySvgTwo/>
+      </span>
       <span className={`copied ${copy ? "animation" : ""}`}>copied!</span>
     </div>
   )

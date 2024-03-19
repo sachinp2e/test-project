@@ -44,37 +44,32 @@ const HeroSection: React.FC<IHeroSectionType> = () => {
               className={`tabcontent ${activeTab === 1 ? 'active' : ''}`}
             >
               <div className="d-flex flex-column">
-                <span className="sub-title">Explore the world of</span>
-                <div className="title">CREATIVE AND UNIQUE ASSETS</div>
+                <div className="title">EXPLORE UNIQUE ASSETS</div>
+                <p className="discription">
+                     With NiftiQ, you have the opportunity to have control of your work, and connect with your biggest supporters.
+                </p>
               </div>
             </div>
             <div
               className={`tabcontent ${activeTab === 2 ? 'active' : ''}`}
             >
               <div className="d-flex flex-column">
-                <span className="sub-title">
-                  get to know the easy process of
-                </span>
-                <div className="title">creating & selling assets</div>
+                <div className="title">SECURE. POWERFUL. PROFITABLE</div>
+                <p className="discription" style={{textAlign:"center"}}>
+                    We bridge the gap between creators, collectors, and enthusiasts by offering an ultimate digital asset marketplace powered by DLT.
+                </p>
               </div>
             </div>
             <div
               className={`tabcontent ${activeTab === 3 ? 'active' : ''}`}
             >
               <div className="d-flex flex-column">
-                <span className="sub-title">ready to</span>
-                <div className="title">explore unique assets?</div>
+                <div className="title">EMPOWER YOUR CREATIVITY</div>
+                <p className="discription">
+                  As a creator, you can curate, exchange, and monetize your digital collectibles.
+                </p>
               </div>
             </div>
-            <p className="discription">
-              Lorem ipsum dolor sit amet consectetur. Egestas lorem diam vel
-              nulla laoreet. At risus pharetra et pellentesque non adipiscing ut
-              mus.
-            </p>
-            <p className="discription">
-              Donec phasellus placerat cras id amet. Nunc potenti ultrices
-              volutpat nisl ullamcorper.
-            </p>
             <Button
               className="explore-assets-btn"
               element={(

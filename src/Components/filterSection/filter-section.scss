@@ -2,14 +2,14 @@
   border-radius: 5px;
   border: 1px solid var(--Border-Outline, #bcbcbc);
   padding: 21px 17px;
-  min-height: 872px;
+  min-height: auto;
   position: sticky;
   top: 70px;
 
   .filter-wrapper {
     display: none;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 
     .filter-header {
       display: flex;
@@ -20,6 +20,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        align-items: flex-start;
 
         span {
           color: #000;
@@ -29,12 +30,12 @@
           font-weight: 700;
           line-height: normal;
 
-          &::after {
-            content: '•';
-            color: #148eff;
-            position: absolute;
-            top: 17px;
-          }
+          // &::after {
+          //   content: '•';
+          //   color: #148eff;
+          //   position: absolute;
+          //   top: 17px;
+          // }
         }
       }
     }

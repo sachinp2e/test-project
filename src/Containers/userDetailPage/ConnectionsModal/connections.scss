@@ -51,6 +51,18 @@
               object-fit: cover;
               border-radius: 50%;
             }
+            .name-initials {
+              width: 42px;
+              height: 42px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-size: 18px;
+              font-weight: 600;
+              color: #fff;
+              background: #000;
+              border-radius: 50%;
+            }
           }
 
           .kalp-id {

@@ -1,6 +1,4 @@
 import Button from '@/Components/Button';
-import CustomModal from '@/Components/CustomModal';
-import CustomSelect from '@/Components/CustomSelect';
 import InputField from '@/Components/Input/Input';
 import GenericModal from '@/Components/modal';
 import { authSelector } from '@/Lib/auth/auth.selector';
@@ -10,7 +8,10 @@ import { addWalletBalance } from '@/Lib/wallet/wallet.slice';
 import { toastErrorMessage } from '@/utils/constants';
 import Gateways from 'mai-payment-aggregator';
 import React, { useState } from 'react';
+import purchaseSuccesLogo from '@/Assets/_images/success-animation1.gif';
+import failedAnimation from '@/Assets/_images/failedanimation.gif'
 import { v4 as uuidv4 } from 'uuid';
+import Image from 'next/image';
 interface Props {}
 
 const headers = {
@@ -27,7 +28,8 @@ const AddFunds = (props: Props) => {
   const [amount, setAmount] = useState<string>('');
   const [initiatePayment, setInitiatePayment] = useState<boolean>(false);
   const [transactionPayload, setTransactionPayload] = useState<any>(null);
-  const [showTransactionResponse,setShowTransactionResponse] = useState<boolean>(false); 
+  const [showTransactionResponse, setShowTransactionResponse] =
+    useState<boolean>(false);
   const [paymentStatus, setPaymentStatus] = useState<boolean>(false);
   const [payload, setpayload] = useState<any>(null);
   const [userInfo, setUserInfo] = useState<any>(null);
@@ -46,7 +48,7 @@ const AddFunds = (props: Props) => {
     if (payload?.transactionStatus === false) {
       return;
     }
-    try{
+    try {
       const response = await axiosInstance.post('/user/verify-transaction', {
         id: payload,
         message: 'Success',
@@ -55,16 +57,16 @@ const AddFunds = (props: Props) => {
         dispatch(addWalletBalance(Number(amount)));
         toggleModal(true);
         setPaymentStatus(true);
-        setShowTransactionResponse(true)
+        setShowTransactionResponse(true);
       }
       setTransactionPayload(payload);
       setInitiatePayment(false);
-    }catch(error){
+    } catch (error) {
       toggleModal(true);
       setPaymentStatus(false);
       setShowTransactionResponse(true);
+      setInitiatePayment(false);
     }
-    
   };
   const initiateAddFunds = async () => {
     if (error || !amount) return;
@@ -90,7 +92,9 @@ const AddFunds = (props: Props) => {
       }
     } catch (error: any) {
       console.log(error);
-      toastErrorMessage('Something went wrong while adding funds! Please try after some time.')
+      toastErrorMessage(
+        'Something went wrong while adding funds! Please try after some time.',
+      );
     }
   };
   const handleClose = () => {
@@ -119,8 +123,23 @@ const AddFunds = (props: Props) => {
           <div className="">
             {showTransactionResponse ? (
               <>
-                <p className='info-title text-center'>{paymentStatus ? 'Payment Success': 'Fail to add funds!'}</p>
-                <p className='info-desc text-center'>{paymentStatus ? 'Amount has been added successfully': 'Please try again after some time'}</p>
+                {' '}
+                <div className='d-flex justify-content-center'>
+                  <Image
+                    src={paymentStatus ? purchaseSuccesLogo : failedAnimation}
+                    alt=""
+                    width={100}
+                    height={100}
+                  />
+                </div>
+                <p className="info-title text-center mx-10">
+                  {paymentStatus ? 'Payment Success' : 'Fail to add funds!'}
+                </p>
+                <p className="info-desc text-center">
+                  {paymentStatus
+                    ? 'Amount has been added successfully'
+                    : 'Please try again after some time'}
+                </p>
                 <div className="d-flex justify-content-center">
                   <Button
                     element={<span>Ok</span>}

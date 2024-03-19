@@ -7,9 +7,7 @@
     border-radius: 20px;
     background: linear-gradient(132deg, #D24074 -0.67%, #1268C3 102.54%);
     width: 540px;
-    min-width: 540px;
-    max-height: 774px;
-    min-height: 774px;
+    height: 774px;
 
     img {
       width: 100%;
@@ -22,20 +20,20 @@
 @media only screen and (min-width: 1024px) and (max-width: 1265px) {
   .carousel-container {
     .center-container {
-      max-width: 400px;
+      max-width: 430px;
     }
   }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
-  .carousel-container {
-    width: 60%;
-    .center-container {
-      max-width: 350px;
-      padding-left: 30px;
-    
+    .carousel-container {
+      width: 100%;
+
+      .center-container {
+        width: fit-content;
+      }
     }
-  }
+    
 }
 
 @media only screen and (min-width: 424px) and (max-width: 767px) {

@@ -1,6 +1,5 @@
 import CustomSelect from "@/Components/CustomSelect";
 import CustomTable from "@/Components/Table";
-import useEffectOnce from "@/Hooks/useEffectOnce";
 import { useAppDispatch, useAppSelector } from "@/Lib/hooks";
 import { getUsersActivity } from "@/Lib/users/users.action";
 import { getAllUsersSelector } from "@/Lib/users/users.selector";
@@ -9,9 +8,9 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const pageSizeArr: any[] = [
-  { label: 10, value: 10 },
-  { label: 20, value: 20 },
-  { label: 30, value: 30 },
+  { label: '10 per page', value: 10 },
+  { label: '20 per page', value: 20 },
+  { label: '30 per page', value: 30 },
 ]
 
 const MyHistory: React.FC = () => {
@@ -30,10 +29,6 @@ const MyHistory: React.FC = () => {
   useEffect(() => {
     setTableData(activities.slice((currentPage * pageSize) - pageSize, currentPage * pageSize));
   }, [activities])
-
-  useEffectOnce(() => {
-    if (!!!activities.length) dispatch(getUsersActivity({ userId: `${params?.userId}` }));
-  });
 
   const handleTableData = (requestedPage: number) => {
     if (!requestedPage || requestedPage > totalPages) {
@@ -94,12 +89,13 @@ const MyHistory: React.FC = () => {
     offerTransfer: 'Offer successfully transferred.',
     bidTransfer: 'Bid successfully transferred.',
     putOnMarketPlace: 'Your asset is listed for sale in the marketplace.',
-    bidUpdated: 'Your bid has been updated.'
+    bidUpdated: 'Your bid has been updated.',
+    followed:'Followed a user.'
   };
 
   const dataHandler = (data:any) =>{
     const data1 =  data?.length > 0 ? data?.map((item:any)=>({
-      activityMessage: ActivityAction[item?.activityAction],
+      activityMessage: item?.activityAction !== null ? ActivityAction[item?.activityAction] : item?.activityType === 'followed' ? 'Followed a user.':'',
       dateTime: dateModifierHandler(item.created_at),
     })) : []
     return data1

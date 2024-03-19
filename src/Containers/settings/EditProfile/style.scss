@@ -30,10 +30,10 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          font-size: 60px;
+          font-size: 45px;
           font-weight: 600;
           color: #fff;
-          background: #757472;
+          background: #000;
           border-radius: 50%;
         }
       }
@@ -251,6 +251,7 @@
     gap: 10px;
     top: 70%;
     right: 20px;
+    z-index: 1;
 
     .edit-btn-icon, .trash-btn-icon {
       border: none;

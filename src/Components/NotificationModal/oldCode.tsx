@@ -38,8 +38,8 @@ const NotificationModal: React.FC<INotification> = () => {
       <div className="heading">Notification</div>
       <hr className="horizontal-rule" />
       <div>
-        {menuItems.map((item) => (
-          <>
+        {menuItems.map((item,idx) => (
+          <div key={idx}>
             <div className="menu-item">
               <div className="d-flex align-items-center gap-1">
                 <div className="noti-img">
@@ -51,7 +51,7 @@ const NotificationModal: React.FC<INotification> = () => {
               <div className="noti-date">{item.date}</div>
             </div>
             <hr className="horizontal-rule" />
-          </>
+          </div>
         ))}
         <div className="view-all">
           <Link href="/#">View All</Link>

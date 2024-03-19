@@ -3,6 +3,7 @@ import transferSvg from '@/Assets/_images/transefer.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import dayjs from 'dayjs';
+import { getActivityMessages } from '@/Containers/AssetsDetails/TabsContent/utils';
 
 
 type Props = {
@@ -18,22 +19,7 @@ const HistoryCard = ({elem}: Props) => {
           <Image src={transferSvg} alt="" />
         </div>
         <div className="title-name">
-          <span>
-            Transferred from
-            <Link href={`/user/${elem?.previous_owner_id}`}>
-              <b>
-                {' '}
-                {elem.previous_owner_firstname} {elem.previous_owner_lastname}{' '}
-              </b>
-            </Link>{' '}
-            to{' '}
-            <Link href={`/user/${elem?.new_owner_id}`}>
-              <b>
-                {' '}
-                {elem.new_owner_firstname} {elem.new_owner_lastname}{' '}
-              </b>
-            </Link>
-          </span>
+          {getActivityMessages(elem)}
           {!!elem?.price && <label>Price:{' '}${elem.price}</label>}
         </div>
       </div>

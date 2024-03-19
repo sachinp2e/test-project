@@ -86,6 +86,10 @@ const LoginScreen: React.FC<ILoginScreenType> = () => {
       } else if (data.payload.status === 200) {
         router.push('/');
       } else {
+        if(data.payload.customErrorNumber=== -2 || data.payload.customErrorNumber === 1000){
+          setErrors({ ...errors, password: 'Invalid credentials!' });
+          return;
+        }
         setGlobalError(data.payload.message);
       }
     },

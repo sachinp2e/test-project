@@ -509,11 +509,12 @@
             color: #fff;
             text-align: center;
             font-family: DM Sans;
-            font-size: 20px;
+            font-size: 24px;
             font-style: normal;
             font-weight: 700;
             line-height: normal;
             overflow-wrap: anywhere;
+            color: #FFF;
           }
         }
 
@@ -527,6 +528,7 @@
           position: absolute;
           top: 10px;
           left: 10px;
+          opacity: 1;
         }
       }
 
@@ -731,6 +733,20 @@
   cursor: pointer;
 }
 
+.create-asset-loader-wrapper {
+  width: 100%;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // bounce animation for the loader
+  .logo-loader {
+    opacity: 0.3;
+    animation: vertical-bounce 1s infinite;
+  }
+}
+
 @media only screen and (width<840px) {
   .create-asset-container {
     padding: 70px 5% 5%;
@@ -916,4 +932,16 @@
 
 .custom-gap-12 {
   gap: 12px;
+}
+
+@keyframes vertical-bounce {
+  0%,
+  100% {
+    transform: translateY(-50%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
 }

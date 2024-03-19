@@ -25,6 +25,7 @@ import { validFileExtensions } from '@/utils/constants';
 import './create-assets.scss';
 import ResultModal from '@/Components/ResultModal';
 import { authSelector } from '@/Lib/auth/auth.selector';
+import { Logo } from '@/Assets/svg';
 
 const CreateAssets: React.FC<CreateAssetsProps> = () => {
   const router = useRouter();
@@ -60,12 +61,14 @@ const CreateAssets: React.FC<CreateAssetsProps> = () => {
   const [draftSuccessModal, toggleDraftSuccessModal] = useState<boolean>(false);
   const [createdAsset, setCreatedAsset] = useState<any>(null);
   const [globalError, setGlobalError] = useState<string>(''); // stores the error coming from backend and displays on the third step
+  const [draftFromExternal,setDraftFromExternal] = useState<boolean>(false);
   const { assets } = useAppSelector(getAllAssetsSelector);
   const { id: userId } = useAppSelector(authSelector);
 
   useEffect(() => {
     if (params.draftDetails?.length) {
       fetchDraftData();
+
     }
   }, [params.draftDetails]);
 
@@ -104,6 +107,12 @@ const CreateAssets: React.FC<CreateAssetsProps> = () => {
         price: payload.price || formData.price,
         royalty: payload.royalty || formData.royalty,
       });
+      if(payload?.certificateId && payload?.draftCreatedFromExternal){
+        setDraftFromExternal(true);
+      }
+      if (payload.httpStatus === 400 && payload.customErrorNumber === 100652) {
+        router.push('/404');
+      }
       if (payload.isMultiple && params.id !== 'multiple') {
         router.push(`/create-asset/multiple/${payload.id}`);
       }
@@ -183,14 +192,15 @@ const CreateAssets: React.FC<CreateAssetsProps> = () => {
 
       // @ts-ignore
       if (
-        finalObj.media?.name &&
         ![
           ...validFileExtensions.audio,
           ...validFileExtensions.video,
           ...validFileExtensions.others,
           ...validFileExtensions.threedimension,
-        ].includes((finalObj.media?.type || '').split('/')?.[1] || '') &&
-        !finalObj.media?.name?.toLowerCase().endsWith('.glb')
+        ].includes((finalObj.media?.type || '').split('/')?.[1] || '')
+        &&
+        !finalObj.media?.name?.toLowerCase().endsWith(".glb")
+      
       ) {
         delete finalObj.thumbnail;
       }
@@ -224,6 +234,7 @@ const CreateAssets: React.FC<CreateAssetsProps> = () => {
       });
 
       const response: any = await dispatch(createAsset(data))
+
       if (!assets.length) {
         await dispatch(getAllAssets({}));
       }
@@ -303,6 +314,9 @@ const CreateAssets: React.FC<CreateAssetsProps> = () => {
         delete finalObj.thumbnail;
       }
 
+      if(finalObj.putOnMarketplace && !finalObj.orderType){
+        finalObj.orderType = 'fixed';
+      }
       Object.entries(finalObj).forEach(([key, value]) => {
         if (
           value === null ||
@@ -312,9 +326,7 @@ const CreateAssets: React.FC<CreateAssetsProps> = () => {
         ) {
           return;
         }
-        if (value === initialFormData[key as keyof CreateAssetFormDataType]) {
-          return;
-        }
+
         // @ts-ignore TODO: fix Ts-Ignore error here
         data.append(key, value);
       });
@@ -343,6 +355,7 @@ const CreateAssets: React.FC<CreateAssetsProps> = () => {
             updateFormData={updateFormData}
             onNext={onNext}
             onDraftAsset={onDraftAsset}
+            draftFromExternal={draftFromExternal}
           />
         );
       case 2:
@@ -382,8 +395,14 @@ const CreateAssets: React.FC<CreateAssetsProps> = () => {
     return null;
   };
 
-  if (params.draftDetails?.[0] && !formData.id) {
-    return null;
+  if (params?.draftDetails?.[0] && !formData.id && !createdAsset) {
+    return (
+      <div className="create-asset-loader-wrapper">
+        <div className="logo-loader">
+          <Logo />
+        </div>
+      </div>
+    );
   }
 
   return (

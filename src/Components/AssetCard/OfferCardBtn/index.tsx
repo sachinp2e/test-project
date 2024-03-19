@@ -114,7 +114,7 @@ const OfferCardBtn: React.FC<IOfferCardBtn> = ({ item }) => {
             </div>
             <div className="d-flex flex-column gap-2 right-col">
               <span>2.5%</span>
-              <span>-</span>
+              <span>{item?.asset?.royalty ? item?.asset?.royalty + '%' : '-'}</span>
             </div>
           </section>
           <hr />

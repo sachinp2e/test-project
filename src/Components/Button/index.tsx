@@ -55,6 +55,9 @@ const Button: React.FC<IButton> = (props) => {
   };
 
   const onHandleConfirm = () => {
+    if(userDetails?.kycStatus === 'INPROCESS'){
+      return toggleAuthorizedModal(false);
+    }
     toggleAuthorizedModal(false);
     toggleKycVerificationModal(true);
   };

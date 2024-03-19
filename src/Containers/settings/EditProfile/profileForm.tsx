@@ -13,7 +13,7 @@ import { authSelector } from '@/Lib/auth/auth.selector';
 import Button from '@/Components/Button';
 import GenericModal from '@/Components/modal';
 import ChangePassword from './changePassword/changePassword';
-import { updateProfileAction } from '@/Lib/auth/auth.action';
+import { getProfileAction, updateProfileAction } from '@/Lib/auth/auth.action';
 import CustomModal from '@/Components/CustomModal';
 import SuccessToaster from '@/Assets/_images/sucess-animation.gif';
 
@@ -98,10 +98,10 @@ const profileValidationSchema = Yup.object().shape({
     .notRequired()
     .max(160, 'Bio must be atleast 160 characters'),
   twitter: Yup.string()
-    .matches(/^https:\/\/twitter\.com\/.*$/, 'Invalid URL')
+    .matches(/^https:\/\/twitter\.com\/.+$/, 'Invalid URL')
     .notRequired(),
   instagram: Yup.string()
-    .matches(/^https:\/\/www\.instagram\.com\/.*$/, 'Invalid URL')
+    .matches(/^https:\/\/www\.instagram\.com\/.+$/, 'Invalid URL')
     .notRequired(),
   discord: Yup.string().notRequired(),
   website: Yup.string()
@@ -188,19 +188,19 @@ const ProfileForm = ({
       dispatch(updateProfileAction(formData))
         .unwrap()
         .then(() => {
+          if (updatedFieldsObj?.username) setCanUpdateUsername(false);
           setCoverImage(null);
           setProfileImage(null);
           setSuccessModal((prev) => !prev);
         })
         .catch((rejectedValue: any) => {
           if (
-            rejectedValue.customErrorNumber === -2 &&
-            rejectedValue?.message ===
-              'You can change username only after 15 days '
+            rejectedValue.customErrorNumber === 10006 &&
+            rejectedValue?.message.includes('username is not available')
           ) {
             formik.setFieldError(
               'userName',
-              'Username can only be changed once in 15 days',
+               rejectedValue?.message,
             );
           } else {
             setGlobalError(rejectedValue?.message);
@@ -222,11 +222,11 @@ const ProfileForm = ({
       const millisecondsInADay = 24 * 60 * 60 * 1000;
       const daysDifference = Math.floor(timeDifference / millisecondsInADay);
       const updateAfter = 15 - daysDifference;
-      updateAfter <= 15
+      (updateAfter <= 15 && updateAfter > 0)
         ? formik.setFieldError(
             'userName',
             `You can update your username after ${
-              updateAfter >= 0 ? updateAfter : 0
+              updateAfter
             } ${updateAfter === 1 ? 'day' : 'days'}.`,
           )
         : setCanUpdateUsername(true);
@@ -251,6 +251,11 @@ const ProfileForm = ({
     togglePasswordModal(false);
     setIsSuccess(true);
   };
+
+  const handleProfileSuccessModal = async () => { 
+    setSuccessModal(prev => !prev);
+    await dispatch(getProfileAction());
+  }
 
   return (
     <div className="profile-form">
@@ -377,7 +382,11 @@ const ProfileForm = ({
               label="Twitter"
               onChange={formik.handleChange}
             />
+            {formik.errors.twitter && formik.touched.twitter && (
+              <p className="error">{formik.errors.twitter}</p>
+            )}
           </div>
+
           <div className="form-element">
             <TextField
               value={formik.values.instagram}
@@ -386,6 +395,9 @@ const ProfileForm = ({
               label="Instagram"
               onChange={formik.handleChange}
             />
+            {formik.errors.instagram && formik.touched.instagram && (
+              <p className="error">{formik.errors.instagram}</p>
+            )}
           </div>
         </div>
         <div className="form-group">
@@ -397,7 +409,11 @@ const ProfileForm = ({
               label="Discord"
               onChange={formik.handleChange}
             />
+            {formik.errors.discord && formik.touched.discord && (
+              <p className="error">{formik.errors.discord}</p>
+            )}
           </div>
+
           <div className="form-element">
             <TextField
               value={formik.values.website}
@@ -406,6 +422,9 @@ const ProfileForm = ({
               label="Website"
               onChange={formik.handleChange}
             />
+            {formik.errors.website && formik.touched.website && (
+              <p className="error">{formik.errors.website}</p>
+            )}
           </div>
         </div>
         {globalError && <div className="global-error">{globalError}</div>}
@@ -425,7 +444,10 @@ const ProfileForm = ({
             close={true}
             backdrop="static"
           />
-          <button className="filled radius-btn" type="submit">
+          <button
+            className="filled radius-btn"
+            type="submit"
+          >
             Save Changes
           </button>
         </div>
@@ -433,7 +455,7 @@ const ProfileForm = ({
       {
         <CustomModal
           show={successModal}
-          onHide={() => setSuccessModal((prev) => !prev)}
+          onHide={handleProfileSuccessModal}
         >
           <div className="profile-update-success-modal">
             <div className="proifle-image">
@@ -450,7 +472,7 @@ const ProfileForm = ({
             </span>
             <Button
               text="OK"
-              onClick={() => setSuccessModal((prev) => !prev)}
+              onClick={handleProfileSuccessModal}
               className="change-password-btn filled"
             />
           </div>

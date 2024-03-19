@@ -49,6 +49,7 @@ export interface ICatalogs {
   isFavourite: boolean;
   creator: {
     firstName: string;
+    lastName:string;
     userName: string;
     profileImage: string;
     isKycVerified: boolean;

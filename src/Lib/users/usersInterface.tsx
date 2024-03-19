@@ -58,8 +58,8 @@ interface IUserData {
   hasMore: boolean;
   loading: boolean;
   followUnfollowLoading: boolean;
-  currentUserTab: string;
   userDetails: any; //{IUsers}
+  userDetailsLoading: boolean;
   userFollowers: any; // {followers: IUsers[]; totalCount: number; latestPage: number; hasMore: boolean; loading: boolean; serverError: any;}
   userFollowing: any; // {following: IUsers[]; totalCount: number; latestPage: number; hasMore: boolean; loading: boolean; serverError: any;}
   userCreatedAssets: any; //{assets: assetsArr[]; totalCount: number; latestPage: number; hasMore: boolean; loading: boolean; serverError: any;}
@@ -73,6 +73,7 @@ interface IUserData {
   userReceivedBids: any; //{assets: assetsArr[]; totalCount: number; latestPage: number; hasMore: boolean; loading: boolean; serverError: any;}
   userProfileDrafts: any; //{assets: assetsArr[]; totalCount: number; latestPage: number; hasMore: boolean; loading: boolean; serverError: any;}
   userProfileOrders: any; //{assets: assetsArr[]; totalCount: number; latestPage: number; hasMore: boolean; loading: boolean; serverError: any;}
+  userTabDataLoading:boolean;
   userActivityHistory: any; 
 }
 

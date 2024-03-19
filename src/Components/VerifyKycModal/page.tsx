@@ -51,7 +51,6 @@ const VerifyKycModal = ({ showKycModal, toggleKycModal }: Iprops) => {
           nationality: selectedCountry.value,
         };
       });
-      localStorage.setItem('kycProcess', 'initiated');
       toggleKyc(true);
     } catch (err: any) {}
   };
@@ -88,7 +87,7 @@ const VerifyKycModal = ({ showKycModal, toggleKycModal }: Iprops) => {
         lastName: userDetails?.lastName,
         mobile_no: userDetails?.mobileNumber || '8425928181',
         email: userDetails?.email,
-        redirect_back_url: window?.location?.origin || process.env.NEXT_PUBLIC_FRONTEND_BASE_URL || 'https://dev-nftm.p2eppl.com',
+        redirect_back_url: `${window?.location?.origin}?redirectfrom=kyc` || `${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}?redirectfrom=kyc` || 'https://dev-nftm.p2eppl.com?redirectfrom=kyc',
         type: 'KYC',
         nationality: selectedCountry.value,
       });
@@ -114,7 +113,7 @@ const VerifyKycModal = ({ showKycModal, toggleKycModal }: Iprops) => {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        className="modal-container"
+        className="modal-container kyc-country"
       >
         <Modal.Body>
           {ErrorMessage ? (

@@ -1,5 +1,4 @@
 .subscription-wrapper {
-  height: 100vh;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -22,6 +21,7 @@
 
   .sub-subscription {
     gap: 60px;
+    margin-bottom: 10rem;
     display: flex;
     flex-wrap: wrap;
     position: relative;

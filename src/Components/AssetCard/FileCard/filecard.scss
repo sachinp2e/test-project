@@ -1,121 +1,182 @@
-.file-cards-main-wrapper {
-  position: relative;
-  cursor: pointer;
+.file-card {
+  min-height: 316px;
   width: 100%;
-  box-shadow: 0 1px 4px 1px #ddd;
+  position: relative;
   border-radius: 5px;
+  box-shadow: 0 1px 4px 1px #ddd;
+  display: flex;
 
-  .file-main-image {
+  &:hover {
+    .file-icon-absolute {
+      display: none;
+    }
+
+    .file-blur-overlay {
+      display: unset;
+    }
+  }
+
+  .asset-image {
     width: 100%;
     height: auto;
-    border-radius: 5px;
     object-fit: cover;
+    border-radius: 5px;
   }
 
-  .file-left-wrapper,
-  .file-right-wrapper {
+  .file-icon-absolute {
     position: absolute;
     top: 16px;
-  }
-
-  .file-left-wrapper {
-    z-index: 99;
     left: 16px;
+    z-index: 1;
   }
 
-  .file-right-wrapper {
+  .on-sale-absolute {
+    position: absolute;
+    top: 16px;
     right: 16px;
+    z-index: 1;
 
-    .sale-file-right-wrapper {
-      display: flex;
-      width: 77px;
-      height: 23px;
-      padding: 4px 16px;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-      border-radius: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.64);
-      background: rgba(24, 24, 24, 0.40);
-      backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-      & span {
-        color: #FFF;
-        text-align: center;
-        font-family: DM Sans;
-        font-size: 12px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-      }
-    }
-
-
-    .file-right-icon {
-      border: none;
-      background: none;
-    }
+    width: 77px;
+    height: 23px;
+    border-radius: 30px;
+    background-color: #18181866;
+    font-family: DM Sans;
+    font-size: 12px;
+    font-weight: 400;
+    color: #fff;
+    border: 1px solid #FFFFFFA3;
   }
 
   .file-blur-overlay {
     display: none;
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     right: 0;
-    top: 0;
-    width: 100%;
-    height: auto;
-    background: #41414180;
-    color: white;
+    bottom: 0;
     border-radius: 5px;
-    background: rgba(0, 0, 0, 0.48);
+    background: #41414180;
     backdrop-filter: blur(16.5px);
+    background: rgba(0, 0, 0, 0.48);
+    z-index: 1;
 
-    .file-text-blur-overlay {
-      padding: 50px 0 16px 0;
-      display: flex;
-      color: #ffffff;
-      align-items: center;
-      justify-content: space-between;
-      flex-direction: column;
+    .overlay-card {
       height: 100%;
+      position: relative;
+      padding: 16px 16px 0 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
 
-      .file-details {
+      .header {
         display: flex;
-        justify-content: center;
         align-items: center;
-        flex-direction: column;
-        gap: 17px;
+        justify-content: space-between;
 
-        .sale-file-details {
+        .file-right-icon{
+          background: transparent;
+          border: none;
+        }
+
+        .bidding-time-wrapper {
           display: flex;
-          width: 77px;
-          height: 23px;
-          padding: 4px 16px;
-          justify-content: center;
           align-items: center;
-          gap: 10px;
-          flex-shrink: 0;
-          border-radius: 30px;
-          background: rgba(24, 24, 24, 0.40);
-          backdrop-filter: blur(3px);
-          -webkit-backdrop-filter: blur(3px);
 
-          & span {
+          .bidding-live-indicator {
+            position: relative;
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin: 10px;
+            background: #02C715;
+
+            &:before {
+              background: #02C715;
+              content: '';
+              position: absolute;
+              display: block;
+              left: -5px;
+              top: -5px;
+              width: 25px;
+              height: 25px;
+              border-radius: 50%;
+              animation: pulse 1.2s infinite ease-in;
+            }
+            &.closed {
+              background: #FF0000;
+              &:before {
+                background: #FF0000;
+              }
+            }
+          }
+
+          .bidding-date {
             color: #FFF;
+
             text-align: center;
-            font-family: DM Sans;
-            font-size: 12px;
+            font-family: Inter;
+            font-size: 14px;
             font-style: normal;
-            font-weight: 400;
+            font-weight: 300;
             line-height: normal;
+
+            b {
+              font-weight: 600;
+            }
+
           }
         }
 
-        .file-title {
-          color: #fff;
+        .like-unlike {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+
+          .like-icon {
+            &.like {
+              svg {
+                & circle {
+                  stroke: transparent;
+                }
+                & path {
+                  fill: red;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .physical-asset-badge {
+        background: #D9D9D9;
+        color: #000;
+        width: max-content;
+        border-radius: 30px;
+        text-align: center;
+        font-family: Inter;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        padding: 7px;
+        margin: 0 auto;
+      }
+
+      .asset-description {
+        margin-top: 0;
+        height: calc(100% - 120px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+
+        .catalogue-name {
+          color: #FFF;
           text-align: center;
           font-family: DM Sans;
           font-size: 16px;
@@ -125,8 +186,9 @@
           text-transform: uppercase;
         }
 
-        .file-sub-title {
-          color: #fff;
+        .asset-name {
+          margin-top: 5px;
+          color: #FFF;
           text-align: center;
           font-family: DM Sans;
           font-size: 20px;
@@ -134,64 +196,55 @@
           font-weight: 700;
           line-height: normal;
           display: flex;
-          gap: 10px;
+          align-items: center;
+          justify-content: center;
+          overflow-wrap: anywhere;
         }
 
-        .file-price {
-          display: flex;
-          color: #fff;
+        .asset-price {
+          color: #FFF;
           text-align: center;
-          justify-content: center;
           font-family: DM Sans;
           font-size: 24px;
           font-style: normal;
           font-weight: 400;
           line-height: normal;
+          margin-top: 25px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-          span {
-            color: #fff;
-            font-family: DM Sans;
-            font-size: 24px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
+          b {
+            font-weight: 600;
           }
+
         }
       }
 
-      .file-cards-btn {
-        border: none;
+      .offer-card{
+        margin-bottom: 40px;
+      }
+
+      .footer {
+        //position: absolute;
+        bottom: 0;
+        width: 100%;
         display: flex;
-        height: 40px;
-        padding: 13px 16px;
         align-items: center;
         justify-content: center;
-        border-radius: 5px;
-        color: #FFF;
-        text-align: center;
-        font-family: Rajdhani;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 24px;
-        border-radius: 5px;
-        background: linear-gradient(114deg, #FFCB14 0%, #FE9417 26.56%, #FF2DF7 79.86%, #D150FF 100%);
+        position: relative;
       }
     }
-  }
-
-  &:hover .file-blur-overlay {
-    display: block;
   }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
   .file-cards-main-wrapper {
-    .file-blur-overlay {
-      .file-text-blur-overlay {
+    .blur-overlay {
+      .text-blur-overlay {
         gap: 20px;
 
-        .file-details {
+        .details {
           gap: 8px;
         }
       }
@@ -201,14 +254,26 @@
 
 @media only screen and (min-width: 1025px) and (max-width: 1300px) {
   .file-cards-main-wrapper {
-    .file-blur-overlay {
-      .file-text-blur-overlay {
+    .blur-overlay {
+      .text-blur-overlay {
         gap: 20px;
 
-        .file-details {
+        .details {
           gap: 8px;
         }
       }
     }
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.5);
+    opacity: 0;
   }
 }

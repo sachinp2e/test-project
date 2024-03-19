@@ -7,6 +7,15 @@ import { MyIprIcon } from '@/Assets/svg';
 import Button from '@/Components/Button';
 import Image from 'next/image';
 import './tabs.scss';
+import MyIPRIcon from '@/Assets/_images/myipr-alert-icon.png';
+import {  useAppDispatch, useAppSelector } from '@/Lib/hooks';
+import { authSelector } from '@/Lib/auth/auth.selector';
+import useEffectOnce from '@/Hooks/useEffectOnce';
+import { getMyiprUserCredits } from '@/Lib/auth/auth.action';
+import axiosInstance from '@/Lib/axios';
+import { toastErrorMessage } from '@/utils/constants';
+
+
 
 interface ITabs {
   isSticky?: boolean;
@@ -21,16 +30,9 @@ const data: IDataItem[] = [
   {
     id: 1,
     img: <MyIprIcon />,
-  },
-  {
-    id: 2,
-    img: <MyIprIcon />,
-  },
-  {
-    id: 3,
-    img: <MyIprIcon />,
-  },
+  }
 ];
+
 
 const Tabs: React.FC<ITabs> = (props) => {
   const { isSticky } = props;
@@ -38,12 +40,33 @@ const Tabs: React.FC<ITabs> = (props) => {
   const [show, setShow] = useState<boolean>(false);
   const target = useRef<any>(null);
   const router = useRouter();
+  const { myiprCredits } = useAppSelector(authSelector);
+  const dispatch = useAppDispatch();
+  const [addcredit ,setaddcredit] = useState<boolean>(false);
 
-  const handleSubscribe = (id: number) => {
-    if (id === 1) {
-      setSubscrib(true);
+
+  useEffectOnce(() => {
+    dispatch(getMyiprUserCredits());
+    if (myiprCredits === 0 ){
+      setaddcredit(true);
+    }
+  });
+  
+  const handleAddCredits = async () => {
+    try {
+      const response = await axiosInstance.post(`/user/redirect_url/`, {
+        addCredit: true,
+      });
+      if (response.data?.result?.url) {
+        window.open(response.data.result.url, '_blank');
+      }
+    } catch (error) {
+      toastErrorMessage('Something went wrong while redirecting, Please try after some time.')
+      console.error('Error while fetching certificate url', error);
     }
   };
+
+
   const scrollToVideoSection = () => {
     const videoSectionElement = document.querySelector('.main-video-section-wrapper');
     if (videoSectionElement) {
@@ -53,33 +76,33 @@ const Tabs: React.FC<ITabs> = (props) => {
 
   const tooltip = (
     <Tooltip id="tooltip" className="apps-tooltip-container">
-      <div className="apps-modal-conatiner">
-        {data.map((item) => (
-          <div key={item.id}>
-            <div className="apps-modal">
-              {item.img}
-              {(subscribe && item.id === 1) ? (
-                <div className="credits-wrapper" onClick={() => setShow(!show)}>
-                  <Image src={CreditIcon} alt="credit" />
-                  <span>Credits: 5</span>
-                </div>
-              ) : (
-                <Button text="Subscribe" className="myipr-button" onClick={() => handleSubscribe(item.id)} />
-              )}
-            </div>
-            <hr className="horizontal-rule" />
-          </div>
-        ))}
+         <div className="tooltip-app-dropdown">
+        
+         <span onClick={() => window.open('https://qa-myipr.p2eppl.com/')}><MyIprIcon width='100px' height='25px' /></span>
+        {!addcredit ? (
+        <div className="available-credits">
+          <Image src={MyIPRIcon} alt="" />
+          <label>Credits: </label>
+          <span>{myiprCredits}</span>
+        </div>
+        ):(
+          <Button
+          isFilled
+          isGradient
+          text="Add Credits"
+          onClick={handleAddCredits}
+        />
+        )}
       </div>
     </Tooltip>
   );
 
   return (
+    <>
     <div className={`subnav-tabs-container ${isSticky ? 'text-white' : ''}`}>
       {!isSticky && <div className ="leaderboard-cursor"onClick={scrollToVideoSection}>How it Works</div>}
       <div onClick={() => router.push('/leaderboard')} className="leaderboard-cursor">Leaderboard</div>
-      <div onClick={() => router.push('/subscription')} className="leaderboard-cursor">Apps</div>
-      {/* <OverlayTrigger
+      <OverlayTrigger
         target={target.current}
         placement="bottom-start"
         overlay={tooltip}
@@ -87,10 +110,12 @@ const Tabs: React.FC<ITabs> = (props) => {
         rootClose
       >
         <div className="app-cursor">
-          <Link href="/subscription">Apps</Link>
+          <span>Apps</span>
         </div>
-      </OverlayTrigger> */}
+      </OverlayTrigger>
     </div>
+
+      </>
   );
 };
 

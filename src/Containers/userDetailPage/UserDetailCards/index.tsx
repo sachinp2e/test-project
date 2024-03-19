@@ -8,7 +8,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Masonry from 'react-masonry-css';
 import './style.scss';
 import ProfileDropdownComponent from '../ProfileDropdown';
-import NoDataComponent from '../Nodata/Index';
+import NoBidsData from '../NoBidsData';
 import { bidsObjHandler, offersObjHandler } from './AssetCardDataHandlers';
 import { getAllUsersSelector } from '@/Lib/users/users.selector';
 import {
@@ -31,7 +31,7 @@ interface IUserDetailCards {
 
 const breakpointColumnsObj = {
   default: 3,
-  1440: 2,
+  1200: 2,
   915: 1,
 };
 
@@ -51,63 +51,36 @@ const UserDetailCards: React.FC<IUserDetailCards> = (props) => {
   const renderCards = () => {
     switch (true) {
       case showCategory === 'Assets' && subCategory === 'Created':
-        return (userCreatedAssets?.assets || []).map(
-          (item: any) => (
-            <AssetCard key={item.id} item={item} />
-          ),
-        );
+        return userCreatedAssets?.assets?.map((item: any) => <AssetCard key={item.id} item={item} />);
+      
       case showCategory === 'Assets' && subCategory === 'Collected':
-        return (userCollectedAssets?.assets || []).map(
-          (item: any) => (
-            <AssetCard key={item.id} item={item} />
-          ),
-        );
-      case showCategory === 'Favourites' && subCategory === 'Assets':
-        return (userFavAssets?.assets || []).map(
-          (item: any) => (
-            <AssetCard key={item.id} item={item} />
-          ),
-        );
+        return userCollectedAssets?.assets?.map((item: any) => <AssetCard key={item.id} item={item} />);
+
       case showCategory === 'Catalogs':
-        return (userCatalogs?.catalogs || []).map(
-          (item: any) => <CatalogCard cardData={item} key={item.id} />,
-        );
-      case showCategory === 'Favourites' && subCategory === 'Catalogs':
-        return (userFavCatalogs?.catalogs || []).map(
-          (item: any) => <CatalogCard cardData={item} key={item.id} />,
-        );
+        return userCatalogs?.catalogs?.map((item: any) => <CatalogCard key={item.id} cardData={item} />);
+        
+      case showCategory === 'Favorites' && subCategory === 'Assets':
+        return userFavAssets?.assets?.map((item: any) => <AssetCard key={item.id} item={item} />);
+      
+      case showCategory === 'Favorites' && subCategory === 'Catalogs':
+        return userFavCatalogs?.catalogs?.map((item: any) => <CatalogCard key={item.id} cardData={item} />);
+      
       case showCategory === 'Offers' && subCategory === 'Offers placed':
-        return (userPlacedOffers?.assets || []).map((item: any) => (
-          <AssetCard key={item.id} item={offersObjHandler(item)}/>
-        ));
+        return userPlacedOffers?.assets?.map((item: any) => <AssetCard key={item.id} item={offersObjHandler(item)} />);
+      
       case showCategory === 'Offers' && subCategory === 'Offers received':
-        return (userReceivedOffers?.assets || []).map((item: any) => (
-          <AssetCard key={item.id} item={offersObjHandler(item)} offerCard/>
-        ));
-      case showCategory === 'Bids':
-        if (subCategory === 'Bids placed' && !!userPlacedBids?.assets?.length) {
-          return (userPlacedBids?.assets || []).map((item: any) => (
-            <AssetCard key={item.id} item={bidsObjHandler(item)} isBids />
-          ));
-        }
-        if (subCategory === 'Bids received' && !!userReceivedBids?.assets?.length) {
-          return (userReceivedBids?.assets || []).map((item: any) => (
-            <AssetCard key={item.id} item={bidsObjHandler(item)}  />
-          ));
-        }
-        return (
-          <NoDataComponent msg={`No ${subCategory}`} />
-        );
+        return userReceivedOffers?.assets?.map((item: any) => <AssetCard key={item.id} item={offersObjHandler(item)} offerCard/>);
+      
+      case showCategory === 'Bids' && subCategory === 'Bids placed':
+        return userPlacedBids?.assets?.map((item: any) => <AssetCard key={item.id} item={bidsObjHandler(item)} isBids />);
+  
+      case showCategory === 'Bids' && subCategory === 'Bids received':
+        return userReceivedBids?.assets?.map((item: any) => <AssetCard key={item.id} item={bidsObjHandler(item)} />);
+      
       case showCategory === 'My Drafts':
-        return (userProfileDrafts?.assets || []).map((item: any) => {
-          return (
-            <AssetCard
-              key={item.id}
-              isDraft
-              item={{ ...item, assetMediaUrl: item.assetMedia || item.assetMediaUrl }}
-            />
-          );
-        });
+        return userProfileDrafts?.assets?.map((item: any) => <AssetCard key={item.id} isDraft
+          item={{ ...item, assetMediaUrl: item.assetMedia || item.assetMediaUrl }} />);
+      
       default:
         return null;
     }
@@ -133,7 +106,7 @@ const UserDetailCards: React.FC<IUserDetailCards> = (props) => {
           filters: { search: search }
         }),
       );
-    } else if (showCategory === 'Favourites' && subCategory === 'Assets') {
+    } else if (showCategory === 'Favorites' && subCategory === 'Assets') {
       dispatch(
         getAllUserFavAssets({
           userId: `${params?.userId}`,
@@ -142,7 +115,7 @@ const UserDetailCards: React.FC<IUserDetailCards> = (props) => {
           filters: { search: search }
         }),
       );
-    } else if (showCategory === 'Favourites' && subCategory === 'Catalogs') {
+    } else if (showCategory === 'Favorites' && subCategory === 'Catalogs') {
       dispatch(
         getAllUserFavCatalogs({
           userId: `${params?.userId}`,
@@ -211,12 +184,12 @@ const UserDetailCards: React.FC<IUserDetailCards> = (props) => {
         dataLength: userCollectedAssets?.assets?.length || 0,
         hasMore: userCollectedAssets?.hasMore,
       };
-    } else if (showCategory === 'Favourites' && subCategory === 'Assets') {
+    } else if (showCategory === 'Favorites' && subCategory === 'Assets') {
       return {
         dataLength: userFavAssets?.assets?.length || 0,
         hasMore: userFavAssets?.hasMore,
       };
-    } else if (showCategory === 'Favourites' && subCategory === 'Catalogs') {
+    } else if (showCategory === 'Favorites' && subCategory === 'Catalogs') {
       return {
         dataLength: userFavCatalogs?.catalogs?.length || 0,
         hasMore: userFavCatalogs?.hasMore,
@@ -264,32 +237,33 @@ const UserDetailCards: React.FC<IUserDetailCards> = (props) => {
   const { dataLength, hasMore } = getDataLengthAndHasMore();
 
   if (
-    (showCategory === 'Assets' && subCategory === 'Created' && userCreatedAssets?.assets?.length === 0) ||
-    (showCategory === 'Assets' && subCategory === 'Collected' && userCollectedAssets?.assets?.length === 0) ||
-    (showCategory === 'Catalogs' && userCatalogs?.catalogs?.length === 0) ||
-    (showCategory === 'Favourites' && subCategory === 'Assets' && userFavAssets?.assets?.length === 0) ||
-    (showCategory === 'Favourites' && subCategory === 'Catalogs' && userFavCatalogs?.catalogs?.length === 0) ||
-    (showCategory === 'Offers' && subCategory === 'Offers placed' && userPlacedOffers?.assets?.length === 0) ||
-    (showCategory === 'Offers' && subCategory === 'Offers received' && userReceivedOffers?.assets?.length === 0) ||
-    (showCategory === 'My Drafts' && userProfileDrafts?.assets?.length === 0)
+    (showCategory === 'Assets' && subCategory === 'Created' && !userCreatedAssets?.assets?.length) ||
+    (showCategory === 'Assets' && subCategory === 'Collected' && !userCollectedAssets?.assets?.length) ||
+    (showCategory === 'Catalogs' && !userCatalogs?.catalogs?.length) ||
+    (showCategory === 'Favorites' && subCategory === 'Assets' && !userFavAssets?.assets?.length) ||
+    (showCategory === 'Favorites' && subCategory === 'Catalogs' && !userFavCatalogs?.catalogs?.length) ||
+    (showCategory === 'Offers' && subCategory === 'Offers placed' && !userPlacedOffers?.assets?.length) ||
+    (showCategory === 'Offers' && subCategory === 'Offers received' && !userReceivedOffers?.assets?.length) ||
+    (showCategory === 'My Drafts' && !userProfileDrafts?.assets?.length)
   ) {
-    return (
-      <div className="d-flex align-items-center justify-content-center mt-5">
-        <div style={{ fontSize: '48px', color: '#ddd' }}>No data found</div>
-      </div>
-    );
-  }
+    return (<div className="d-flex align-items-center justify-content-center mt-5">
+              <div style={{ fontSize: '48px', color: '#ddd' }}>No data found</div>
+            </div>);
+  } else if (
+    (showCategory === 'Bids' && subCategory === 'Bids placed' && !userPlacedBids?.assets?.length) ||
+    (showCategory === 'Bids' && subCategory === 'Bids received' && !userReceivedBids?.assets?.length)
+  ) { return <NoBidsData msg={`No ${subCategory}`} /> }
 
   if (['Orders', 'History'].includes(showCategory)) {
     return (
-      <div className="user-details-card">
+      <div className={`user-details-card ${showCategory === 'Orders' ? 'order-vh' : ''}`}>
         <ProfileDropdownComponent dropDown={showCategory} />
       </div>
     );
   }
 
   return (
-    <div className={`user-details-card ${subCategory === 'Orders' ? 'order-vh' : ''}`} id="scrollable-div">
+    <div className="user-details-card" id="scrollable-div">
       <InfiniteScroll
         dataLength={dataLength}
         next={fetchMoreData}
@@ -298,8 +272,8 @@ const UserDetailCards: React.FC<IUserDetailCards> = (props) => {
         scrollableTarget="scrollable-div">
         <Masonry
           breakpointCols={breakpointColumnsObj}
-          className={`my-masonry-grid masonry-wrapper ${subCategory}`}
-          // columnClassName="my-masonry-grid_column"
+          className={`my-masonry-grid masonry-wrapper`}
+          columnClassName="my-masonry-grid_column"
         >
           {renderCards()}
         </Masonry>

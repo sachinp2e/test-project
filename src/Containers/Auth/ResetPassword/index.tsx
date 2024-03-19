@@ -63,7 +63,7 @@ const ResetPassword: React.FC<IPasswordType> = () => {
       const token = param.token;
       const { password } = values;
       const data: any = await dispatch(resetPasswordAction({ token, password }));
-      if (data.payload.status === 400 && data.payload.customErrorNumber === 10018) {
+      if (data.payload.status === 400 && data.payload.customErrorNumber === 9012) {
         setGlobalError('Password cannot be one of your previous five passwords. Please choose a different one.');
       } else if (data.payload.status === 400 && data.payload.customErrorNumber === -2) {
         setErrors({ password: data.payload.message });

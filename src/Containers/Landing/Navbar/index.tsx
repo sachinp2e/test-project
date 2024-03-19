@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NotificationModal from '../../../Components/NotificationModal';
 import CustomSelect from '../../../Components/CustomSelect';
@@ -39,6 +39,7 @@ const menuItems = [
 const NavBar: React.FC<INavBarType> = () => {
   const router = useRouter();
 
+  const [isMobile, setIsMobile] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState('');
 
@@ -54,6 +55,7 @@ const NavBar: React.FC<INavBarType> = () => {
   const handleSelectChange = (name: string, option: any) => {
     setSelectedOptions(option.value);
   };
+
 
   return (
     <>

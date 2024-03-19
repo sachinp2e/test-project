@@ -8,14 +8,12 @@ import UserDetailCards from './UserDetailCards/index';
 import ToggleTab from '@/Components/ToggleTab';
 import LocalSearchBar from '@/Components/localSearchBar';
 import filterIcon from '@/Assets/_images/filter.svg';
-import userCover from '../../Assets/_images/user-cover.png';
 import editIcon from '@/Assets/_images/edit-icon-img.svg';
 import StarIcon from '../../Assets/_images/star-icone.svg';
-import { updateCurrentUserTab } from '@/Lib/users/users.slice';
 import userProfile from '@/Assets/_images/user-profile.png';
 import { CopySvgTwo, Discord, FacebookIcon, Instagram, LinkedinIcon, TwitterIcon } from '@/Assets/svg';
 import FilterSection from '@/Components/filterSection';
-import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/Lib/hooks';
 import { getAllUsersSelector } from '@/Lib/users/users.selector';
 import { debounce } from 'lodash';
@@ -28,48 +26,44 @@ import './users.scss';
 import Snackbar from '@/Components/Snackbar';
 import ShareOverlay from './ShareOverlay';
 import Link from 'next/link';
-import { updateFollowStatus } from '@/Lib/users/users.slice';
+import { resetUserAssets, updateFollowStatus } from '@/Lib/users/users.slice';
 import CustomCopyToClipboard from '@/Components/CopyToClipboard';
 import { makeFilterApiCallSelector } from '@/Lib/globalSearchAndFilters/globalSearchAndFilters.selector';
-
-const dropDownItemsArr = [
-  { label: 'My Drafts', value: 'My Drafts' },
-  { label: 'Orders', value: 'Orders' },
-  { label: 'History', value: 'History' },
-];
+import SkeletonLoading from './UserDetailCards/skeletonLoading';
+import userCover from '@/Assets/_images/default-user-cover.svg';
 
 const UserDetailPage: React.FC = () => {
   const params = useParams();
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const pathName = usePathname();
   const dispatch = useAppDispatch();
-
+  
+  const searchParams = useSearchParams();
   const tab = searchParams.get('tab') || 'Assets';
+  const subTab = searchParams.get('subTab') || 'Collected';
 
   const { id } = useAppSelector(authSelector);
   const ownProfile: boolean = params?.userId === id;
-  const { usersData: { userDetails } } = useAppSelector(getAllUsersSelector);
+  const { usersData: { userDetails, userTabDataLoading } } = useAppSelector(getAllUsersSelector);
   const makeApiCall = useAppSelector(makeFilterApiCallSelector);
 
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-  const [isVisible, setIsVisible] = useState<boolean>(true);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const [connectionsModal, setConnectionsModal] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>('');
   const [modalTitle, setModalTitle] = useState<string>(''); // Followers | Following
-  const [subCategory, setSubCategory] = useState<string>('Collected');
   const [showCategory, setShowCategory] = useState<string>(tab);
-  const [dropDownVisible, setDropDownVisible] = useState<boolean>(false);
+  const [subCategory, setSubCategory] = useState<string>(subTab);
   const [search, setSearch] = useState<string>('');
-  const [subCategoryTabs, setSubCategoryTabs] = useState<string[]>(['Collected', 'Created']);
+  const [subCategoryTabs, setSubCategoryTabs] = useState<string[]>([]);
   const filterColSize = isFilterVisible && isVisible ? 3 : 0;
   const tabs = ownProfile
-    ? ['Assets', 'Catalogs', 'Favourites', 'Offers', 'Bids', 'My Drafts', 'Orders', 'History']
-    : ['Assets', 'Catalogs', 'Favourites'];
-
+    ? ['Assets', 'Catalogs', 'Favorites', 'Offers', 'Bids', 'My Drafts', 'Orders', 'History']
+    : ['Assets', 'Catalogs', 'Favorites'];
+  
   helperUseEffectsHook({
-    showCategory, subCategory, search, userId: `${params?.userId}`, makeApiCall,
-    setSubCategory, setSubCategoryTabs, setIsVisible, setDropDownVisible
+    tab, showCategory, subCategory, search, userId: `${params?.userId}`, makeApiCall,
+    setShowCategory, setSubCategory, setSubCategoryTabs, setIsVisible
+
   });
 
   const toggleConnectionsModal = (title: string = '') => {
@@ -83,12 +77,10 @@ const UserDetailPage: React.FC = () => {
 
   const handleMainTabClick = (tab: string) => {
     setShowCategory(tab);
-    dispatch(updateCurrentUserTab(tab));
-    window.history.pushState({ path: `${pathName}?tab=${tab}` }, '', `${pathName}?tab=${tab}`);
   };
 
   const handleNestedTabClick = (tab: string) => {
-    setDropDownVisible(false);
+    dispatch(resetUserAssets());
     setSubCategory(tab);
   };
 
@@ -127,13 +119,20 @@ const UserDetailPage: React.FC = () => {
           <div className="profile-col">
             <div className="user-profile">
               <div className="profile-pic">
+              { userDetails?.profileImage ? (
                 <Image
-                  src={userDetails?.profileImage || userProfile}
-                  width={600}
-                  height={600}
+                  src={ userDetails?.profileImage }
+                  alt="profile image"
                   quality={100}
-                  alt="user-profile-image"
+                  height={900}
+                  width={900}
                 />
+              ) : (
+                <div className="name-initials">
+                  {userDetails?.firstName && userDetails?.firstName[0].toUpperCase()}
+                  {userDetails?.lastName && userDetails?.lastName[0].toUpperCase()}
+                </div>
+              )}
               </div>
               <div className="username">
                 <span>{userDetails?.userName}</span>
@@ -172,7 +171,6 @@ const UserDetailPage: React.FC = () => {
                     </span>}
                   isGradient
                   onClick={() => router.push(`/settings/editProfile/${params?.userId}`)}
-                  onlyVerifiedAccess
                 />
                 ) : (
                   <div>
@@ -234,9 +232,6 @@ const UserDetailPage: React.FC = () => {
             tabs={tabs}
             activeToggle={showCategory}
             handleTabClick={handleMainTabClick}
-            dropDownItemsArr={dropDownItemsArr}
-            dropDownVisible={dropDownVisible}
-            handleDropDownClick={handleNestedTabClick}
           />
         </div>
         <div className={`local-searchbar-row ${clsHandler(showCategory) ? 'local-searchbar-row-hidden' : ''}`}>
@@ -250,8 +245,8 @@ const UserDetailPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="explore-cards">
-        {isVisible && !isFilterVisible && (tab !== 'Catalogs') && (
+      <div className="user-tabs-cards">
+        {isVisible && !isFilterVisible && !(showCategory === 'Catalogs' || subCategory === 'Catalogs') && (
           <Button
             className="filter-button"
             onClick={handleToggleFilter}
@@ -262,22 +257,19 @@ const UserDetailPage: React.FC = () => {
             }
           />
         )}
-        <div className={`explore-filter-container`}>
-          <Row className="m-0">
-            {isVisible && isFilterVisible && (tab !== 'Catalogs') && (
-              <Col lg={filterColSize} className="pe-4 ps-0 pb-1">
+        <div className={`user-tabs-filter-container`}>
+          <Row>
+            {isVisible && isFilterVisible && !(showCategory === 'Catalogs' || subCategory === 'Catalogs') && (
+              <Col lg={filterColSize}>
                 <FilterSection
                   handleToggleFilter={handleToggleFilter}
                   isFilterVisible={isFilterVisible}
                 />
               </Col>
             )}
-            <Col lg={isVisible ? 12 - filterColSize : 12} className="p-0">
-              <UserDetailCards
-                subCategory={subCategory || ''}
-                showCategory={showCategory}
-                search={search}
-              />
+            <Col lg={12 - filterColSize}>
+              {userTabDataLoading && (showCategory !== 'Orders' && showCategory !== 'History') ? <SkeletonLoading/> :
+              <UserDetailCards subCategory={subCategory || ''} showCategory={showCategory} search={search} />}
             </Col>
           </Row>
         </div>

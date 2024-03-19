@@ -31,7 +31,7 @@ import { useParams } from 'next/navigation';
 
 interface IVodeosCardsSection {
   item: any;
-  loading?: boolean;
+  loading?: boolean; 
   handleViewAssets: (id: string) => void;
   offerCard: boolean;
   isDraft: boolean;
@@ -86,7 +86,7 @@ const VideoCardComponent: React.FC<IVodeosCardsSection> = (props) => {
           <div className="image-icon-absolute">
             <VideoSVG />
           </div>
-          {orderType === 'fixed' && <div className="on-sale-absolute">
+          {orderType === 'fixed' && !isDraft && <div className="on-sale-absolute">
             On Sale
           </div>}
           <div className="video-blur-overlay">
@@ -98,7 +98,7 @@ const VideoCardComponent: React.FC<IVodeosCardsSection> = (props) => {
                 {cardType === cardTypeEnum.SINGLE_BID ||
                 cardType === cardTypeEnum.MULTIPLE_BID ? (
                   <div className="bidding-time-wrapper">
-                    <p className="bidding-date">
+                    <div className="bidding-date">
                     {item?.orderType === 'timed' && (
                         <AuctionTimer
                           bidStartDate={item?.bidStartDate}
@@ -106,7 +106,7 @@ const VideoCardComponent: React.FC<IVodeosCardsSection> = (props) => {
                           card={true}
                         />
                       )}
-                    </p>
+                    </div>
                   </div>
                 ) : item.physicalAsset ? (
                   <div className="physical-asset-badge">Physical Asset</div>
@@ -116,10 +116,10 @@ const VideoCardComponent: React.FC<IVodeosCardsSection> = (props) => {
                    bidStartDate={item?.offerStart}
                    bidEndDate={item?.offerExpiry}
                    card={true}/> )}
-                <CommonFavouriteBtn
+                {!isDraft && <CommonFavouriteBtn
                   assetId={id}
                   isFavourite={item?.isFavourite}
-                />
+                />}
               </div>
               {item.physicalAsset &&
                 (cardType === cardTypeEnum.SINGLE_BID ||
@@ -168,14 +168,23 @@ const VideoCardComponent: React.FC<IVodeosCardsSection> = (props) => {
                         : 'Highest Offer:'}
                   </p>
                   <h4>
-                    ${item.price ?? item.highestBid ?? 0}
-                    {(cardType === cardTypeEnum.SINGLE_BID ||
-                      cardType === cardTypeEnum.MULTIPLE_BID) &&
-                      isBids && (
-                        <span className="ms-2" onClick={onEditBid}>
-                          <EditIcon height="22" width="22" />
-                        </span>
-                      )}
+                  <b className="ms-2">
+                    $
+                    {cardType === cardTypeEnum.SINGLE_BID ||
+                    cardType === cardTypeEnum.MULTIPLE_BID
+                      ? item?.highestBid || item.bidAmount || '0'
+                      : cardType === cardTypeEnum.SINGLE_SALE ||
+                          cardType === cardTypeEnum.MULTIPLE_SALE
+                        ? item?.price || '0'
+                        : item?.offerAmount || item?.highestOffer || '0'}
+                  </b>
+                  {(cardType === cardTypeEnum.SINGLE_BID ||
+                    cardType === cardTypeEnum.MULTIPLE_BID) &&
+                    isBids && (
+                      <span className="ms-2" onClick={onEditBid}>
+                        <EditIcon height="22" width="22" />
+                      </span>
+                    )}
                   </h4>
                 </div>
               </div>

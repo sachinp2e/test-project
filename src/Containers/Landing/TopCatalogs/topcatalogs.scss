@@ -109,6 +109,18 @@
               height: 24px;
               border-radius: 50%;
             }
+            .name-initials {
+              width: 25px;
+              height: 25px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-size: 10px;
+              font-weight: 600;
+              color: #fff;
+              background: #000;
+              border-radius: 50%;
+            }
           }
         }
 

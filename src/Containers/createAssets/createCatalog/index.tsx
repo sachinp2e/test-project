@@ -90,7 +90,7 @@ const CreateCatalog: React.FC<ICreateCatalogProps> = ({
     initialValues,
     onSubmit: async (values: CreateCatalogFormDataType) => {
       const formData = new FormData();
-      formData.append('name', values.name);
+      formData.append('name', values.name.toLowerCase().trim());
       formData.append('symbol', values.symbol);
       formData.append('description', values.description);
       if(values.shortUrl)formData.append('shortUrl', values.shortUrl);
@@ -114,8 +114,10 @@ const CreateCatalog: React.FC<ICreateCatalogProps> = ({
             } else if (error.customErrorNumber === -2) {
               setCommonError(null)
               setFieldError(error.errorfields,error.message)
-            }else if (error.success === false) {
-              setCommonError(error.response);
+            } else if (error.success === false) {
+              if (error.response.includes('already exists')) 
+                setCommonError('Catalog with same name already exists');
+              else setCommonError(error.response);
             }
           },
         }),

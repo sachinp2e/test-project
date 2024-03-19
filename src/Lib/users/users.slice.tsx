@@ -13,8 +13,8 @@ const initialState: IInitialState = {
     latestPage: 1,
     hasMore: true,
     serverError: null,
-    currentUserTab: '',
     userDetails: {},
+    userDetailsLoading: true,
     userFollowers: {},
     userFollowing: {},
     userCreatedAssets: {},
@@ -28,6 +28,7 @@ const initialState: IInitialState = {
     userReceivedBids: {},
     userProfileDrafts: {},
     userProfileOrders: {},
+    userTabDataLoading: true,
     followUnfollowLoading: true,
     userActivityHistory: {}
   },
@@ -38,23 +39,31 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     resetUserStates: (state: IInitialState) => {
-    state.usersData.currentUserTab = '',
-    state.usersData.userDetails = {};
-    state.usersData.userFollowers = {};
-    state.usersData.userFollowing = {};
-    state.usersData.userCreatedAssets = {};
-    state.usersData.userCollectedAssets = {};
-    state.usersData.userCatalogs = {};
-    state.usersData.userFavAssets = {};
-    state.usersData.userFavCatalogs = {};
-    state.usersData.userPlacedOffers = {};
-    state.usersData.userReceivedOffers = {};
-    state.usersData.userPlacedBids = {};
-    state.usersData.userReceivedBids = {};
-    state.usersData.userProfileDrafts = {};
-    state.usersData.userProfileOrders = {};
-    state.usersData.userActivityHistory = {};
+      state.usersData.userDetails = {};
+      state.usersData.userFollowers = {};
+      state.usersData.userFollowing = {};
+      state.usersData.userCreatedAssets = {};
+      state.usersData.userCollectedAssets = {};
+      state.usersData.userCatalogs = {};
+      state.usersData.userFavAssets = {};
+      state.usersData.userFavCatalogs = {};
+      state.usersData.userPlacedOffers = {};
+      state.usersData.userReceivedOffers = {};
+      state.usersData.userPlacedBids = {};
+      state.usersData.userReceivedBids = {};
+      state.usersData.userProfileDrafts = {};
+      state.usersData.userProfileOrders = {};
+      state.usersData.userActivityHistory = {};
     },
+    resetUserAssets: (state: IInitialState) => {
+      state.usersData.userCreatedAssets = {};
+      state.usersData.userCollectedAssets = {};
+      state.usersData.userFavAssets = {};
+      state.usersData.userPlacedOffers = {};
+      state.usersData.userReceivedOffers = {};
+      state.usersData.userPlacedBids = {};
+      state.usersData.userReceivedBids = {};
+      },
     addNewCatalog: (state: IInitialState, action) => {
       if (!!state.usersData.userCatalogs.catalogs.length) {
         state.usersData.userCatalogs.catalogs = [
@@ -63,9 +72,6 @@ const usersSlice = createSlice({
       } else {
         state.usersData.userCatalogs.catalogs = [action.payload];
       }
-    },
-    updateCurrentUserTab: (state: IInitialState, action) => {
-      state.usersData.currentUserTab = action.payload;
     },
     updateFollowStatus: (state: IInitialState, action) => {
       switch (action.payload.title) {
@@ -124,75 +130,6 @@ const usersSlice = createSlice({
         (draft: any) => draft.id !== action.payload,
       );
     },
-    updateUserPageFavAssets: (state: IInitialState, action) => {
-      let updatedFavIndex: number;
-      switch (action.payload.tab) {
-        case "Assets":
-          state.usersData.userFavAssets = {};
-          updatedFavIndex =
-          state.usersData.userCreatedAssets.assets.findIndex((asset: any) =>
-            asset.id === action.payload?.assetId);
-          if (updatedFavIndex === -1) {
-            updatedFavIndex =
-          state.usersData.userCollectedAssets.assets.findIndex((asset: any) =>
-            asset.id === action.payload?.assetId);
-            state.usersData.userCollectedAssets.assets[updatedFavIndex] = {
-              ...state.usersData.userCollectedAssets.assets[updatedFavIndex],
-              isFavourite: action.payload?.isLike }
-          } else {
-            state.usersData.userCreatedAssets.assets[updatedFavIndex] = {
-              ...state.usersData.userCreatedAssets.assets[updatedFavIndex],
-              isFavourite: action.payload?.isLike }
-          }
-          break;
-        case "Favourites":
-          updatedFavIndex =
-          state.usersData.userFavAssets.assets.findIndex((asset: any) =>
-            asset.id === action.payload?.assetId);
-          state.usersData.userFavAssets.assets[updatedFavIndex] = {
-            ...state.usersData.userFavAssets.assets[updatedFavIndex],
-            isFavourite: action.payload?.isLike }
-          break;
-        case "Offers":
-          state.usersData.userFavAssets = {};
-          updatedFavIndex =
-          state.usersData.userPlacedOffers.assets.findIndex((asset: any) =>
-            asset.id === action.payload?.assetId);
-          if (updatedFavIndex === -1) {
-            updatedFavIndex =
-          state.usersData.userReceivedOffers.assets.findIndex((asset: any) =>
-            asset.id === action.payload?.assetId);
-            state.usersData.userReceivedOffers.assets[updatedFavIndex] = {
-              ...state.usersData.userReceivedOffers.assets[updatedFavIndex],
-              isFavourite: action.payload?.isLike }
-          } else {
-            state.usersData.userPlacedOffers.assets[updatedFavIndex] = {
-              ...state.usersData.userPlacedOffers.assets[updatedFavIndex],
-              isFavourite: action.payload?.isLike }
-          }
-          break;
-        case "Bids":
-          state.usersData.userFavAssets = {};
-          updatedFavIndex =
-          state.usersData.userPlacedBids.assets.findIndex((asset: any) =>
-            asset.id === action.payload?.assetId);
-          if (updatedFavIndex === -1) {
-            updatedFavIndex =
-          state.usersData.userReceivedBids.assets.findIndex((asset: any) =>
-            asset.id === action.payload?.assetId);
-            state.usersData.userReceivedBids.assets[updatedFavIndex] = {
-              ...state.usersData.userReceivedBids.assets[updatedFavIndex],
-              isFavourite: action.payload?.isLike }
-          } else {
-            state.usersData.userPlacedBids.assets[updatedFavIndex] = {
-              ...state.usersData.userPlacedBids.assets[updatedFavIndex],
-              isFavourite: action.payload?.isLike }
-          }
-          break;
-        default:
-          break;
-      }
-    }
   },
   extraReducers: (builder) => {
     // getAllUsers reducers
@@ -287,7 +224,7 @@ const usersSlice = createSlice({
     // userAssets reducers
     builder
       .addCase(getUserAssets.pending, (state: IInitialState) => {
-        state.usersData.loading = true;
+        state.usersData.userTabDataLoading = true;
         state.usersData.serverError = null;
       })
       .addCase(getUserAssets.fulfilled, (state: IInitialState, action) => {
@@ -309,6 +246,7 @@ const usersSlice = createSlice({
               state.usersData.userCreatedAssets.hasMore =
                 action.payload.resObj?.pagination?.totalPages >
                 action.payload?.latestPage;
+              state.usersData.userTabDataLoading = false;
             }
             break;
           case 'ownerId':
@@ -325,18 +263,19 @@ const usersSlice = createSlice({
               state.usersData.userCollectedAssets.hasMore =
                 action.payload.resObj?.pagination?.totalPages >
                 action.payload?.latestPage;
+              state.usersData.userTabDataLoading = false;
             }
             break;
         }
       })
       .addCase(getUserAssets.rejected, (state: IInitialState, action) => {
-        state.usersData.loading = false;
+        state.usersData.userTabDataLoading = false;
         state.usersData.serverError = action.payload;
       });
     //  getAllUserCatalogs reducers
     builder
       .addCase(getAllUserCatalogs.pending, (state: IInitialState, action) => {
-        state.usersData.loading = true;
+        state.usersData.userTabDataLoading = true;
         state.usersData.serverError = null;
       })
       .addCase(getAllUserCatalogs.fulfilled, (state: IInitialState, action) => {
@@ -352,16 +291,16 @@ const usersSlice = createSlice({
         state.usersData.userCatalogs.hasMore =
           action.payload.resObj?.pagination?.totalPages >
           action.payload?.latestPage;
-        state.usersData.loading = false;
+        state.usersData.userTabDataLoading = false;
       })
       .addCase(getAllUserCatalogs.rejected, (state: IInitialState, action) => {
-        state.usersData.loading = false;
+        state.usersData.userTabDataLoading = false;
         state.usersData.serverError = action.payload;
       });
     // getAllUserFavAssets reducers
     builder
       .addCase(getAllUserFavAssets.pending, (state: IInitialState) => {
-        state.usersData.loading = true;
+        state.usersData.userTabDataLoading = true;
       })
       .addCase(
         getAllUserFavAssets.fulfilled,
@@ -378,18 +317,19 @@ const usersSlice = createSlice({
           state.usersData.userFavAssets.hasMore =
             action.payload.resObj?.pagination?.totalPages >
             action.payload?.latestPage;
+          state.usersData.userTabDataLoading = false;
         },
       )
       .addCase(
         getAllUserFavAssets.rejected,
         (state: IInitialState) => {
-          state.usersData.loading = false;
+          state.usersData.userTabDataLoading = false;
         },
       );
     //  getAllUserFavCatalogs reducers
     builder
     .addCase(getAllUserFavCatalogs.pending, (state: IInitialState) => {
-      state.usersData.loading = true;
+      state.usersData.userTabDataLoading = true;
       state.usersData.serverError = null;
     })
     .addCase(
@@ -407,19 +347,19 @@ const usersSlice = createSlice({
         state.usersData.userFavCatalogs.hasMore =
           action.payload.resObj?.pagination?.totalPages >
           action.payload?.latestPage;
-        state.usersData.loading = false;
+        state.usersData.userTabDataLoading = false;
       },
     )
     .addCase(
       getAllUserFavCatalogs.rejected,
       (state: IInitialState, action) => {
-        state.usersData.loading = false;
+        state.usersData.userTabDataLoading = false;
         state.usersData.serverError = action.payload;
       },
     );
     // getAllPlacedOffers reducers
     builder.addCase(getAllPlacedOffers.pending, (state: IInitialState) => {
-      state.usersData.loading = true;
+      state.usersData.userTabDataLoading = true;
     });
     builder.addCase(getAllPlacedOffers.fulfilled, (state: IInitialState, action: any) => {
       const newData = action.payload?.resObj?.data || [];
@@ -433,14 +373,14 @@ const usersSlice = createSlice({
       state.usersData.userPlacedOffers.hasMore =
         action.payload.resObj?.pagination?.totalPages >
         action.payload?.latestPage;
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
     builder.addCase(getAllPlacedOffers.rejected, (state: IInitialState) => {
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
     // getAllReceivedOffers reducers
     builder.addCase(getAllReceivedOffers.pending, (state: IInitialState) => {
-    state.usersData.loading = true;
+    state.usersData.userTabDataLoading = true;
     });
     builder.addCase(getAllReceivedOffers.fulfilled, (state: IInitialState, action: any) => {
       const newData = action.payload?.resObj?.data || [];
@@ -454,14 +394,14 @@ const usersSlice = createSlice({
       state.usersData.userReceivedOffers.hasMore =
         action.payload.resObj?.pagination?.totalPages >
         action.payload?.latestPage;
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
     builder.addCase(getAllReceivedOffers.rejected, (state: IInitialState) => {
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
     // getAllPlacedBids reducers
     builder.addCase(getAllPlacedBids.pending, (state: IInitialState) => {
-      state.usersData.loading = true;
+      state.usersData.userTabDataLoading = true;
     });
     builder.addCase(getAllPlacedBids.fulfilled, (state: IInitialState, action: any) => {
       const newData = action.payload?.resObj?.data || [];
@@ -475,14 +415,14 @@ const usersSlice = createSlice({
       state.usersData.userPlacedBids.hasMore =
         action.payload.resObj?.pagination?.totalPages >
         action.payload?.latestPage;
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
     builder.addCase(getAllPlacedBids.rejected, (state: IInitialState) => {
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
     // getAllReceivedBids reducers
     builder.addCase(getAllReceivedBids.pending, (state: IInitialState) => {
-    state.usersData.loading = true;
+    state.usersData.userTabDataLoading = true;
     });
     builder.addCase(getAllReceivedBids.fulfilled, (state: IInitialState, action: any) => {
       const newData = action.payload?.resObj?.data || [];
@@ -496,14 +436,14 @@ const usersSlice = createSlice({
       state.usersData.userReceivedBids.hasMore =
         action.payload.resObj?.pagination?.totalPages >
         action.payload?.latestPage;
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
     builder.addCase(getAllReceivedBids.rejected, (state: IInitialState) => {
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
      // getAllMyDrafts reducers
      builder.addCase(getAllMyDrafts.pending, (state: IInitialState) => {
-      state.usersData.loading = true;
+      state.usersData.userTabDataLoading = true;
     });
     builder.addCase(
       getAllMyDrafts.fulfilled,
@@ -519,15 +459,15 @@ const usersSlice = createSlice({
       state.usersData.userProfileDrafts.hasMore =
         action.payload.resObj?.pagination?.totalPages >
         action.payload?.latestPage;
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
       },
     );
     builder.addCase(getAllMyDrafts.rejected, (state: IInitialState) => {
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
     // getAllMyOrders reducers
     builder.addCase(getAllMyOrders.pending, (state: IInitialState) => {
-      state.usersData.loading = true;
+      state.usersData.userTabDataLoading = true;
     });
     builder.addCase(getAllMyOrders.fulfilled, (state: IInitialState, action: any) => {
       const newData = action.payload?.resObj?.data || [];
@@ -543,14 +483,14 @@ const usersSlice = createSlice({
       state.usersData.userProfileOrders.hasMore =
         action.payload.resObj?.pagination?.totalPages >
         action.payload?.latestPage;
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
     builder.addCase(getAllMyOrders.rejected, (state: IInitialState) => {
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
     // get all user activity
     builder.addCase(getUsersActivity.pending, (state: IInitialState) => {
-      state.usersData.loading = true;
+      state.usersData.userTabDataLoading = true;
     });
     builder.addCase(
       getUsersActivity.fulfilled,
@@ -574,13 +514,13 @@ const usersSlice = createSlice({
           action.payload.resObj?.pagination?.totalPages >
           action.payload?.latestPage;
           
-        state.usersData.loading = false;
+        state.usersData.userTabDataLoading = false;
       }
     )
     builder.addCase(getUsersActivity.rejected, (state: IInitialState) => {
-      state.usersData.loading = false;
+      state.usersData.userTabDataLoading = false;
     });
   },
 });
-export const { resetUserStates, addNewCatalog, updateFollowStatus, deleteDraft, updateUserPageFavAssets, updateCurrentUserTab } = usersSlice.actions;
+export const { resetUserStates, resetUserAssets, addNewCatalog, updateFollowStatus, deleteDraft } = usersSlice.actions;
 export default usersSlice.reducer;

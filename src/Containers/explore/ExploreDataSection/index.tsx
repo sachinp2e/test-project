@@ -15,7 +15,6 @@ import './style.scss';
 
 interface IExploreCards {
   loading: boolean;
-  assetsData?: any[];
   showCategory: string;
   selectedDropdown?: any;
 }
@@ -27,8 +26,9 @@ const breakpointColumnsObj = {
 };
 
 const ExploreDataSection: React.FC<IExploreCards> = (props) => {
-  const { loading, showCategory, assetsData, selectedDropdown } = props;
+  const { loading, showCategory, selectedDropdown } = props;
   const dispatch = useAppDispatch();
+  const { assets } = useAppSelector(getAllAssetsSelector);
   const { catalogsData } = useAppSelector(getAllCatalogsSelector);
   const { usersData } = useAppSelector(getAllUsersSelector);
   const allAssets = useAppSelector(getAllAssetsSelector);
@@ -36,7 +36,7 @@ const ExploreDataSection: React.FC<IExploreCards> = (props) => {
   const renderCards = () => {
     switch (showCategory) {
       case 'assets':
-        return (assetsData || []).map((item: any) => {
+        return (assets || []).map((item: any) => {
           return <AssetCard key={item.id} item={item} loading={loading} />;
         });
       case 'catalogs':
@@ -107,7 +107,7 @@ const ExploreDataSection: React.FC<IExploreCards> = (props) => {
   const { dataLength, hasMore } = getDataLengthAndHasMore();
 
   if (
-    (showCategory === 'assets' && assetsData?.length === 0) ||
+    (showCategory === 'assets' && assets?.length === 0) ||
     (showCategory === 'catalogs' && catalogsData.catalogs?.length === 0) ||
     (showCategory === 'users' && usersData?.users?.length === 0)
   ) {
@@ -125,8 +125,7 @@ const ExploreDataSection: React.FC<IExploreCards> = (props) => {
         next={fetchMoreData}
         hasMore={hasMore as boolean}
         loader={<></>}
-        scrollableTarget="scrollable-div"
-      >
+        scrollableTarget="scrollable-div">
         <Masonry
           breakpointCols={breakpointColumnsObj}
           className="my-masonry-grid masonry-wrapper"

@@ -2,11 +2,12 @@ import { toast, Bounce } from 'react-toastify';
 
 export const MAX_FILE_SIZE = 1024000000;
 
-export const validFileExtensions: validFileExtensionsType = {
+export const validFileExtensions: Record<string, string[]> = {
   image: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'svg+xml', 'webp', 'jfif'],
   video: ['mp4', 'mov', 'avi', 'wmv', 'flv', '3gp', 'mkv', 'webm'],
-  audio: ['mp3', 'wav', 'ogg', 'm4a', 'wma', 'flac', 'aac','mpeg'],
+  audio: ['mp3', 'wav', 'ogg', 'wma', 'flac', 'aac','mpeg'],
   others: ['pdf', 'docx', 'obj'],
+  application: ['pdf','docx'],
   threedimension: ['glb'],
 };
 

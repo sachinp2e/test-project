@@ -34,6 +34,7 @@
     gap: 24px;
     overflow-y: hidden;
     overflow-x: scroll;
+    cursor: auto!important;
 
     .sub-card-testimonials-main-wrapper {
       display: flex;
@@ -53,14 +54,20 @@
         align-items: center;
         gap: 8px;
         .card-testimonials-user-name {
-          font-family:
-            DM Sans,
-            sans-serif;
+          color: #000;
+          font-family: "DM Sans";
           font-size: 16px;
+          font-style: normal;
           font-weight: 700;
-          line-height: 21px;
-          letter-spacing: 0em;
-          text-align: left;
+          line-height: normal;
+        }
+        .card-testimonials-user-designation{
+          color: #000;
+          font-family: "DM Sans";
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
         }
       }
 

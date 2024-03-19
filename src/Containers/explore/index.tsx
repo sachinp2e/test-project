@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { Col, Row } from 'react-bootstrap';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -26,6 +26,7 @@ import { getAllCategorySelector } from '@/Lib/category/category.selector';
 import { getAllCategories } from '@/Lib/category/category.action';
 import './explore.scss';
 import useEffectOnce from '@/Hooks/useEffectOnce';
+import { resetExploreAssets } from '@/Lib/assets/assets.slice';
 
 interface IExplore {}
 
@@ -38,9 +39,10 @@ const Explore: React.FC<IExplore> = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get('search') || '';
   const selectedCategoryIdParam = searchParams.get('id') || '';
+  const selectedCategoryNameParam = searchParams.get('category') || '';
   
-  const { assets, loading: assetsLoading } = useAppSelector(getAllAssetsSelector);
   const { categories } = useAppSelector(getAllCategorySelector);
+  const { assets, loading: assetsLoading } = useAppSelector(getAllAssetsSelector);
   const {
     catalogsData: { catalogs, allCatalogsLoading },
   } = useAppSelector(getAllCatalogsSelector);
@@ -69,7 +71,16 @@ const Explore: React.FC<IExplore> = () => {
 
   useEffectOnce(() => {
     dispatch(clearAllGlobalFilters());
+    dispatch(resetExploreAssets());
   });
+
+  useEffect(() => {
+    if (!firstRender && selectedCategoryIdParam) {
+      const filteredCategory = categories.filter(category => category.id === selectedCategoryIdParam);
+      setCoverImage(filteredCategory[0]?.mediaUrl);
+      setSelectedValue({ ...selectedValue, category: `${selectedCategoryIdParam}` })
+    }
+  }, [selectedCategoryIdParam])
   
   useEffect(() => {
     if (!firstRender) {
@@ -77,7 +88,7 @@ const Explore: React.FC<IExplore> = () => {
     } else {
       setFirstRender(false);
     }
-  }, [selectedValue, search]);
+  }, [selectedValue, search, params.type]);
 
   useEffect(() => {
     if (makeApiCall) {
@@ -89,21 +100,41 @@ const Explore: React.FC<IExplore> = () => {
   useEffect(() => {
     if (!!categories.length) {
     const filteredCategory = categories.filter(category => category.id === selectedCategoryIdParam);
-    setCoverImage(filteredCategory[0]?.mediaUrl_resized || '');
+    setCoverImage(filteredCategory[0]?.mediaUrl || '');
     }
-   }, [categories]);
+  }, [categories]);
+  
+  const categoryOptions = useMemo(() => {
+    const options: any[] = [];
+    options.push({
+      id: '',
+      value: '',
+      label: 'All Category',
+    });
+    (categories || []).forEach((category: any) => {
+      options.push({
+        id: category.id,
+        value: category.id,
+        label: category.name,
+      });
+    });
+    return options;
+  }, [categories]);
 
   const handleTabClick = (tab: string) => {
-    setCoverImage('');
+    if (params.type !== 'catalogs') setCoverImage('');
+    if (params.type !== 'assets') dispatch(resetExploreAssets());
     router.push(`/explore/${tab}`);
   };
-
   const handleOnchange = (key: string, option: any) => {
+    if (key === 'category' && option.label === 'All Category') {
+      router.push('/explore/assets');
+      setCoverImage('');
+      setSelectedValue({ category: '', sortBy: '', orderBy: '' });
+      return;
+    }
     if (key === 'category') {
-      // router.push(`?category=${option.label}&id=${option.value}`);
-      setSelectedValue({ ...selectedValue, [key]: option.value });
-      const filteredCategory = categories.filter(category => category.name === option.label);
-      setCoverImage(filteredCategory[0]?.mediaUrl_resized);
+      router.push(`?category=${option.label}&id=${option.value}`);
     } else {
       setSelectedValue({
         ...selectedValue,
@@ -126,7 +157,7 @@ const Explore: React.FC<IExplore> = () => {
         <div className="explore-container">
           <div className="explore-cover">
             <Image src={coverImage || defaultCoverImg} alt="explore-assets-cover-image" quality={100} width={2600} height={500}/>
-            <div className="category-title">explore</div>
+            <div className="category-title">{selectedCategoryNameParam || 'explore'}</div>
           </div>
           <div className="tabs-dropdown">
             <ToggleTab
@@ -140,13 +171,10 @@ const Explore: React.FC<IExplore> = () => {
                   <CustomSelect
                     name="category"
                     placeholder="All Category"
-                    value={selectedValue.category}
-                    options={categories.map((category: any) => ({
-                      id: category.id,
-                      value: category.id,
-                      label: category.name,
-                    }))}
+                    value={selectedCategoryIdParam}
+                    options={categoryOptions}
                     onChange={handleOnchange}
+                    fix
                   />
                 </div>
               )}
@@ -165,7 +193,7 @@ const Explore: React.FC<IExplore> = () => {
                   <div className="sort-select">
                     <CustomSelect
                       name="sortBy"
-                      placeholder="Sort By"
+                      placeholder="Recently Listed"
                       value={selectedValue.sortBy}
                       options={SortByDataCatalog}
                       onChange={handleOnchange}
@@ -219,7 +247,6 @@ const Explore: React.FC<IExplore> = () => {
                     <ExploreDataSection
                       loading={assetsLoading || allCatalogsLoading}
                       showCategory={params.type}
-                      assetsData={assets}
                       selectedDropdown={selectedValue}
                     />
                   </Col>

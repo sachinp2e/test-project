@@ -14,7 +14,10 @@ import { removeAssetFromSale } from '@/Lib/assetDetail/assetDetail.action';
 import GenericModal from '@/Components/modal';
 import Checkout from '../Checkout';
 import transferGif from '@/Assets/_images/transfer.gif';
-import { assetBought, updateAssetDetails } from '@/Lib/assetDetail/assetDetail.slice';
+import {
+  assetBought,
+  updateAssetDetails,
+} from '@/Lib/assetDetail/assetDetail.slice';
 import VerifyAssetModal from '@/Containers/AssetsDetails/AssetActionComponents/VerifyAssetModal';
 import axiosInstance from '@/Lib/axios';
 import { toastErrorMessage, toastSuccessMessage } from '@/utils/constants';
@@ -104,8 +107,17 @@ const OfferActionComponents = ({
   return (
     <>
       <div className="offers-section">
-        <span>Highest Offer: </span>
-        <label>${AssetDetails?.highestOffer ?? 0}</label>
+        {AssetDetails?.onHold ? (
+          <span>
+            Transfer in progress{' '}
+            <Image src={transferGif} alt="" width={60} height={60} />
+          </span>
+        ) : (
+          <>
+            <span>Highest Offer: </span>
+            <label>${AssetDetails?.highestOffer ?? 0}</label>
+          </>
+        )}
       </div>
       <div className="verify-btn-group">
         <div className="make-offer-button">
@@ -123,6 +135,7 @@ const OfferActionComponents = ({
                 <Image src={ArrowBtnImg} alt="arrow" />
               </div>
             }
+            disabled={AssetDetails?.onHold}
             onClick={handleSaleOrOfferbtn}
           />
           {/* {AssetDetails?.isMultiple && (
@@ -240,7 +253,7 @@ const FixedActionComponents = ({
   };
   const handleCancelButton = () => {
     toggleEditPrice(false);
-    setNewPrice(AssetDetails?.price)
+    setNewPrice(AssetDetails?.price);
     setError('');
   };
   const handlePriceChange = (e: any) => {
@@ -263,9 +276,9 @@ const FixedActionComponents = ({
       const response = await axiosInstance.patch(`/asset/${AssetDetails.id}`, {
         price: newPrice,
       });
-      if(response?.data?.status === 200){
+      if (response?.data?.status === 200) {
         toastSuccessMessage('Price updated successfully.');
-        dispatch(updateAssetDetails({price:newPrice}))
+        dispatch(updateAssetDetails({ price: newPrice }));
         toggleEditPrice(false);
       }
     } catch (error: any) {
@@ -442,7 +455,7 @@ const FixedActionComponents = ({
       <GenericModal
         show={showBuyModal}
         onHide={handleBuyModalClose}
-        title={showPayModal ? 'Wallet' : 'Buy'}
+        title={showPayModal ? 'Wallet' : 'Checkout'}
         body={
           <Checkout
             handleConfirm={handleConfirmBuy}
@@ -451,7 +464,7 @@ const FixedActionComponents = ({
             quantity={quantity}
           />
         }
-        className=""
+        className="checkout-modal"
         close={true}
       />
       {showVerifyAssetModal && (
@@ -574,19 +587,18 @@ const Verification = (props: any) => {
     }
   };
 
-  const buttonText = useMemo(() => {
-    if (isLegallyVerified || assetVerificationStatus === 'completed') {
-      return 'View/Download Certificate';
-    }
-    if (certificateId) {
-      return 'Verification in process';
-    }
-    return 'Verify Asset';
-  }, [assetId, certificateId, assetVerificationStatus, isLegallyVerified]);
+  if (
+    certificateId &&
+    !(isLegallyVerified || assetVerificationStatus === 'completed')
+  ) {
+    return <button className="view-download">Verification in process</button>;
+  }
 
   return (
     <button className="view-download" onClick={onClick}>
-      {buttonText}
+      {isLegallyVerified || assetVerificationStatus === 'completed'
+        ? 'View/Download Certificate'
+        : 'Verify Asset'}
     </button>
   );
 };

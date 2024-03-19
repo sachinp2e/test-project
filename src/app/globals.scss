@@ -14,6 +14,13 @@ p {
   margin: 0;
 }
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 .error-input {
   border-radius: 5px;
   height: 40px;
@@ -132,18 +139,26 @@ body::-webkit-scrollbar {
   top: 60px;
   left: 0;
   right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: #fde6da;
   padding: 1rem 0;
   z-index: 998;
   gap: 0.5rem;
-  width: 80%;
+  width: 100%;
   margin: auto;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   box-shadow: rgba(0, 0, 0,0.2) 0px 20px 30px -10px;
+  .kyc-toast-container{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .kyc-message{
+    border-bottom:none ;
+  }
   span {
     font-family: Rajdhani;
     font-weight: 700;
@@ -153,13 +168,13 @@ body::-webkit-scrollbar {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    cursor:default;
     border-bottom: 2px solid black;
   }
   .cancle-icon-container{
     border: none;
-    position: relative;
-    left: 25%;
+    position: absolute;
+    right: 1rem;
   }
 }
 
@@ -241,10 +256,13 @@ body::-webkit-scrollbar {
     background-image: url('../Assets/_images/second-background.png');
   }
 }
-@media only screen and (min-width: 320px) and (max-width: 440px) {
+@media only screen and (min-width: 320px) and (max-width: 700px) {
   .kyc-toast-top{
-    flex-direction: column;
-    width: 85%;
+    .kyc-toast-container{
+      // flex-direction: column;
+      justify-content: start;
+    }
+    width: 100%;
     .kyc-message{
       border: none;
       padding: 10px;
@@ -253,10 +271,6 @@ body::-webkit-scrollbar {
       position: absolute;
       top: 110px;
       left: 8px;
-  }
-  .cancle-icon-container{
-    left: 40%;
-    bottom: 10px;
   }
   }
 }

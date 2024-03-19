@@ -17,10 +17,10 @@ export const getWalletTransactions = createAsyncThunk(
   'user/wallet-transactions',
   async (filter: any, thunkAPI: any) => {
     const query: any = {
-      deposit: '&transactionType=0',
+      deposit: '&transactionType=4',
       withdrawl: '&transactionType=1',
       transaction:'',
-      sale:'&orderType=0',
+      sale:'&transactionCode=3',
       refund:'&transactionType=2'
     };
     try {

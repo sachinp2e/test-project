@@ -164,12 +164,12 @@ const ChangePassword: React.FC<ChangePasswordType> = ({ handleSuccessModel }) =>
                   </div>
                 }
               >
-                <p className={`${errors.newPassword && touched.newPassword ? 'form-error' : ''}`}>
+                <span className={`${errors.newPassword && touched.newPassword ? 'form-error' : ''}`}>
                     <span className="hint">
                       <HintIcon />{' '}
                       {errors.newPassword || 'Password must be atleast 8 characters...'}
                     </span>
-                </p>
+                </span>
               </OverlayTrigger>
             </div>
             <div className="change-password-form-field">

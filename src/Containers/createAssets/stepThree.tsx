@@ -186,7 +186,7 @@ const StepThree: React.FC<IStepThreeProps> = ({
   const saveAsDraft = () => {
     onDraftAsset(values);
   };
-  
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="step-two-container step-three">
@@ -309,7 +309,7 @@ const StepThree: React.FC<IStepThreeProps> = ({
           <Row className="bid-expire">
             <Col>
               <CustomSelect
-                label="Bid Expiration *"
+                label="Auction Expiration *"
                 className="bid-expire-select"
                 placeholder="Select Bid Expiration"
                 onChange={handleBidExpirationDateChange}

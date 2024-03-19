@@ -20,6 +20,7 @@ import { getAllCategorySelector } from '@/Lib/category/category.selector';
 import './footer.scss';
 import { debounce } from 'lodash';
 import { toastErrorMessage, toastSuccessMessage } from '@/utils/constants';
+import  KalpStudioLogo  from '@/Assets/_images/kalpStudiLogo.png';
 
 const menuItems = [
   {
@@ -51,9 +52,10 @@ const FooterSection = () => {
   const [email, setEmail] = useState('');
   
   const validateEmail = (email: string) => {
-    const regex =/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
+    const regex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/; 
     return regex.test(email);
   };
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -76,12 +78,16 @@ const FooterSection = () => {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const emailValue = e.target.value;
     setEmail(emailValue);
-    setIsValidEmail(validateEmail(emailValue));
-    debouncedSubscribe(emailValue);
+    setIsValidEmail(validateEmail(emailValue)); 
   };
 
 
+
   const handleSubscribe = async () => {
+    if (email.length < 1) { 
+      toastErrorMessage('Please enter an email first!')
+      return; 
+    }
     if (isValidEmail) {
       try {
         setIsSubscribing(true);
@@ -98,9 +104,8 @@ const FooterSection = () => {
         
         if (response.ok) {
           toastSuccessMessage(
-            'Congratulations! You have subscribe to the newsletter',
+            'Congratulations! You have subscribed to the newsletter',
           );
-          console.log('User subscribed successfully!');
         } else {
           toastErrorMessage('You have already subscribed to our service')
         }
@@ -111,6 +116,7 @@ const FooterSection = () => {
       }
     }
   };
+
   
 
   return (
@@ -128,9 +134,10 @@ const FooterSection = () => {
           <ul>
             {categories.map((category: any) => (
               <li key={category.id}>
-                <Link href={`/explore/assets?category=${category.name}&id=${category.id}`}>
+                <span className='categories'
+                  onClick={() => { router.push(`/explore/assets?category=${category?.name}&id=${category?.id}`); }}>
                   {category.name}
-                </Link>
+                </span>
               </li>
             ))}
           </ul>
@@ -143,19 +150,19 @@ const FooterSection = () => {
           <div className="options-footer">
             <ul>
               <li>
-                <Link href={`/user/${userDetails?.id}`}>Profile</Link>
+                <span className='categories' onClick={() => { router.push(`/user/${userDetails?.id}`); }}>Profile</span>
               </li>
               <li>
-                <Link href={`/user/${userDetails?.id}?tab=Favourites`}>Favorites</Link>
+                <span className='categories' onClick={() => { router.push(`/user/${userDetails?.id}?tab=Favorites&subTab=Assets`); }}>Favorites</span>
               </li>
               <li>
-                <Link href={`/settings/myWallet/${userId}`}>Wallet</Link>
+                <span className='categories' onClick={() => { router.push(`/settings/myWallet/${userId}`); }}>Wallet</span>
               </li>
               <li>
-                <Link href={`/user/${userDetails?.id}?tab=Catalogs`}>Catalogs</Link>
+                <span className='categories' onClick={() => { router.push(`/user/${userDetails?.id}?tab=Catalogs`); }}>My Catalogs</span>
               </li>
               <li>
-                <Link href={`/settings/editProfile/${userId}`}>Settings</Link>
+                <span className='categories' onClick={() => { router.push(`/settings/editProfile/${userId}`); }}>Settings</span>
               </li>
             </ul>
           </div>
@@ -168,10 +175,10 @@ const FooterSection = () => {
             <div className="options-footer">
               <ul>
                 <li>
-                  <Link href="/#">About Us</Link>
+                  <Link href="/about-us">About Us</Link>
                 </li>
                 <li>
-                  <Link href="/#">Contact Us</Link>
+                  <Link href="/contact-us">Contact Us</Link>
                 </li>
               </ul>
             </div>
@@ -202,19 +209,19 @@ const FooterSection = () => {
                   <span className="social-icon">
                     <Twitter className="hover-item" />
                   </span>
-                <Link href="https://twitter.com/Mai_Lab_tech">Twitter</Link>
+                <Link href="https://twitter.com/Mai_Lab_tech" target='_blank'>Twitter</Link>
               </li>
               <li>
                   <span className="social-icon">
                     <Image src={InstagramImg} alt="" />
                   </span>
-                <Link href="https://www.instagram.com/the.mailabs/">Instagram</Link>
+                <Link href="https://www.instagram.com/the.mailabs/" target='_blank'>Instagram</Link>
               </li>
               <li>
                   <span className="social-icon">
                     <Image src={DiscordImg} alt="" />
                   </span>
-                <Link href="https://discord.com/channels/@me/1202162860088905748">Discord</Link>
+                <Link href="https://discord.com/channels/@me/1202162860088905748" target='_blank'>Discord</Link>
               </li>
             </ul>
           </div>
@@ -225,36 +232,44 @@ const FooterSection = () => {
           </div>
           <div className="options-footer">
             <ul>
-            <li>
-                  <input type="text" placeholder="Enter your email address..." value={email} onChange={handleEmailChange} />
-                  
-                </li>
-                <li>
-                  <Button
-                    className="footer-Subscribe-btn"
-                    onClick={handleSubscribe}
-                    element={(
-                      <div className="d-flex justify-content-center align-items-center gap-2">
-                        <span className="p-0">{'Subscribe'}</span>
-                        <Image src={ArrowCircleRightImg} alt="arrow" />
-                      </div>
-                    )}
-                    isFilled
-                    isGradient
-                    disabled={!isValidEmail || isSubscribing}
-                  />
-                </li>
+              <li>
+                <input type="text" placeholder="Enter your email address..." value={email} onChange={handleEmailChange} />
+              </li>
+              <li>
+                <Button
+                  className="footer-Subscribe-btn"
+                  onClick={handleSubscribe}
+                  element={(
+                    <div className="d-flex justify-content-center align-items-center gap-2">
+                      <span className="p-0">{'Subscribe'}</span>
+                      <Image src={ArrowCircleRightImg} alt="arrow" />
+                    </div>
+                  )}
+                  isFilled
+                  isGradient
+                  disabled={!isValidEmail || isSubscribing }
+                /> 
+              </li>
             </ul>
           </div>
         </div>
       </div>
       <hr className="horizontal-rule horizontal-line-sub-footer"/>
       <div className="terms-footer-main-wrapper">
-            <div className="footer-logo-right-wrapper" onClick={() => router.push('/')}>
+            <div className="footer-logo-right-wrapper" >
+              <span onClick={() => router.push('/')}>
               <NavLogo />
+              </span>
+              <div className='footer-logo-right-wrapper-powerby' onClick={() => window.open('https://kalp.studio/', '_blank')}>       
+              <Image
+                  src={KalpStudioLogo}
+                  alt="logo"
+                />  
             </div>
+            </div>
+            
         <span>Copyright © 2024. All rights reserved</span>
-        <span>Terms & Conditions | Privacy Policy</span>
+        <span className='footer-condition'> Terms & Conditions | Privacy Policy</span>
       </div>
     </div>
       )}

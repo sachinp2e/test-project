@@ -7,7 +7,6 @@ import {
   Dropdown,
   Form,
   InputGroup,
-  OverlayTrigger,
   Tooltip,
 } from 'react-bootstrap';
 import Tabs from './Tabs';
@@ -16,10 +15,8 @@ import UserDetailsDropdown from './UserDetails';
 import NotificationModal from '@/Components/NotificationModal';
 import {
   Arrow,
-  Logo,
-  MoonIcon,
+  NavLogo,
   SearchIcon,
-  SunIcon,
   WalletIcon,
 } from '@/Assets/svg';
 import ArrowImg from '@/Assets/_images/arrow-circle-right.svg';
@@ -37,10 +34,10 @@ import { logout, updateKycReminder } from '@/Lib/auth/auth.slice';
 import { getWalletDetails } from '@/Lib/wallet/wallet.action';
 import { walletSelector } from '@/Lib/wallet/wallet.selector';
 import { getNotifications } from '@/Lib/notifications/notifications.action';
-import UseNotificationSocket from '@/Hooks/useNotificationSocket';
-import { updateNotificationsState } from '@/Lib/notifications/notifications.slice';
 import Link from 'next/link';
 import { getAllCurrencies } from '@/Lib/currencies/currencies.action';
+import MobileNavbar from '@/Containers/Landing/Navbar/MobileNavbar';
+import axiosInstance from '@/Lib/axios';
 
 // TODO: Remove this variable and use state instead
 let initialModalStatus = true;
@@ -78,9 +75,10 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
   const searchValue = searchParams.get('search') || '';
 
   const { walletBalance } = useAppSelector(walletSelector);
-  const { accessToken, userDetails, isLoggedIn, kycReminder, userId } =
+  const { accessToken, userDetails, kycReminder, userId } =
     useAppSelector(authSelector);
 
+  const [isMobile, setIsMobile] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [openModal, setOpenModal] = useState<boolean>(initialModalStatus);
   const [open, setOpen] = useState(false);
@@ -92,12 +90,6 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
       ? params?.type
       : 'assets',
   );
-
-  const newSocketNotificationHandler = (data: any) => {
-    dispatch(updateNotificationsState(data));
-  };
-
-  const socket = UseNotificationSocket(newSocketNotificationHandler);
 
   // set the search value in params to explore page on debounce of 500ms
   const debounced = debounce((value: string) => {
@@ -126,7 +118,6 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
   };
 
   const setSelectedDropdownValue = (value: 'assets' | 'catalogs' | 'users') => {
-    // dispatch(setGlobalSearchType(value));
     setDropdownValue(value);
   };
 
@@ -139,6 +130,10 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
 
   };
   useEffect(() => {
+    const isKycProcessCompleted = searchParams.get('redirectfrom') === 'kyc';
+    if(isKycProcessCompleted){
+      updateKycAfterRedirection();
+    }
     const token = localStorage.getItem('accessToken');
     if (!token) {
       dispatch(logout());
@@ -154,6 +149,19 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 440);
+    };
+  
+    window.addEventListener('resize', handleResize);
+    handleResize(); 
+  
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isMobile]);
 
   const handleArrow = () => {
     setOpen(!open);
@@ -185,6 +193,14 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
       href: 'create-asset/multiple',
     },
   ];
+
+  const updateKycAfterRedirection = async() =>{
+    try{
+      await axiosInstance.patch('/user/update/kyc-status')    
+    }catch(error:any){
+      console.log(error);
+    }
+  }
 
   const fetchData = async () => {
     try {
@@ -237,6 +253,10 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
 
   return (
     <>
+      {
+      isMobile ? (
+        <MobileNavbar/>
+      ):(
       <div>
         <div
           className={`sub-navbar ${isSticky || alwaysSticky ? 'sticky' : ''}`}
@@ -245,7 +265,7 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
             <div className="navbar-inner-container">
               {(isSticky || alwaysSticky) && (
                 <Link href={'/'} className="nav-logo" >
-                  <Logo />
+                  <NavLogo />
                 </Link>
               )}
               <div className="right-wrapper">
@@ -253,7 +273,7 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
                   <SearchIcon className="position-absolute ms-2 z-1" />
                   <InputGroup size="lg">
                     <Form.Control
-                      placeholder="Search by Assets, catalogs, users..."
+                      placeholder="Search by Assets, Catalogs, Users..."
                       className="search-input"
                       defaultValue={searchValue}
                       onChange={handleInputChange}
@@ -315,6 +335,9 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
                     )}
                   </>
                 )}
+                {
+                  userDetails?.authId && (
+                
                 <div className="btn-wrapper">
                   {userDetails?.isKycVerified ? (
                     // <OverlayTrigger
@@ -346,6 +369,7 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
                     />
                   )}
                 </div>
+                )}
                 <div className="avatar-wrapper">
                   <div className="rounded-circle avatar">
                     {accessToken ? (
@@ -380,7 +404,7 @@ const SubNavBar: React.FC<ISubNavBarType> = ({ alwaysSticky = false }) => {
           />
         )}
       </div>
-
+      )}
       {kycReminder && (
         <CustomModal show={openModal} onHide={handleModalCloseEvent}>
           <div className="modal-children">

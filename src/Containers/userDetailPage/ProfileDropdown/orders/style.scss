@@ -95,11 +95,12 @@
       }
 
       span:nth-child(odd) {
-          cursor: pointer;
+          cursor: pointer !important;
       }
 
       .light {
           color: #CFCDCF;
+          cursor: pointer!important;
       }
   }
 }

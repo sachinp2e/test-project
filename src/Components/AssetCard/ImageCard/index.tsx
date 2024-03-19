@@ -73,7 +73,7 @@ const ImageCardSection: React.FC<IImageCardsSection> = (props) => {
           <div className="image-icon-absolute">
             <ImageIconSvg />
           </div>
-          {orderType === 'fixed' && <div className="on-sale-absolute">On Sale</div>}
+          {orderType === 'fixed' && !isDraft && <div className="on-sale-absolute">On Sale</div>}
           <div className="image-blur-overlay">
             <div className="overlay-card">
               <div className="header">
@@ -83,7 +83,7 @@ const ImageCardSection: React.FC<IImageCardsSection> = (props) => {
                 {cardType === cardTypeEnum.SINGLE_BID ||
                 cardType === cardTypeEnum.MULTIPLE_BID ? (
                   <div className="bidding-time-wrapper">
-                    <p className="bidding-date">
+                    <div className="bidding-date">
                       {item?.orderType === 'timed' && (
                         <AuctionTimer
                           bidStartDate={item?.bidStartDate}
@@ -91,7 +91,7 @@ const ImageCardSection: React.FC<IImageCardsSection> = (props) => {
                           card={true}
                         />
                       )}
-                    </p>
+                    </div>
                   </div>
                 ) : item.physicalAsset ? (
                   <div className="physical-asset-badge">Physical Asset</div>
@@ -103,12 +103,12 @@ const ImageCardSection: React.FC<IImageCardsSection> = (props) => {
                    card={true}
                  />
                )}
-                <div className="file-right-wrapper">
+                {!isDraft && <div className="file-right-wrapper">
                   <CommonFavouriteBtn
                     assetId={id}
                     isFavourite={item?.isFavourite}
                   />
-                </div>
+                </div>}
               </div>
               {item.physicalAsset &&
                 (cardType === cardTypeEnum.SINGLE_BID ||

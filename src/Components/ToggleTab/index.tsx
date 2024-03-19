@@ -10,13 +10,10 @@ interface IToggleTabType {
   activeToggle: string;
   children?: JSX.Element[];
   handleTabClick?: (tab: string) => void;
-  dropDownItemsArr?: any[];
-  dropDownVisible?: boolean;
-  handleDropDownClick?: (option: string) => void;
 }
 
 const ToggleTab: React.FC<IToggleTabType> = (props) => {
-  const { tabs, children, handleTabClick, activeToggle, dropDownItemsArr = [], dropDownVisible = false, handleDropDownClick } = props;
+  const { tabs, children, handleTabClick, activeToggle } = props;
   const [activeTab, setActiveTab] = useState<string>(activeToggle);
 
   return (

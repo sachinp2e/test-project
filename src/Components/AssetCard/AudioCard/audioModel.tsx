@@ -3,6 +3,7 @@ import { PlaySVG, PauseSVG, VolumeSvg, VolumeMuteSvg } from '@/Assets/svg';
 import './audioModel.scss';
 import Image from 'next/image';
 import Waveform from './WaveForm';
+import useEffectOnce from '../../../Hooks/useEffectOnce';
 
 interface AudioModelProps {
   audioUrl: string;
@@ -11,131 +12,47 @@ interface AudioModelProps {
 
 const AudioModel: React.FC<AudioModelProps> = ({ audioUrl, thumbnailUrl }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  const [duration, setDuration] = useState<number>(0);
-  const [progress, setProgress] = useState<number>(0);
-  const [volume, setVolume] = useState<number>(1);
+  const [currentTime, setCurrentTime] = useState<any>(0);
+  const [volume, setVolume] = useState<number>(0.2);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);;
   const [waveFormInstance, setWaveformInstance] = useState<any>(null);
+  const [duration, setDuration] = useState<any>(0);
+
+  const handlePlay = () => {
+      waveFormInstance.play();
+      waveFormInstance.on('audioprocess', onTimeUpdate);
+      setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+      waveFormInstance.pause();
+      setIsPlaying(false);
+  };
 
   useEffect(() => {
-    const audioElement = audioRef.current;
-    if (audioElement) {
-      audioElement.addEventListener('timeupdate', handleTimeUpdate);
-      audioElement.addEventListener('loadedmetadata', handleLoadedMetadata);
-
-      return () => {
-        audioElement.removeEventListener('timeupdate', handleTimeUpdate);
-        audioElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      };
+    if(currentTime.toFixed() === duration.toFixed()) {
+      setIsPlaying(false)
     }
-  }, []);
+  }, [duration, currentTime])
 
-  useEffect(() => {
-    if (isPlaying) {
-      const animationFrameId = requestAnimationFrame(updateProgress);
-      return () => cancelAnimationFrame(animationFrameId);
+  useEffectOnce(() => {
+    if (waveFormInstance) {
+      waveFormInstance.on('audioprocess', onTimeUpdate);
     }
-  }, [isPlaying, currentTime]);
-  
-
-  const handlePlayPause = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
+    return () => {
+      if (waveFormInstance) {
+        waveFormInstance.un('audioprocess', onTimeUpdate);
       }
-      setIsPlaying(!isPlaying);
-    }
-  };
+    };
+  });
 
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime || 0);
-    }
-  };
-
-  const handleLoadedMetadata = () => {
-    if (audioRef.current) {
-      setDuration(audioRef.current.duration || 0);
-    }
-  };
-
-  // const handleSeekClick = (e: React.MouseEvent<HTMLDivElement>) => {
-  //   if (progressBarRef.current) {
-  //     const rect = progressBarRef.current.getBoundingClientRect();
-  //     const offsetX = e.clientX - rect.left;
-  //     const progressPercentage = (offsetX / rect.width) * 100;
-  //     handleSeek(progressPercentage * duration / 100);
-  //   }
-  // };
-
-  // const handleProgressDotMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-  //   const handleMouseMove = (event: MouseEvent) => {
-  //     if (progressBarRef.current) {
-  //       const rect = progressBarRef.current.getBoundingClientRect();
-  //       const offsetX = event.clientX - rect.left;
-  //       const progressPercentage = Math.min(Math.max(offsetX / rect.width, 0), 1) * 100;
-  //       handleSeek(progressPercentage * duration / 100);
-  //     }
-  //   };
-
-  //   const handleMouseUp = () => {
-  //     document.removeEventListener('mousemove', handleMouseMove);
-  //     document.removeEventListener('mouseup', handleMouseUp);
-  //   };
-
-  //   document.addEventListener('mousemove', handleMouseMove);
-  //   document.addEventListener('mouseup', handleMouseUp);
-  // };
-
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newVolume = parseFloat(e.target.value);
-    setVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
-    }
-  };
-
-  const handleSeek = (eventOrTime: React.MouseEvent<HTMLDivElement, MouseEvent> | number) => {
-    let seekTime: number;
-    if (typeof eventOrTime === 'number') {
-      seekTime = eventOrTime;
-    } else {
-      const event = eventOrTime as React.MouseEvent<HTMLDivElement, MouseEvent>;
-      if (audioRef.current && progressBarRef.current) {
-        const rect = progressBarRef.current.getBoundingClientRect();
-        const offsetX = event.clientX - rect.left;
-        const progressPercentage = (offsetX / rect.width) * 100;
-        seekTime = (progressPercentage / 100) * duration;
-      } else {
-        return;
-      }
-    }
-    if (audioRef.current) {
-      audioRef.current.currentTime = seekTime;
-    }
-    setCurrentTime(seekTime);
-  };
-
-  const updateProgress = () => {
-    if (audioRef.current && duration > 0) {
-      const currentTime = audioRef.current.currentTime;
-      const currentProgress = (currentTime / duration) * 100;
-      setProgress(currentProgress);
-      setCurrentTime(currentTime);
-
-      if (currentProgress < 100) {
-        requestAnimationFrame(updateProgress);
-      } else {
-        setIsPlaying(false);
-        setCurrentTime(0);
-        setProgress(0);
-      }
+  const onTimeUpdate = () => {
+    if (waveFormInstance.isPlaying()) {
+      var currentTime = waveFormInstance.getCurrentTime(),
+        totalTime = waveFormInstance.getDuration();
+      setDuration(totalTime);
+      setCurrentTime(currentTime)
     }
   };
 
@@ -146,9 +63,18 @@ const AudioModel: React.FC<AudioModelProps> = ({ audioUrl, thumbnailUrl }) => {
   };
 
   const toggleMute = () => {
-    setIsMuted(!isMuted);
     if (audioRef.current) {
-      audioRef.current.muted = !audioRef.current.muted;
+      audioRef.current.muted = !isMuted
+      setIsMuted(prev => !prev);
+    }
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (audioRef.current) {
+
+      audioRef.current.volume = newVolume;
     }
   };
 
@@ -163,33 +89,24 @@ const AudioModel: React.FC<AudioModelProps> = ({ audioUrl, thumbnailUrl }) => {
         />
       </div>
       <div className="player-controls">
-        {/* <div className="progress-bar" ref={progressBarRef} onClick={handleSeekClick}> */}
-          
-            {/* <div className="progress" style={{ width: `${progress}%` }} /> */}
-            <Waveform
-                  setWaveformInstance={setWaveformInstance}
-                  audioUrl={audioUrl}
-                  
-                
-                />
-            {/* <div className="progress-dot" style={{ left: `${progress}%` }} onMouseDown={handleProgressDotMouseDown} /> */}
-          
-        {/* </div> */}
-
+        <Waveform
+          setWaveformInstance={setWaveformInstance}
+          audioUrl={audioUrl}
+        />
         <div className='bottom-side-player'>
           <div className="playback-controls">
-            <span className="time">{formatTime(currentTime)} </span>
+            <span className="time">{formatTime(currentTime)}</span>
             <span className='audio-svg' onClick={toggleMute}>
               {isMuted ? <VolumeMuteSvg /> : <VolumeSvg />}
             </span>
-            <audio ref={audioRef} src={audioUrl} />
+            <audio ref={audioRef} src={audioUrl}/>
             <input type="range" min="0" max="1" step="0.01" value={volume} onChange={handleVolumeChange} />
             {isPlaying ? (
-              <span className="control pause" onClick={handlePlayPause}>
+              <span className="control pause" onClick={handlePause}>
                 <PauseSVG />
               </span>
             ) : (
-              <span className="control play" onClick={handlePlayPause}>
+              <span className="control play" onClick={handlePlay}>
                 <PlaySVG />
               </span>
             )}

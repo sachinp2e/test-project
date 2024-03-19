@@ -15,10 +15,11 @@ export const  offersObjHandler = (inputObject: any) => {
     price: 'offerAmount',
     name: 'name',
     assetMediaUrl: 'assetMediaUrl',
-    assetMediaUrl_resized: 'assetMediaUrl_resized'
+    assetMediaUrl_resized: 'assetMediaUrl_resized',
+    isFavourite: 'isFavourite'
   };
   Object.entries(keyMapping).forEach(([key, value]) => {
-    if (key === 'name' || key === 'assetMediaUrl' || key === 'assetMediaUrl_resized') {
+    if (key === 'name' || key === 'assetMediaUrl' || key === 'assetMediaUrl_resized' || key === 'isFavourite') {
       transformedObject[key] = inputObject.asset[value];
     } else {
       transformedObject[key] = inputObject[value];
@@ -38,10 +39,11 @@ export const bidsObjHandler = (inputObject: any) => {
       owner: 'assetOwner',
       bidEndDate: 'bidExpiry',
       name: 'name',
-      assetMediaUrl: 'assetMediaUrl'
+      assetMediaUrl: 'assetMediaUrl',
+      isFavourite: 'isFavourite'
     };
     Object.entries(keyMapping).forEach(([key, value]) => {
-      if (key === 'name' || key === 'assetMediaUrl') {
+      if (key === 'name' || key === 'assetMediaUrl' || key === 'isFavourite') {
         transformedObject[key] = inputObject.asset[value];
       } else {
         transformedObject[key] = inputObject[value];

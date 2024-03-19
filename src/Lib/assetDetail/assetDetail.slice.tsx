@@ -49,7 +49,7 @@ export const assetsSlice = createSlice({
     },
     updateAssetDetails: (state, action: PayloadAction<any>) => {
       Object.keys(action.payload).forEach((key) => {
-        if (state.AssetDetails.hasOwnProperty(key)) {
+        if (state.AssetDetails.hasOwnProperty(key) || key === 'userBid') {
           state.AssetDetails[key] = action.payload[key];
         }
       });

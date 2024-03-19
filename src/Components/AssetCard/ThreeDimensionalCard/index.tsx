@@ -64,9 +64,9 @@ const ThreeDimensionalSection: React.FC<IThreeDimensionalSection> = (props) => {
   return (
       <>
       <ErrorBoundary>
-        <div className="three-dimensional-main-wrapper" key={id} id={id}>
+        <div className="three-dimensional-main" key={id} id={id}>
         <ImageWithFallback
-            className="audio-asset-image"
+            className="three-dimensional-main-image"
             src={
               showResizedImage
                 ? assetThumbnail_resized
@@ -83,14 +83,14 @@ const ThreeDimensionalSection: React.FC<IThreeDimensionalSection> = (props) => {
           <div className="three-dimensional-left-wrapper">
             <ThreeDimensional />
           </div>
-          {orderType ==='fixed' && <div className="on-sale-absolute">
+          {orderType ==='fixed' && !isDraft && <div className="on-sale-absolute">
             On Sale
           </div>}
           <div className="three-dimensional-blur-overlay">
             {cardType === cardTypeEnum.SINGLE_BID ||
             cardType === cardTypeEnum.MULTIPLE_BID ? (
               <div className="bidding-time-wrapper">
-                <p className="bidding-date">
+                <div className="bidding-date">
                   {item?.orderType === 'timed' && (
                     <AuctionTimer
                       bidStartDate={item?.bidStartDate}
@@ -98,7 +98,7 @@ const ThreeDimensionalSection: React.FC<IThreeDimensionalSection> = (props) => {
                       card={true}
                     />
                   )}
-                </p>
+                </div>
               </div>
             ) : item.physicalAsset ? (
               <div className="physical-asset-badge">Physical Asset</div>
@@ -108,12 +108,12 @@ const ThreeDimensionalSection: React.FC<IThreeDimensionalSection> = (props) => {
                    bidStartDate={item?.offerStart}
                    bidEndDate={item?.offerExpiry}
                    card={true}/> )}
-            <div className="three-dimensional-right-wrapper">
+            {!isDraft && <div className="three-dimensional-right-wrapper">
               <CommonFavouriteBtn
                 assetId={id}
                 isFavourite={item?.isFavourite}
               />
-            </div>
+            </div>}
             {item.physicalAsset &&
               (cardType === cardTypeEnum.SINGLE_BID ||
                 cardType === cardTypeEnum.MULTIPLE_BID) && (
@@ -143,14 +143,23 @@ const ThreeDimensionalSection: React.FC<IThreeDimensionalSection> = (props) => {
                         : 'Highest Offer:'}
                   </p>
                   <h4>
-                    ${item.price ?? 0 ?? item.highestBid}
-                    {(cardType === cardTypeEnum.SINGLE_BID ||
-                      cardType === cardTypeEnum.MULTIPLE_BID) &&
-                      isBids && (
-                        <span className="ms-2" onClick={onEditBid}>
-                          <EditIcon height="22" width="22" />
-                        </span>
-                      )}
+                  <b className="ms-2">
+                    $
+                    {cardType === cardTypeEnum.SINGLE_BID ||
+                    cardType === cardTypeEnum.MULTIPLE_BID
+                      ? item?.highestBid || item.bidAmount || '0'
+                      : cardType === cardTypeEnum.SINGLE_SALE ||
+                          cardType === cardTypeEnum.MULTIPLE_SALE
+                        ? item?.price || '0'
+                        : item?.offerAmount || item?.highestOffer || '0'}
+                  </b>
+                  {(cardType === cardTypeEnum.SINGLE_BID ||
+                    cardType === cardTypeEnum.MULTIPLE_BID) &&
+                    isBids && (
+                      <span className="ms-2" onClick={onEditBid}>
+                        <EditIcon height="22" width="22" />
+                      </span>
+                    )}
                   </h4>
                 </div>
               </div>

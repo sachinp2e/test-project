@@ -17,9 +17,9 @@ const RenderSkeleton: React.FC<ISkeleton> = () => {
         columnClassName="my-masonry-grid_column"
       >
         {
-          Array.from(Array(12).keys()).map((item) => {
+          Array.from(Array(12).keys()).map((item,idx:number) => {
             return (
-              <Skeleton cardType={item % 2 === 0 ? 'VIDEO' : item % 3 === 0 ? 'AUDIO' : 'IMAGE'} />
+              <Skeleton cardType={item % 2 === 0 ? 'VIDEO' : item % 3 === 0 ? 'AUDIO' : 'IMAGE'} key={idx}/>
             )
           })
         }

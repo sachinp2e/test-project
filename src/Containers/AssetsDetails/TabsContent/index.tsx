@@ -11,7 +11,8 @@ import {
   getAssetCountListing,
   getAssetCountOffers,
 } from '@/Lib/assetDetail/assetDetail.action';
-
+import NodataMsg from '../../../Assets/_images/EmptyState.png';
+import Image from 'next/image';
 interface ITabsContent {
   selectedTab: string;
 }
@@ -35,13 +36,13 @@ const TabsContent = ({ selectedTab }: ITabsContent) => {
 
   const fetchAssetHistory = async () => {
     try {
-      const { data: responseData } = await axiosInstance.get(
-        `/asset/get-asset-data/${AssetDetails?.id}`,
+      const { data: responseData } = await axiosInstance.get('/activity',
         {
           params: {
-            query: 'history',
+            // query: 'history',
             page: Number(assetHistory.pagination.page || 0) + 1,
-            pageSize: 7,
+            limit: 7,
+            assetId: AssetDetails?.id,
           },
         },
       );
@@ -160,7 +161,16 @@ const TabsContent = ({ selectedTab }: ITabsContent) => {
             ))}
           </InfiniteScroll>
         ) : (
+          <div className='container-div'>
+            <Image
+              src={NodataMsg}
+              alt="avatar"
+              quality={100}
+              width={200}
+              height={200}
+            />
           <p className="text-center fs-2 mt-5">No History Found </p>
+          </div>
         ))}
     </>
   );

@@ -16,6 +16,7 @@ import './mobileFooterSection.scss';
 import { getAllCategorySelector } from '@/Lib/category/category.selector';
 import { debounce } from 'lodash';
 import { toastErrorMessage, toastSuccessMessage } from '@/utils/constants';
+import { useRouter } from 'next/navigation';
 
 const menuItems = [
   {
@@ -33,6 +34,7 @@ const menuItems = [
 ];
 
 const MobileFooterSection = () => {
+  const router = useRouter();
   const [selectedOptions, setSelectedOptions] = useState<string>('')
 
   const handleSelectChange = (name: string, option: IOption) => {
@@ -67,6 +69,10 @@ const MobileFooterSection = () => {
 
 
   const handleSubscribe = async () => {
+    if (email.length < 1) { 
+      toastErrorMessage('Please enter an email first!')
+      return; 
+    }
     if (isValidEmail) {
       try {
         setIsSubscribing(true);
@@ -86,7 +92,6 @@ const MobileFooterSection = () => {
           toastSuccessMessage(
             'Congratulations! You have subscribe to the newsletter',
           );
-          console.log('User subscribed successfully!');
         } else {
           toastErrorMessage('You have already subscribed to our service')
         }
@@ -98,7 +103,6 @@ const MobileFooterSection = () => {
     }
   };
   
-
   const toggleDropdown = (section:string) => {
     switch (section) {
       case 'Marketplace':
@@ -128,18 +132,19 @@ const MobileFooterSection = () => {
     <div className="mobile-footer-main-wrapper">
       <div className="sub-footer-main-wrapper">
         <div className="section-footer">
-          <div className="title-footer" onClick={() => toggleDropdown('About')}>
-            <span >About</span>
+          <div className="title-footer" onClick={() => toggleDropdown('Marketplace')}>
+            <span >Marketplace</span>
             <span><Vector2SVG/></span>
           </div>
           {showMarketplace && (
-          <div className="options-footer">
+          <div className="mobile-options-footer">
               <ul>
-            {categories.map((category: any) => (
+              {categories.map((category: any) => (
               <li key={category.id}>
-                <Link href={`/explore/assets?category=${category.name}&id=${category.id}`}>
+                <p className='categories'
+                  onClick={() => { router.push(`/explore/assets?category=${category?.name}&id=${category?.id}`); }}>
                   {category.name}
-                </Link>
+                </p>
               </li>
             ))}
           </ul>
@@ -151,22 +156,22 @@ const MobileFooterSection = () => {
             <span><Vector2SVG/></span>
           </div>
           {showMyAccount && (
-          <div className="options-footer">
+          <div className="mobile-options-footer">
             <ul>
               <li>
-                <Link href={`/user/${userDetails?.id}`}>Profile</Link>
+                <p className='categories' onClick={() => { router.push(`/user/${userDetails?.id}?tab=Assets&subTab=Collected`); }}>Profile</p>
               </li>
               <li>
-                <Link href={`/user/${userDetails?.id}?tab=Favourites`}>Favorites</Link>
+                <p className='categories' onClick={() => { router.push(`/user/${userDetails?.id}?tab=Favorites&subTab=Assets`); }}>Favorites</p>
               </li>
               <li>
-                <Link href={`/settings/myWallet/${userId}`}>Wallet</Link>
+                <p className='categories' onClick={() => { router.push(`/settings/myWallet/${userId}`); }}>Wallet</p>
               </li>
               <li>
-                <Link href={`/user/${userDetails?.id}?tab=Catalogs`}>Catalogs</Link>
+                <p className='categories' onClick={() => { router.push(`/user/${userDetails?.id}?tab=Catalogs`); }}>Catalogs</p>
               </li>
               <li>
-                <Link href={`/settings/editProfile/${userId}`}>Settings</Link>
+                <p className='categories' onClick={() => { router.push(`/settings/editProfile/${userId}`); }}>Settings</p>
               </li>
             </ul>
           </div>)}
@@ -178,7 +183,7 @@ const MobileFooterSection = () => {
               <span><Vector2SVG/></span>
             </div>
             {showCompany && (
-            <div className="options-footer">
+            <div className="mobile-options-footer">
               <ul>
                 <li>
                   <Link href="/#">About Us</Link>
@@ -213,13 +218,13 @@ const MobileFooterSection = () => {
           <div className="title-footer">
             <span>Subscribe to our Newsletter</span>
           </div>
-          <div className="options-footer">
+          <div className="mobile-options-footer">
             <div className='footer-subscribe'>
             <span>
                   <input type="text" placeholder="Enter your email address..." value={email} onChange={handleEmailChange} />
                   
                 </span>
-                <span>
+                <span className='mobile-subscribe-wrapper'>
                   <Button
                     className="footer-Subscribe-btn"
                     onClick={handleSubscribe}

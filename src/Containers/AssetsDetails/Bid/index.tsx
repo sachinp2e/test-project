@@ -6,12 +6,13 @@ import { useAppSelector } from '@/Lib/hooks';
 import { AssetDetailSelector } from '@/Lib/assetDetail/assetDetail.selector';
 import { getAllCurrenciesSelector } from '@/Lib/currencies/currencies.selector';
 import * as yup from 'yup';
-import ConfirmBidModal from '@/Components/EditBidModal/ConfirmBidModal';
+// import ConfirmBidModal from '@/Components/EditBidModal/ConfirmBidModal';
 import axiosInstance from '@/Lib/axios';
 import { authSelector } from '@/Lib/auth/auth.selector';
 import useEffectOnce from '@/Hooks/useEffectOnce';
+import { PayoutWalletModal } from '../Checkout';
 
-export const numberSchema = (minBid?: number) =>
+const numberSchema = (minBid?: number) =>
   yup
     .number()
     .positive('Bid should be greater than 0')
@@ -81,16 +82,18 @@ const BidNow = ({ handlePlaceBid }: any) => {
     }
   };
 
-  const totalBid = useMemo(()=>{
-    const serviceCharge = Number(serviceCharges?.platformFee || 0) / 100 * Number(bid)
-    
-    return Number(bid || 0) + serviceCharge
-  },[bid])
+  const totalBid = useMemo(() => {
+    const serviceCharge =
+      (Number(serviceCharges?.platformFee || 0) / 100) * Number(bid);
+
+    return Number(bid || 0) + serviceCharge;
+  }, [bid]);
 
   return (
     <>
       {showAvailableBalanceModal ? (
-        <ConfirmBidModal onConfirm={onConfirm} />
+        // <ConfirmBidModal onConfirm={onConfirm} />
+        <PayoutWalletModal amount={bid} initiatePayment={onConfirm} />
       ) : (
         <>
           <div className="bid-container">

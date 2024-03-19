@@ -99,8 +99,7 @@ const VerifyAssetModal: React.FC<IVerifyAssetModal> = ({
     } catch (err: any) {
       console.log(err);
       setError(
-        err.response?.data?.message &&
-          'ASSET VERIFICATION FAILED! A certificate for this asset already exist in MyIPR recycle bin. Please restore the certificate to link it with this asset.',
+        err.response?.data?.message
       );
     }
   };

@@ -5,10 +5,6 @@
     display: flex;
     gap: 1rem;
     width: 100%;
-    .explore-user-masonry-grid {
-      width: 100%;
-    }
-
     .my-masonry-grid_column {
       overflow: hidden; //added to fix double-scroll
       transition: 1s ease-in-out width;
@@ -46,10 +42,12 @@
   }
 }
 
-.order-vh{
-  height: auto;
+.masonry-skeleton{
+  display: flex;
+  gap: 1rem;
+  width: 100%;
 }
 
-.my-masonry-grid_column {
-  width: 100% !important; /* Use !important to override Masonary existing width styles */
+.order-vh{
+  height: auto;
 }

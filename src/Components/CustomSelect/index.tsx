@@ -17,6 +17,7 @@ interface ICustomSelectProps {
   placeholder?: string | React.ReactNode;
   label?: string | JSX.Element | React.ReactNode;
   options: IOption[];
+  fix?: boolean;
 }
 
 const CustomSelect: React.FC<ICustomSelectProps> = (props) => {
@@ -28,6 +29,7 @@ const CustomSelect: React.FC<ICustomSelectProps> = (props) => {
     placeholder = 'Select an option',
     options,
     label,
+    fix=false
   } = props;
 
   const selectRef = useRef<HTMLDivElement>(null);
@@ -37,8 +39,14 @@ const CustomSelect: React.FC<ICustomSelectProps> = (props) => {
   );
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (fix) setSelectedOption(value);
+  }, [value])
+  
   const handleOptionSelect = (option: IOption) => {
-    setSelectedOption(option.value);
+    if (!fix) {
+      setSelectedOption(option.value);
+    }
     setIsDropdownOpen(false);
     onChange(name as string, option);
   };

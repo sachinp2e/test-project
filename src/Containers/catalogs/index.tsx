@@ -4,24 +4,8 @@ import { Col, Row } from 'react-bootstrap';
 import Image from 'next/image';
 import './catalogs.scss';
 import LocalSearch from '@/Components/localSearchBar';
-import {
-  Discord,
-  Facebook,
-  HeartIocnTwo,
-  Instagram,
-  LinkFile,
-  Linkedin,
-  Twiiter,
-  VerifiedSign,
-} from '@/Assets/svg';
+import { VerifiedSign } from '@/Assets/svg';
 import CatalogAvatar from '../../Assets/_images/top-catalog-avatar.jpg';
-import HeartIcon1 from '../../Assets/_images/red-heart-1.png';
-import HeartIcon6 from '../../Assets/_images/red-heart-6.png';
-import HeartIcon3 from '../../Assets/_images/red-heart-3.png';
-import HeartIcon4 from '../../Assets/_images/red-heart-4.png';
-import HeartIcon5 from '../../Assets/_images/red-heart-5.png';
-import Button from '@/Components/Button';
-import filterIcon from '@/Assets/_images/filter.svg';
 import FilterSection from '@/Components/filterSection';
 import AssetCard from '../../Components/AssetCard/index';
 import MasonryLayout from '../../Components/MasonryLayout/index';
@@ -35,8 +19,7 @@ import {
 } from '@/Lib/catalogs/catalogs.action';
 import { useParams } from 'next/navigation';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import CustomFavAndUnFav from "@/Components/CustomFavourite";
-import { debounce } from 'lodash';
+import CustomFavAndUnFav from '@/Components/CustomFavourite';
 import { authSelector } from '@/Lib/auth/auth.selector';
 
 const Catalogs = () => {
@@ -50,12 +33,19 @@ const Catalogs = () => {
 
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
-  const [favBtn, setFavBtn] = useState<boolean>(catalogDetails?.isFavourite || false);
+  const [favBtn, setFavBtn] = useState<boolean>(
+    catalogDetails?.isFavourite || false,
+  );
+  const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [filteredAssets, setFilteredAssets] = useState<any[]>([]);
 
   useEffectOnce(() => {
-    dispatch(getCataLogDetails({ id: `${params?.id}` }));
+    dispatch(getCataLogDetails({ id: `${params?.id}` })).then((res) => {
+      if (res?.payload?.resObj.id) {
+        setFavBtn(res?.payload?.resObj?.isFavourite);
+      }
+    });
   });
 
   useEffect(() => {
@@ -71,18 +61,30 @@ const Catalogs = () => {
     setIsFilterVisible(!isFilterVisible);
   };
 
-  const handleFavBtn = async () => {
-    await dispatch(
-      favUnfavCatalogAction({
-        userId: userId,
-        catalogueId: `${params?.id}`,
-        isFavourite: !catalogDetails.isFavourite,
-      }),
-    ).then((res) => {
-      if(res?.payload?.catalogId && res?.payload?.userId ){
-        setFavBtn(!catalogDetails?.isFavourite);
+  const handleLikeUnlikeBtn = async () => {
+    try {
+      if (isDebouncing) {
+        return;
       }
-    })
+      setIsDebouncing(true);
+      setTimeout(() => {
+        setIsDebouncing(false);
+      }, 500);
+      const response = await dispatch(
+        favUnfavCatalogAction({
+          userId: userId,
+          catalogueId: `${params?.id}`,
+          isFavourite: !catalogDetails.isFavourite,
+        }),
+      );
+      if (response.payload?.catalogId) {
+        setFavBtn(!catalogDetails.isFavourite);
+      } else if (response.payload?.customErrorNumber) {
+        throw new Error('Something went wrong!');
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   const filterColSize = isFilterVisible ? 3 : 0;
@@ -119,17 +121,26 @@ const Catalogs = () => {
           <Col lg={4}>
             <>
               <div className="catalogs-picture">
-                <Image
-                  src={
-                    catalogDetails?.image ||
-                    catalogDetails?.creator?.profileImage ||
-                    CatalogAvatar
-                  }
-                  height={500}
-                  width={500}
-                  quality={100}
-                  alt="profile-image"
-                />
+                {catalogDetails?.creator?.profileImage ? (
+                  <Image
+                    src={
+                      catalogDetails?.image ||
+                      catalogDetails?.creator?.profileImage ||
+                      CatalogAvatar
+                    }
+                    height={500}
+                    width={500}
+                    quality={100}
+                    alt="profile-image"
+                  />
+                ) : (
+                  <div className="name-initials">
+                    {catalogDetails?.creator?.firstName &&
+                      catalogDetails?.creator?.firstName[0].toUpperCase()}
+                    {catalogDetails?.creator?.lastName &&
+                      catalogDetails?.creator?.lastName[0].toUpperCase()}
+                  </div>
+                )}
               </div>
               {/* <div className="share-icons">
                 <label htmlFor="">Share</label>{' '}
@@ -146,7 +157,7 @@ const Catalogs = () => {
           </Col>
           <Col lg={8}>
             <div className="catalogs-desc">
-              <div className='d-flex justify-content-between align-items-center'>
+              <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="catalogs-name">{catalogDetails?.name}</div>
                   <div className="creator-name">
@@ -160,12 +171,11 @@ const Catalogs = () => {
                   </div>
                 </div>
 
-                <div
-                  className="favourite"
-                  onClick={handleFavBtn}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <CustomFavAndUnFav favBtn={favBtn} />
+                <div className="favourite" style={{ cursor: 'pointer' }}>
+                  <CustomFavAndUnFav
+                    favBtn={favBtn}
+                    handleLikeUnlikeBtn={handleLikeUnlikeBtn}
+                  />
                 </div>
               </div>
 
@@ -182,13 +192,13 @@ const Catalogs = () => {
                 <div className="box-details two">
                   <span>Min Asset Price </span>
                   <label htmlFor="">
-                    {abbreviateNumber(catalogDetails?.floorPrice)||0}
+                    {abbreviateNumber(catalogDetails?.floorPrice) || 0}
                   </label>
                 </div>
                 <div className="box-details three">
                   <span>Total Catalog Sale</span>
                   <label htmlFor="">
-                    {abbreviateNumber(catalogDetails?.volume)||0}
+                    {abbreviateNumber(catalogDetails?.volume) || 0}
                   </label>
                 </div>
                 <div className="box-details four">
@@ -238,8 +248,8 @@ const Catalogs = () => {
                   <MasonryLayout
                     configObj={{ default: isFilterVisible ? 3 : 4 }}
                   >
-                    {catalogAssets?.assets?.map((item: any) => {
-                      return <AssetCard item={item} />;
+                    {catalogAssets?.assets?.map((item: any, idx: number) => {
+                      return <AssetCard item={item} key={`asset_${idx}`} />;
                     })}
                   </MasonryLayout>
                 </InfiniteScroll>

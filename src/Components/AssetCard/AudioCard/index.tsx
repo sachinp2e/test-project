@@ -1,10 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Waveform from './WaveForm';
 import { EditIcon, MusicSVG, PauseSVG, PlaySVG, VerifiedSign } from '@/Assets/svg';
 import './audiocard.scss';
 import ErrorBoundary from '@/Components/AssetCard/errorBoundary';
 import { CardType, cardTypeEnum, getCardType, } from '@/Components/AssetCard/helperMethod';
-import useEffectOnce from '@/Hooks/useEffectOnce';
 import CommonFavouriteBtn from '../CommonFavouriteBtn';
 import CardFooter from '@/Components/AssetCard/cardFooter';
 import EditBidModal from '@/Components/EditBidModal';
@@ -30,13 +29,16 @@ const AudioCardsSection: React.FC<IAudioCardsSection> = (props) => {
 
   const [waveFormInstance, setWaveformInstance] = useState<any>(null);
   const [renderPlayer, toggleRenderPlayer] = useState<boolean>(false);
-  const [audioTime, setAudioTime] = useState<number>(0);
   const [editBidModal, toggleEditBidModal] = useState<boolean>(false);
-  const [duration, setDuration] = useState<number>(0);
+  const [duration, setDuration] = useState<any>(0);
 
-  const onTimeUpdate = (event: React.SyntheticEvent<HTMLAudioElement>) => {
-    const audioElement = event.target as HTMLAudioElement;
-    setAudioTime(audioElement.currentTime);
+  const onTimeUpdate = () => {
+    if (waveFormInstance.isPlaying()) {
+      var currentTime = waveFormInstance.getCurrentTime(),
+        totalTime = waveFormInstance.getDuration(),
+        remainingTime = totalTime - currentTime;
+      setDuration(remainingTime);
+    }
   };
 
   const cardType: CardType = useMemo(() => {
@@ -47,8 +49,15 @@ const AudioCardsSection: React.FC<IAudioCardsSection> = (props) => {
     e.preventDefault();
     e.stopPropagation();
     waveFormInstance.play();
+    waveFormInstance.on('audioprocess', onTimeUpdate);
     toggleRenderPlayer(true);
   };
+
+  useEffect(() => {
+    if(duration?.toFixed() == 0) {
+      toggleRenderPlayer(false)
+    }
+  }, [duration])
 
   const onPause = (e: any) => {
     e.preventDefault();
@@ -69,17 +78,6 @@ const AudioCardsSection: React.FC<IAudioCardsSection> = (props) => {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  useEffectOnce(() => {
-    if (waveFormInstance) {
-      waveFormInstance.on('audioprocess', onTimeUpdate);
-    }
-    return () => {
-      if (waveFormInstance) {
-        waveFormInstance.un('audioprocess', onTimeUpdate);
-      }
-    };
-  });
-
   return (
     <>
       <ErrorBoundary>
@@ -97,7 +95,7 @@ const AudioCardsSection: React.FC<IAudioCardsSection> = (props) => {
           <div className="audio-left-icon-wrapper">
             <MusicSVG />
           </div>
-          {orderType ==='fixed' && <div className="on-sale-absolute">
+          {orderType ==='fixed' && !isDraft && <div className="on-sale-absolute">
             On Sale
           </div>}
           <div className="audio-blur-overlay">
@@ -109,7 +107,7 @@ const AudioCardsSection: React.FC<IAudioCardsSection> = (props) => {
                 {cardType === cardTypeEnum.SINGLE_BID ||
                 cardType === cardTypeEnum.MULTIPLE_BID ? (
                   <div className="bidding-time-wrapper">
-                    <p className="bidding-date">
+                    <div className="bidding-date">
                     {item?.orderType === 'timed' && (
                         <AuctionTimer
                           bidStartDate={item?.bidStartDate}
@@ -117,7 +115,7 @@ const AudioCardsSection: React.FC<IAudioCardsSection> = (props) => {
                           card={true}
                         />
                       )}
-                    </p>
+                    </div>
                   </div>
                 ) : item.physicalAsset ? (
                   <div className="physical-asset-badge">Physical Asset</div>
@@ -128,10 +126,10 @@ const AudioCardsSection: React.FC<IAudioCardsSection> = (props) => {
                    bidEndDate={item?.offerExpiry}
                    card={true}
                  /> )}
-                <CommonFavouriteBtn
+                {!isDraft && <CommonFavouriteBtn
                   assetId={id}
                   isFavourite={item?.isFavourite}
-                />
+                />}
               </div>
               {item.physicalAsset &&
                 (cardType === cardTypeEnum.SINGLE_BID ||
@@ -156,13 +154,8 @@ const AudioCardsSection: React.FC<IAudioCardsSection> = (props) => {
                 <Waveform
                   setWaveformInstance={setWaveformInstance}
                   audioUrl={assetMediaUrl}
-
-
                 />
-                <span>
-                  {formatTime(duration)}
-                </span>
-
+                <span>{formatTime(duration)}</span>
               </div>
               <div className={`details-section ${offerCard ? 'offer-card' : ''}`}>
                 <div className="left-section">
@@ -187,14 +180,23 @@ const AudioCardsSection: React.FC<IAudioCardsSection> = (props) => {
                         : 'Highest Offer:'}
                   </p>
                   <h4>
-                    ${item.price ?? item.highestBid ?? item?.bidAmount ?? 0}
-                    {(cardType === cardTypeEnum.SINGLE_BID ||
-                        cardType === cardTypeEnum.MULTIPLE_BID) &&
-                      isBids && (
-                        <span className="ms-2" onClick={onEditBid}>
-                          <EditIcon height="22" width="22" />
-                        </span>
-                      )}
+                  <b className="ms-2">
+                    $
+                    {cardType === cardTypeEnum.SINGLE_BID ||
+                    cardType === cardTypeEnum.MULTIPLE_BID
+                      ? item?.highestBid || item.bidAmount || '0'
+                      : cardType === cardTypeEnum.SINGLE_SALE ||
+                          cardType === cardTypeEnum.MULTIPLE_SALE
+                        ? item?.price || '0'
+                        : item?.offerAmount || item?.highestOffer || '0'}
+                  </b>
+                  {(cardType === cardTypeEnum.SINGLE_BID ||
+                    cardType === cardTypeEnum.MULTIPLE_BID) &&
+                    isBids && (
+                      <span className="ms-2" onClick={onEditBid}>
+                        <EditIcon height="22" width="22" />
+                      </span>
+                    )}
                   </h4>
                 </div>
               </div>

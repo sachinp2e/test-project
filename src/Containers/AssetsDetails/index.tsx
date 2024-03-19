@@ -28,6 +28,7 @@ import {
   DownloadAssetIcon,
   HintIcon,
   ImageIconSvg,
+  MusicSVG,
   OverlayBack,
   PauseSVG,
   Vector2SVG,
@@ -68,7 +69,7 @@ import axiosInstance from '@/Lib/axios';
 import { jsonStringToArrayOfObjects } from '@/utils/helperMethods';
 import AssetActionComponents from './AssetActionComponents';
 import DeleteModal from './DeleteModal';
-import CustomFavAndUnFav from "@/Components/CustomFavourite";
+import CustomFavAndUnFav from '@/Components/CustomFavourite';
 import { AssetDetailSelector } from '@/Lib/assetDetail/assetDetail.selector';
 import AuctionTimer from '@/Components/AuctionTimer';
 import CustomCopyToClipboard from '../../Components/CopyToClipboard';
@@ -79,6 +80,8 @@ import {
 import { authSelector } from '@/Lib/auth/auth.selector';
 import TabsContent from './TabsContent';
 import ResultModal from '@/Components/ResultModal';
+import { Accordion } from 'react-bootstrap';
+import { IoChevronUp } from 'react-icons/io5';
 
 const AssetDetails = () => {
   const { id }: any = useParams();
@@ -109,26 +112,27 @@ const AssetDetails = () => {
     'SUCCESS' | 'FAILURE' | null
   >(null);
   const [isHoveringInfo, setIsHoveringInfo] = useState<boolean>(false);
-  const [favBtn, setFavBtn] = useState<boolean>(
-    AssetDetails.isFavourite || false,
-  );
+  const [favBtn, setFavBtn] = useState<boolean>(false);
 
   const { loading } = useAppSelector(getAllAssetsSelector);
   const [renderPlayer, toggleRenderPlayer] = useState<boolean>(false);
   const { id: userId } = useAppSelector(authSelector);
   const [showAbout, setShowAbout] = useState(false);
+  const [showDescription, setShowDescription] = useState(false);
 
   useEffectOnce(() => {
     dispatch(clearAssetState());
     dispatch(getAssetDetails(id))
       .then((res) => {
-        if(res?.payload?.customErrorNumber === 100100){
-          router.push('/404')
+        if (res?.payload?.status === 200) {
+          setFavBtn(res?.payload?.result?.isFavourite);
         }
-        console.log('response',res);
+        if (res?.payload?.customErrorNumber === 100100) {
+          router.push('/404');
+        }
       })
       .catch((err) => {
-        console.log('error',err);
+        console.log('error', err);
       });
     dispatch(getSimilarAssets(id));
   });
@@ -178,6 +182,12 @@ const AssetDetails = () => {
   const handleBid = () => {
     setBidNow(true);
   };
+  const exploreHandler = () => {
+    if (AssetDetails.blockChainTxnUrl) {
+      window.open(AssetDetails.blockChainTxnUrl, '_blank');
+    }
+  };
+
   const handlePlaceBid = (bid: string, bidCurrency: string) => {
     if (Number(bid) > AssetDetails?.minBid) {
       const payload = {
@@ -187,7 +197,12 @@ const AssetDetails = () => {
       };
       dispatch(placeBidOnAsset(payload)).then((res) => {
         if (res?.payload?.status === 200) {
-          dispatch(updateAssetDetails({ highestBid: Number(bid) }));
+          dispatch(
+            updateAssetDetails({
+              highestBid: Number(bid),
+              userBid: { id: res.payload.result.id },
+            }),
+          );
           setSuccessModal('SUCCESS');
           handleBidClose();
         } else {
@@ -196,6 +211,7 @@ const AssetDetails = () => {
       });
     }
   };
+
   const handleLikeUnlikeBtn = async () => {
     try {
       if (isDebouncing) {
@@ -228,6 +244,12 @@ const AssetDetails = () => {
     }
   };
   const handleDeleteBtn = () => {
+    if (
+      AssetDetails.certificateId &&
+      !(AssetDetails.isLegallyVerified || AssetDetails.assetVerificationStatus === 'completed')
+    ) {
+      return null;
+    }
     toggleDeleteModal(true);
   };
 
@@ -269,9 +291,6 @@ const AssetDetails = () => {
   const handleFeeInfo = () => {
     setIsHoveringInfo((prev) => !prev);
   };
-  const toggleAboutDropdown = () => {
-    setShowAbout((prev) => !prev);
-  };
 
   const isOwner = useMemo(() => {
     return AssetDetails?.owner?.id === userId;
@@ -297,6 +316,8 @@ const AssetDetails = () => {
       />
     );
   }
+
+  console.info('Asset Details : ', AssetDetails);
 
   return (
     <div className="asset-container">
@@ -334,7 +355,10 @@ const AssetDetails = () => {
               onClick={handleLikeUnlikeBtn}
               style={{ cursor: 'pointer' }}
             >
-              <CustomFavAndUnFav favBtn={favBtn} />
+              <CustomFavAndUnFav
+                favBtn={favBtn}
+                handleLikeUnlikeBtn={handleLikeUnlikeBtn}
+              />
             </div>
             {AssetDetails.ownerId === userId && (
               <Dropdown className="more-button-hover">
@@ -350,7 +374,15 @@ const AssetDetails = () => {
                   </span>
                 </Dropdown.Item> */}
                   {AssetDetails.ownerId === userId && (
-                    <Dropdown.Item onClick={handleDeleteBtn}>
+                    <Dropdown.Item
+                      onClick={handleDeleteBtn}
+                      disabled={
+                        AssetDetails.certificateId &&
+                        !(AssetDetails.isLegallyVerified
+                          || AssetDetails.assetVerificationStatus === 'completed'
+                        )
+                      }
+                    >
                       <span className="report-more-icon">
                         <DeleteBinIconBlack />
                         Delete Asset
@@ -419,7 +451,9 @@ const AssetDetails = () => {
                 )}
                 {cardSelect === 'audio' && (
                   <>
-                    <span className="asset-details-card-logo"></span>
+                    <span className="asset-details-card-logo">
+                      <MusicSVG />
+                    </span>
                     <AudioModel
                       audioUrl={AssetDetails?.assetMediaUrl}
                       thumbnailUrl={
@@ -458,7 +492,7 @@ const AssetDetails = () => {
           <div className="details-address">
             <span className="details-heading">Details</span>
             <div className="contract-address">
-              <label htmlFor="">Contract Address</label>
+              <label htmlFor="">Catalog ID</label>
               <div className="address">
                 {AssetDetails?.catalogue?.txnHash ? (
                   <>
@@ -467,7 +501,9 @@ const AssetDetails = () => {
                       lastSliceNumber={55}
                       sliceNumber={4}
                     />
-                    <LinkButton />
+                    <span onClick={exploreHandler}>
+                      <LinkButton />
+                    </span>
                   </>
                 ) : (
                   'N/A'
@@ -477,7 +513,7 @@ const AssetDetails = () => {
 
             <div className="block-chain-detail">
               <div className="chain-detail">
-                <span>Token ID </span>
+                <span>Asset ID </span>
                 <label htmlFor="">
                   {AssetDetails?.mintedTxId
                     ? `${AssetDetails?.mintedTxId?.slice(
@@ -539,10 +575,12 @@ const AssetDetails = () => {
         </Col>
         <Col lg={8}>
           {AssetDetails?.orderType === 'timed' && (
-            <AuctionTimer
-              bidStartDate={AssetDetails?.bidStartDate}
-              bidEndDate={AssetDetails?.bidEndDate}
-            />
+            <div className='mb-4'>
+              <AuctionTimer
+                bidStartDate={AssetDetails?.bidStartDate}
+                bidEndDate={AssetDetails?.bidEndDate}
+              />
+            </div>
           )}
 
           {AssetDetails?.isMultiple && (
@@ -554,29 +592,19 @@ const AssetDetails = () => {
             </div>
           )}
           <div className="asset-details">
-            {AssetDetails?.physicalAsset ? (
-              <div
-                className="asset-about"
-                onClick={() => toggleAboutDropdown()}
-              >
-                <span>About</span>
-                <span>
-                  <Vector2SVG />
-                </span>
-              </div>
-            ) : (
-              <div className="asset-desc">{AssetDetails?.description}</div>
-            )}
-            {showAbout && (
-              <div className="asset-desc">{AssetDetails?.description}</div>
-            )}
             <div className="creator-current">
               <div className="owners-detail">
                 <div className="owner-img">
+                  {AssetDetails?.creator?.profileImage ? (
                   <Image
-                    src={AssetDetails?.creator?.profileImage || catalogs}
+                    src={AssetDetails?.creator?.profileImage }
                     alt="" width={100} height={100}
-                  />
+                  />): (
+                    <div className="name-initials">
+                      {AssetDetails?.creator?.firstName && AssetDetails?.creator?.firstName[0].toUpperCase()}
+                      {AssetDetails?.creator?.lastName && AssetDetails?.creator?.lastName[0].toUpperCase()}
+                    </div>
+                  )}
                   <div className="verified">
                     <VerifiedSign width="24px" height="24px" />
                   </div>
@@ -593,10 +621,16 @@ const AssetDetails = () => {
               </div>
               <div className="owners-detail">
                 <div className="owner-img">
+                  {AssetDetails?.owner?.profileImage ? (
                   <Image
-                    src={AssetDetails?.owner?.profileImage || catalogs}
+                    src={AssetDetails?.owner?.profileImage }
                     alt="" width={100} height={100}
-                  />
+                  />): (
+                    <div className="name-initials">
+                      {AssetDetails?.owner?.firstName && AssetDetails?.owner?.firstName[0].toUpperCase()}
+                      {AssetDetails?.owner?.lastName && AssetDetails?.owner?.lastName[0].toUpperCase()}
+                    </div>
+                  )}
                   <div className="verified">
                     <VerifiedSign width="24px" height="24px" />
                   </div>
@@ -637,9 +671,24 @@ const AssetDetails = () => {
                 handleBidNowBtn={handleBid}
               />
             )}
-
-            <div className="buttons-download mt-3"></div>
+            <Accordion>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>
+                  Asset description <IoChevronUp className="down-arrow" />
+                </Accordion.Header>
+                <Accordion.Body>{AssetDetails?.description}</Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+            {AssetDetails?.physicalAssetDescription && <Accordion>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>
+                  Physical description <IoChevronUp className="down-arrow" />
+                </Accordion.Header>
+                <Accordion.Body>{AssetDetails?.physicalAssetDescription}</Accordion.Body>
+              </Accordion.Item>
+            </Accordion>}
           </div>
+
           <div className="asset-tabs">
             <ToggleTab
               tabs={tabs}
@@ -661,7 +710,7 @@ const AssetDetails = () => {
       <TopCatalogs
         className="similar"
         title="Similar Assets from this catalog"
-        desc="Check out the video to make your journey even more easier."
+        desc="Check out few more Assets that we think you may like."
         toggleTab={false}
         similarAssets={similarAssets}
       />

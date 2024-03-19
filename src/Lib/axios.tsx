@@ -44,6 +44,7 @@ axiosInstance.interceptors.request.use(
           refreshToken: refreshToken,
         });
         localStorage.setItem('accessToken', response.data.result.access_token);
+        localStorage.setItem('refreshToken', response?.data?.result?.refresh_token);
         token = response.data.result.access_token;
       }
     }
@@ -64,11 +65,11 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
+ async (error) => {
       const originalRequest = error.config;
 
       if (originalRequest.url === '/user/refresh') {
-        // store.dispatch(logout());
+        store.dispatch(logout());
         localStorage.clear();
         window.location.href = '/login';
       }
@@ -82,23 +83,28 @@ axiosInstance.interceptors.response.use(
           // @ts-ignore
           originalRequest._retry = true;
           const refreshToken = localStorage.getItem('refreshToken');
-          return axiosInstance
+          return await axiosInstance
             .post('/user/refresh', { refreshToken })
             .then((res) => {
               if (res.status === 200) {
-                localStorage.setItem('accessToken', res.data.accessToken);
+                localStorage.setItem('accessToken', res?.data?.result?.access_token);
+                localStorage.setItem('refreshToken', res?.data?.result?.refresh_token);
                 return axiosInstance(originalRequest);
               }
             })
             .catch((err) => {
-              localStorage.clear();
-              window.location.href = '/login';
+              if(err?.response?.data?.customErrorNumber === 89001){
+                localStorage.clear();
+                window.location.href = '/login';
+              }
               return Promise.reject(err);
             });
-        } else if (originalRequest._retry) {
-          localStorage.clear();
-          window.location.href = '/login';
-        }
+        } 
+
+        // else if (originalRequest._retry) {
+        //   localStorage.clear();
+        //   window.location.href = '/login';
+        // }
       }
     return Promise.reject(error);
   },

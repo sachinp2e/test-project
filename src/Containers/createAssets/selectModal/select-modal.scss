@@ -90,6 +90,9 @@
         gap: 10px;
         // flex-direction: column;
         .key-value-icons {
+          svg{
+            cursor: pointer;
+          }
           display: flex;
           gap: 10px;
           align-items: center;

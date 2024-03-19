@@ -5,9 +5,6 @@
     display: flex;
     gap: 1rem;
     width: 100%;
-    .explore-user-masonry-grid {
-      width: 100%;
-    }
 
     .my-masonry-grid_column {
       overflow: hidden; //added to fix double-scroll

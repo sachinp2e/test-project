@@ -39,9 +39,12 @@
         width: 120px;
         margin-left: 16px;
         .custom-select{
-          width:fit-content;
+          width:140px;
           .select-placeholder{
             width: max-content;
+          }
+          .options-container{
+            width: fit-content;
           }
         }
       }

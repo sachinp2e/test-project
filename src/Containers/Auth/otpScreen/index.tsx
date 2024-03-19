@@ -13,6 +13,8 @@ import Button from '@/Components/Button';
 import { LoginLogo } from '@/Assets/svg';
 import '../Signup/signup.scss';
 import '../auth.scss';
+import {  toastSuccessMessage } from '@/utils/constants';
+import Link from 'next/link';
 
 interface IOtpScreenType {}
 
@@ -29,6 +31,7 @@ const OtpScreen: React.FC<IOtpScreenType> = () => {
   const router = useRouter();
   const otpVerify = useAppSelector(authSelector);
   const [otpResent, setOtpResent] = useState<boolean>(false);
+  const [isBlocked,setIsBlocked] = useState<boolean>(false);
 
   const handleOtp = useCallback(async (otp: string) => {
     try {
@@ -53,14 +56,22 @@ const OtpScreen: React.FC<IOtpScreenType> = () => {
         if (setErrors) {
           setErrors({ otpError: data.payload.message });
         }
+      }else if (data.payload.httpStatus === 400 && data.payload.customErrorNumber === 9015) {
+        if (setErrors) {
+          setIsBlocked(true);
+          setErrors({ otpError: data.payload.message });
+        }
       } else if (data.payload.status === 200) {
         setTimer(30);
+        toastSuccessMessage(
+          'OTP send sucessfully!',
+        );
       }
     } catch (error) {
       console.error('Invalid OTP, Please enter correct OTP:', error);
     }
   }, [dispatch]);
-
+  console.log(errors)
   return (
     <>
       <Row className="m-0 auth-container">
@@ -69,9 +80,9 @@ const OtpScreen: React.FC<IOtpScreenType> = () => {
         </Col>
         <Col xs={12} sm={12} md={6} lg={6} xl={6} xxl={6} className="otp p-0 align-self-center">
           <div className="otp-main-container">
-            <div className="logo">
+            <Link href={'/'} className="logo">
               <LoginLogo />
-            </div>
+            </Link>
             <div className="heading-container">
               <div className="heading">Enter OTP</div>
               <span className="sub-heading">
@@ -90,11 +101,12 @@ const OtpScreen: React.FC<IOtpScreenType> = () => {
               handleResend={handleResend}
               setOtpResent={setOtpResent}
             />
+
             <div>
               <button
                 className="otp-btn"
                 onClick={() => handleOtp(otp || '')}
-                disabled={!loading}
+                disabled={!loading|| isBlocked}
               >
                 {otpVerify.otpVerifyLoading &&  <span className="loader" />}
                 Proceed

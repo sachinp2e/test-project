@@ -14,7 +14,7 @@ export const getTrendingAssets = createAsyncThunk(
         url = `/asset/trending?period=${period}`;
       }
       // @ts-ignore
-      const response = await axiosInstance.get(url, { restrictToken: true });
+      const response = await axiosInstance.get(url);
       return {
         resArr: response.data?.result,
         period,

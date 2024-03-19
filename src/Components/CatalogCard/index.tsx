@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { ICatalogs } from '@/Lib/catalogs/catalogsInterface';
 import { isValidFileType } from '@/utils/helperMethods';
 
+
 interface ICatalogCard {
   cardData: ICatalogs;
 }
@@ -103,13 +104,21 @@ const CatalogCard: React.FC<ICatalogCard> = ({ cardData }) => {
       <div className="text-explore-catalog">
         <span>{cardData?.name}</span>
         <div className="sub-text-explore-catalog">
+          {cardData?.creator?.profileImage ?(
           <Image
-            src={cardData?.creator?.profileImage || CatalogAvatar}
+            src={cardData?.creator?.profileImage  }
             alt="avatar"
             quality={100}
             width={200}
             height={200}
           />
+          ): (
+            <div className="name-initials">
+              {cardData?.creator?.firstName && cardData?.creator?.firstName[0].toUpperCase()}
+              {cardData?.creator?.lastName && cardData?.creator?.lastName[0].toUpperCase()}
+              
+            </div>
+          )}
           <span>Created By:</span>
           <span>{cardData?.creator?.userName || cardData?.creator_userName}</span>
           <Image src={StarIcon} alt="star icon" />
@@ -118,13 +127,19 @@ const CatalogCard: React.FC<ICatalogCard> = ({ cardData }) => {
       <div className="explore-catalog-img-overlay">
         <div className="text-explore-catalog-img-overlay">
           <div className="avatar-text-explore-catalog">
+            {cardData?.creator?.profileImage ? (
             <Image
-              src={cardData?.creator?.profileImage || CatalogAvatar}
+              src={cardData?.creator?.profileImage}
               alt="avatar"
               quality={100}
               width={200}
               height={200}
-            />
+            />): (
+              <div className="name-initials">
+                {cardData?.creator?.firstName && cardData?.creator?.firstName[0].toUpperCase()}
+                {cardData?.creator?.lastName && cardData?.creator?.lastName[0].toUpperCase()}
+              </div>
+            )}
           </div>
           <div className="header-text-explore-catalog">
             <span>{cardData?.name}</span>
